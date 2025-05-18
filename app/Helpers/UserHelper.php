@@ -28,15 +28,17 @@ class UserHelper
         DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->delete();
     }
 
-    public static function checkPassword ($user, $password){
+    public static function checkPassword($user, $password)
+    {
         if (! Hash::check($password, $user->password)) {
             throw ValidationException::withMessages([
                 'password' => ['Credenciais não constam em nosso registro.'],
             ]);
         }
     }
-    
-    public static function checkUserActive ($user){
+
+    public static function checkUserActive($user)
+    {
         if ($user->active === 0) {
             throw ValidationException::withMessages([
                 'active' => ['Este usuário está inativo e não pode acessar a conta. Por favor, entre em contato com o administrador.'],

@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Enterprise;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class EnterpriseRepository
 {
@@ -35,7 +34,7 @@ class EnterpriseRepository
         return $this->model->where('cnpj', $cnpj)->first();
     }
 
-    public function createt($data)
+    public function create($data)
     {
         return $this->model->create($data);
     }

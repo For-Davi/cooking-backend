@@ -25,7 +25,7 @@ class Enterprise extends Model
         'phone',
         'subscription_id',
         'number_address',
-        'active'
+        'active',
     ];
 
     public function users()
