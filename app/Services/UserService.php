@@ -50,8 +50,6 @@ class UserService
         $this->enterpriseRepository->create($enterpriseDTO->toArray());
 
         $userDTO = UserStartDTO::fromRequest($request->only(['name', 'password', 'email']));
-
         return $this->repository->create($userDTO->toArray());
-
     }
 }

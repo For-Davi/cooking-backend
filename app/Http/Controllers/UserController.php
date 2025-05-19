@@ -26,7 +26,6 @@ class UserController
 
     private function configureToken($user)
     {
-
         $token = $user->createToken('my-app-token');
         $token->accessToken->update([
             'expires_at' => Carbon::now()->addHours(3),
