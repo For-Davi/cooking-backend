@@ -12,7 +12,7 @@ class UserStartDTO
         public string $email,
         public string $password,
         public string $enterprise_id,
-        public RoleUser $role
+        public string $role
     ) {}
 
     public static function fromRequest($data): self
@@ -22,7 +22,7 @@ class UserStartDTO
             email: $data['email'],
             enterprise_id: $data['enterprise_id'],
             password: Hash::make($data['password']),
-            role: RoleUser::ADMIN
+            role: 'master'
         );
     }
 
@@ -32,7 +32,7 @@ class UserStartDTO
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
-            'role' => $this->role->value,
+            'role' => $this->role,
             'enterprise_id' => $this->enterprise_id,
         ];
     }
