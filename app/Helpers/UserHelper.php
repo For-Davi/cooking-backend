@@ -23,7 +23,6 @@ class UserHelper
 
     public static function clearTokenReset($user)
     {
-        DB::table('password_resets')->where('email', $user->email)->delete();
         DB::table('password_reset_tokens')->where('email', $user->email)->delete();
         DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->delete();
     }
