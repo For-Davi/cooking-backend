@@ -11,6 +11,7 @@ class UserStartDTO
         public string $name,
         public string $email,
         public string $password,
+        public string $enterprise_id,
         public RoleUser $role
     ) {}
 
@@ -19,6 +20,7 @@ class UserStartDTO
         return new self(
             name: $data['name'],
             email: $data['email'],
+            enterprise_id: $data['enterprise_id'],
             password: Hash::make($data['password']),
             role: RoleUser::ADMIN
         );
@@ -31,6 +33,7 @@ class UserStartDTO
             'email' => $this->email,
             'password' => $this->password,
             'role' => $this->role->value,
+            'enterprise_id' => $this->enterprise_id,
         ];
     }
 }
