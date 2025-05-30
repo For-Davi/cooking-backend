@@ -45,6 +45,11 @@ class UserRepository
         return null;
     }
 
+    public function updateDepartment($departmentId)
+    {
+        $this->model->where('department_id', $departmentId)->update(['department_id' => null]);
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);

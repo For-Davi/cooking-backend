@@ -1,27 +1,21 @@
 <?php
 
-namespace App\DTO\User;
+namespace App\DTO\Department;
 
-use Illuminate\Support\Facades\Hash;
-
-class UserStartDTO
+class CreateDepartmentDTO
 {
     public function __construct(
         public string $name,
-        public string $email,
-        public string $password,
+        public string $parent_id,
         public string $enterprise_id,
-        public string $role
     ) {}
 
     public static function fromRequest($data): self
     {
         return new self(
             name: $data['name'],
-            email: $data['email'],
+            parent_id: $data['parentId'],
             enterprise_id: $data['enterprise_id'],
-            password: Hash::make($data['password']),
-            role: 'master'
         );
     }
 
@@ -29,10 +23,8 @@ class UserStartDTO
     {
         return [
             'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-            'role' => $this->role,
             'enterprise_id' => $this->enterprise_id,
+            'parent_id' => $this->parent_id,
         ];
     }
 }
