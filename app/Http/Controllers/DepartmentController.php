@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Auth\CreateDepartmentRequest;
-use App\Http\Requests\Auth\UpdateDepartmentRequest;
-use App\Http\Requests\DeleteDepartmentRequest;
+use App\Http\Requests\Department\CreateDepartmentRequest;
+use App\Http\Requests\Department\UpdateDepartmentRequest;
+use App\Http\Requests\Department\DeleteDepartmentRequest;
 use App\Repositories\DepartmentRepository;
 use App\Services\DepartmentService;
 use App\Utils\ErrorLogger;
@@ -17,10 +17,10 @@ class DepartmentController
 
     private $repository;
 
-    public function __construct(DepartmentService $service, DepartmentRepository $enterpriseRepository)
+    public function __construct(DepartmentService $service, DepartmentRepository $repository)
     {
         $this->service = $service;
-        $this->enterpriseRepository = $enterpriseRepository;
+        $this->repository = $repository;
     }
 
     public function index(Request $request)
@@ -40,12 +40,14 @@ class DepartmentController
     {
         try {
             DB::beginTransaction();
+            // dd($request->get('enterprise_id'));
             $department = $this->service->create($request);
 
             if ($department) {
                 DB::commit();
 
                 $departments = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                dd($departments);
 
                 return response()->json(['departments' => $departments, 'message' => 'Departamento cadastrado com sucesso'], 201);
             }

@@ -6,7 +6,7 @@ class UpdateDepartmentDTO
 {
     public function __construct(
         public string $name,
-        public string $parent_id,
+        public ?string $parent_id,
     ) {}
 
     public static function fromRequest($data): self

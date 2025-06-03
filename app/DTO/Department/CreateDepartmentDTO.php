@@ -6,7 +6,7 @@ class CreateDepartmentDTO
 {
     public function __construct(
         public string $name,
-        public string $parent_id,
+        public ?string $parent_id,
         public string $enterprise_id,
     ) {}
 
