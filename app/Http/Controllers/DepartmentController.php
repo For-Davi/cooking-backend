@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Department\CreateDepartmentRequest;
-use App\Http\Requests\Department\UpdateDepartmentRequest;
 use App\Http\Requests\Department\DeleteDepartmentRequest;
+use App\Http\Requests\Department\UpdateDepartmentRequest;
 use App\Repositories\DepartmentRepository;
 use App\Services\DepartmentService;
 use App\Utils\ErrorLogger;
@@ -40,16 +40,12 @@ class DepartmentController
     {
         try {
             DB::beginTransaction();
-            // dd($request->get('enterprise_id'));
             $department = $this->service->create($request);
 
             if ($department) {
                 DB::commit();
 
-                $departments = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
-                dd($departments);
-
-                return response()->json(['departments' => $departments, 'message' => 'Departamento cadastrado com sucesso'], 201);
+                return response()->json(['message' => 'Departamento cadastrado com sucesso'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -69,9 +65,7 @@ class DepartmentController
             if ($department) {
                 DB::commit();
 
-                $departments = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
-
-                return response()->json(['departments' => $departments, 'message' => 'Departamento atualizado com sucesso'], 201);
+                return response()->json(['message' => 'Departamento atualizado com sucesso'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
