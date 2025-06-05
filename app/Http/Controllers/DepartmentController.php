@@ -30,7 +30,7 @@ class DepartmentController
 
             return response()->json(['departments' => $departments], 200);
         } catch (\Exception $e) {
-            ErrorLogger::log('Erro ao buscar departamentos.', $e, $request);
+            ErrorLogger::log('Erro ao buscar departamentos:', $e, $request);
 
             return response()->json(['message' => 'Erro ao buscar departamentos'], 500);
         }
@@ -45,12 +45,12 @@ class DepartmentController
             if ($department) {
                 DB::commit();
 
-                return response()->json(['message' => 'Departamento cadastrado com sucesso'], 201);
+                return response()->json(['message' => 'Departamento cadastrado'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao cadastrar departamento', $e, $request);
+            ErrorLogger::log('Erro ao cadastrar departamento:', $e, $request);
 
             return response()->json(['message' => 'Erro ao cadastrar departamento'], 500);
         }
@@ -65,12 +65,12 @@ class DepartmentController
             if ($department) {
                 DB::commit();
 
-                return response()->json(['message' => 'Departamento atualizado com sucesso'], 200);
+                return response()->json(['message' => 'Departamento atualizado'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao atualizar departamento', $e, $request);
+            ErrorLogger::log('Erro ao atualizar departamento:', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar departamento'], 500);
         }
@@ -87,12 +87,12 @@ class DepartmentController
                 DB::commit();
                 $departments = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['departments' => $departments, 'message' => 'Departamento deletado com sucesso'], 200);
+                return response()->json(['departments' => $departments, 'message' => 'Departamento excluído'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao excluir departamento', $e, $request);
+            ErrorLogger::log('Erro ao excluir departamento:', $e, $request);
 
             return response()->json(['message' => 'Erro ao excluir departamento'], 500);
         }

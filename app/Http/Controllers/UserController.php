@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\DeleteUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserListResource;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
+use App\Utils\ErrorLogger;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class UserController
 {
@@ -54,7 +56,7 @@ class UserController
                 'enterprise_name' => $user->enterprise->name,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao logar com usuário: '.$e->getMessage());
+            ErrorLogger::log('Erro ao logar com usuário:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -86,7 +88,21 @@ class UserController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao registrar usuário: '.$e->getMessage());
+            ErrorLogger::log('Erro ao registrar com usuário:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function index(CreateUserRequest $request)
+    {
+        try {
+            $users = $this->repository->getAllByEnterprise($request->get('enterprise_id'), ['department', 'role']);
+
+            return response()->json(['users' => UserListResource::collection($users)], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao listar membros da organização:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -109,7 +125,53 @@ class UserController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao registrar membro da organização: '.$e->getMessage());
+            ErrorLogger::log('Erro ao registrar membro da organização:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function update(UpdateUserRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = $this->service->update($request);
+
+            if ($user) {
+                DB::commit();
+
+                $users = $this->repository->getAllByEnterprise($request->get('enterprise_id'), ['department', 'role']);
+
+                return response()->json(['users' => UserListResource::collection($users), 'message' => 'Membro atualizado'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao atualizar membro da organização:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function destroy(DeleteUserRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = $this->repository->delete($request->route('id'));
+
+            if ($user) {
+                DB::commit();
+
+                $users = $this->repository->getAllByEnterprise($request->get('enterprise_id'), ['department', 'role']);
+
+                return response()->json(['users' => UserListResource::collection($users), 'message' => 'Membro excluído'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao excluir membro da organização:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

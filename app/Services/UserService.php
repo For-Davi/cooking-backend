@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\Enterprise\EnterpriseStartDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\User\CreateUserDTO;
+use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
 use App\Repositories\EnterpriseRepository;
@@ -56,6 +57,11 @@ class UserService
         return $this->repository->create($userDTO);
     }
 
+    private function updateUser($userId, $userDTO)
+    {
+        return $this->repository->update($userId, $userDTO);
+    }
+
     private function createEnterprise($enterpriseDTO)
     {
         return $this->enterpriseRepository->create($enterpriseDTO);
@@ -91,5 +97,14 @@ class UserService
         ]);
 
         return $this->createUser($userDTO->toArray());
+    }
+
+    public function update($request)
+    {
+        $userDTO = UpdateUserDTO::fromRequest([
+            ...$request->only(['name', 'email', 'role_id', 'department_id', 'active']),
+        ]);
+
+        return $this->updateUser($request->id, $userDTO->toArray());
     }
 }

@@ -2,28 +2,24 @@
 
 namespace App\DTO\User;
 
-use Illuminate\Support\Facades\Hash;
-
-class CreateUserDTO
+class UpdateUserDTO
 {
     public function __construct(
         public string $name,
         public string $email,
-        public string $password,
-        public string $enterprise_id,
         public string $department_id,
-        public string $role_id
+        public string $role_id,
+        public int $active
     ) {}
 
     public static function fromRequest($data): self
     {
         return new self(
             name: $data['name'],
-            password: Hash::make($data['password']),
             email: $data['email'],
-            enterprise_id: $data['enterpriseId'],
             department_id: $data['departmentId'],
-            role_id: $data['roleId']
+            role_id: $data['roleId'],
+            active: $data['active'],
         );
     }
 
@@ -32,10 +28,9 @@ class CreateUserDTO
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'password' => $this->password,
             'role_id' => $this->role_id,
-            'enterprise_id' => $this->enterprise_id,
             'department_id' => $this->department_id,
+            'active' => $this->active,
         ];
     }
 }
