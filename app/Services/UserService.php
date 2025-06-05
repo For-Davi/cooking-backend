@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use App\DTO\Enterprise\EnterpriseStartDTO;
+use App\DTO\Role\RoleStartDTO;
+use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
 use App\Repositories\EnterpriseRepository;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Validation\ValidationException;
 
@@ -15,11 +18,15 @@ class UserService
 
     protected $enterpriseRepository;
 
+    protected $roleRepository;
+
     public function __construct(
         UserRepository $repository,
         EnterpriseRepository $enterpriseRepository,
+        RoleRepository $roleRepository
     ) {
         $this->repository = $repository;
+        $this->roleRepository = $roleRepository;
         $this->enterpriseRepository = $enterpriseRepository;
     }
 
@@ -44,16 +51,45 @@ class UserService
         }
     }
 
-    public function create($request)
+    private function createUser($userDTO)
+    {
+        return $this->repository->create($userDTO);
+    }
+
+    private function createEnterprise($enterpriseDTO)
+    {
+        return $this->enterpriseRepository->create($enterpriseDTO);
+    }
+
+    private function startRole($roleDTO)
+    {
+        return $this->roleRepository->create($roleDTO);
+    }
+
+    public function register($request)
     {
         $enterpriseDTO = EnterpriseStartDTO::fromRequest($request->only(['nameEnterprise']));
-        $enterprise = $this->enterpriseRepository->create($enterpriseDTO->toArray());
+        $enterprise = $this->createEnterprise($enterpriseDTO->toArray());
+
+        $roleDTO = RoleStartDTO::fromRequest(['enterprise_id' => $enterprise->id]);
+        $role = $this->startRole($roleDTO->toArray());
 
         $userDTO = UserStartDTO::fromRequest([
             ...$request->only(['name', 'password', 'email']),
             'enterprise_id' => $enterprise->id,
+            'role_id' => $role->id,
         ]);
 
-        return $this->repository->create($userDTO->toArray());
+        return $this->createUser($userDTO->toArray());
+    }
+
+    public function store($request)
+    {
+        $userDTO = CreateUserDTO::fromRequest([
+            ...$request->only(['name', 'password', 'email', 'role_id', 'department_id']),
+            'enterprise_id' => $request->get('enterprise_id'),
+        ]);
+
+        return $this->createUser($userDTO->toArray());
     }
 }

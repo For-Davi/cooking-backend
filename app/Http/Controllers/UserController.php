@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Resources\UserListResource;
 use App\Repositories\EnterpriseRepository;
+use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +19,14 @@ class UserController
 
     private $rule;
 
-    protected $enterpriseRepository;
+    private $repository;
 
-    public function __construct(UserService $service, EnterpriseRepository $enterpriseRepository)
+    private $enterpriseRepository;
+
+    public function __construct(UserService $service, UserRepository $repository, EnterpriseRepository $enterpriseRepository)
     {
         $this->service = $service;
+        $this->repository = $repository;
         $this->enterpriseRepository = $enterpriseRepository;
     }
 
@@ -59,7 +65,7 @@ class UserController
         try {
             DB::beginTransaction();
 
-            $user = $this->service->create($request);
+            $user = $this->service->register($request);
 
             if ($user) {
                 $token = $this->configureToken($user);
@@ -81,6 +87,29 @@ class UserController
             DB::rollBack();
 
             Log::error('Erro ao registrar usuário: '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function store(CreateUserRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = $this->service->store($request);
+
+            if ($user) {
+                DB::commit();
+
+                $users = $this->repository->getAllByEnterprise($request->get('enterprise_id'), ['department', 'role']);
+
+                return response()->json(['users' => UserListResource::collection($users), 'message' => 'Membro adicionado á sua organização'], 201);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Erro ao registrar membro da organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
