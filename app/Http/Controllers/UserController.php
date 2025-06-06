@@ -7,12 +7,13 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Resources\UserListResource;
+use App\Http\Resources\User\UserListResource;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use App\Utils\ErrorLogger;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UserController
@@ -94,7 +95,7 @@ class UserController
         }
     }
 
-    public function index(CreateUserRequest $request)
+    public function index(Request $request)
     {
         try {
             $users = $this->repository->getAllByEnterprise($request->get('enterprise_id'), ['department', 'role']);

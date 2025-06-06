@@ -13,7 +13,7 @@ class RoleStartDTO
     public static function fromRequest($data): self
     {
         return new self(
-            name: 'master',
+            name: 'Master',
             enterprise_id: $data['enterprise_id'],
             permissions: []
         );
