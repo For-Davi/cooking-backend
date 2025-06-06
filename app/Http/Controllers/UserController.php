@@ -118,7 +118,6 @@ class UserController
 
             if ($user) {
                 DB::commit();
-
                 $users = $this->repository->getAllByEnterprise($request->get('enterprise_id'), ['department', 'role']);
 
                 return response()->json(['users' => UserListResource::collection($users), 'message' => 'Membro adicionado á sua organização'], 201);

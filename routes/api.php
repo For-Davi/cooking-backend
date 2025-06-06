@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,8 @@ Route::prefix('user')->middleware(['auth:sanctum', 'token.expiration', 'set.ente
     Route::post('/', [UserController::class, 'store']);
     Route::put('/', [UserController::class, 'update']);
     Route::delete('/{id}', [UserController::class, 'destroy']);
+});
+
+Route::prefix('role')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
+    Route::get('/list-select', [RoleController::class, 'indexSelect']);
 });

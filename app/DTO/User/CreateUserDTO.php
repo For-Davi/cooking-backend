@@ -11,7 +11,7 @@ class CreateUserDTO
         public string $email,
         public string $password,
         public string $enterprise_id,
-        public string $department_id,
+        public ?string $department_id,
         public string $role_id
     ) {}
 
@@ -21,7 +21,7 @@ class CreateUserDTO
             name: $data['name'],
             password: Hash::make($data['password']),
             email: $data['email'],
-            enterprise_id: $data['enterpriseId'],
+            enterprise_id: $data['enterprise_id'],
             department_id: $data['departmentId'],
             role_id: $data['roleId']
         );

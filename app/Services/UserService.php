@@ -92,7 +92,7 @@ class UserService
     public function store($request)
     {
         $userDTO = CreateUserDTO::fromRequest([
-            ...$request->only(['name', 'password', 'email', 'role_id', 'department_id']),
+            ...$request->only(['name', 'password', 'email', 'roleId', 'departmentId']),
             'enterprise_id' => $request->get('enterprise_id'),
         ]);
 
