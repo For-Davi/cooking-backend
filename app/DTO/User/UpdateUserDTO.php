@@ -7,7 +7,7 @@ class UpdateUserDTO
     public function __construct(
         public string $name,
         public string $email,
-        public string $department_id,
+        public ?string $department_id,
         public string $role_id,
         public int $active
     ) {}

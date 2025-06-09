@@ -6,6 +6,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
+use App\Http\Requests\User\ShowUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserListResource;
 use App\Repositories\EnterpriseRepository;
@@ -104,6 +105,20 @@ class UserController
 
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao listar membros da organização:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function show(ShowUserRequest $request)
+    {
+        try {
+            $user = $this->repository->findById($request->id);
+
+            return response()->json(['user' => $user], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao buscar usuário:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

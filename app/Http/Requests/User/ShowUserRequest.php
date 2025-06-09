@@ -4,7 +4,7 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteUserRequest extends FormRequest
+class ShowUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -21,8 +21,8 @@ class DeleteUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do usuário é obrigatório.',
-            'id.exists' => 'O usuário informado não existe.',
+            'id.required' => 'O ID do usuário é obrigatório',
+            'id.exists' => 'O ID do usuário informado não existe.',
         ];
     }
 

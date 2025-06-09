@@ -23,7 +23,7 @@ class UpdateDepartmentRequest extends FormRequest
     {
         return [
             'id.required' => 'O ID do departamento é obrigatório.',
-            'id.exists' => 'O departamento informado não existe.',
+            'id.exists' => 'O ID do departamento informado não existe.',
             'name.required' => 'O nome do departamento é obrigatório',
             'name.string' => 'O nome deve ser uma string',
             'name.min' => 'O nome do departamento não pode ter menos de 3 caracteres',

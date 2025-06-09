@@ -17,6 +17,7 @@ Route::prefix('department')->middleware(['auth:sanctum', 'token.expiration', 'se
 
 Route::prefix('user')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
     Route::get('/', [UserController::class, 'index']);
+    Route::get('/{id}', [UserController::class, 'show']);
     Route::post('/', [UserController::class, 'store']);
     Route::put('/', [UserController::class, 'update']);
     Route::delete('/{id}', [UserController::class, 'destroy']);

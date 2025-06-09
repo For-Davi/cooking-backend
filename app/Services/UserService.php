@@ -102,7 +102,7 @@ class UserService
     public function update($request)
     {
         $userDTO = UpdateUserDTO::fromRequest([
-            ...$request->only(['name', 'email', 'role_id', 'department_id', 'active']),
+            ...$request->only(['name', 'email', 'roleId', 'departmentId', 'active']),
         ]);
 
         return $this->updateUser($request->id, $userDTO->toArray());
