@@ -19,6 +19,7 @@ Route::prefix('user')->middleware(['auth:sanctum', 'token.expiration', 'set.ente
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{id}', [UserController::class, 'show']);
     Route::post('/', [UserController::class, 'store']);
+    Route::post('/filter', [UserController::class, 'filter']);
     Route::put('/', [UserController::class, 'update']);
     Route::delete('/{id}', [UserController::class, 'destroy']);
 });

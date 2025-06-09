@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\User\FilterUserDTO;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
+use App\Http\Requests\User\FilterUserRequest;
 use App\Http\Requests\User\ShowUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserListResource;
@@ -105,6 +107,24 @@ class UserController
 
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao listar membros da organização:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function filter(FilterUserRequest $request)
+    {
+        try {
+            $userFilterDTO = FilterUserDTO::fromRequest([
+                ...$request->only(['name', 'email', 'role', 'department', 'active']),
+                'enterprise_id' => $request->get('enterprise_id'),
+            ]);
+            $users = $this->repository->getAllWithFilter($userFilterDTO);
+
+            return response()->json(['users' => UserListResource::collection($users)], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao filtrar usuários da organização:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

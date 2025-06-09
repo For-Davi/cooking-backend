@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DTO\User\FilterUserDTO;
 use App\Models\User;
 
 class UserRepository
@@ -24,6 +25,33 @@ class UserRepository
 
         if (! empty($relations)) {
             $query->with($relations);
+        }
+
+        return $query->get();
+    }
+
+    public function getAllWithFilter(FilterUserDTO $filters)
+    {
+        $query = $this->model->where('enterprise_id', $filters->enterprise_id);
+
+        if ($filters->name !== null) {
+            $query->where('name', 'like', "%{$filters->name}%");
+        }
+
+        if ($filters->email !== null) {
+            $query->where('email', 'like', "%{$filters->email}%");
+        }
+
+        if ($filters->active !== null) {
+            $query->where('active', $filters->active);
+        }
+
+        if ($filters->department_id !== null) {
+            $query->where('department_id', $filters->department_id);
+        }
+
+        if ($filters->role_id !== null) {
+            $query->where('role_id', $filters->role_id);
         }
 
         return $query->get();
