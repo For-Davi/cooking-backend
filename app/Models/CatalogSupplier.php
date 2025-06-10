@@ -16,7 +16,7 @@ class CatalogSupplier extends Model
         'type',
         'supplier_id',
         'enterprise_id',
-        'description'
+        'description',
     ];
 
     protected $casts = [
@@ -32,5 +32,4 @@ class CatalogSupplier extends Model
     {
         return $this->belongsTo(Enterprise::class);
     }
-
 }

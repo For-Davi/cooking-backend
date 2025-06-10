@@ -20,5 +20,4 @@ class CategorySupplier extends Model
     {
         return $this->belongsTo(Enterprise::class);
     }
-
 }

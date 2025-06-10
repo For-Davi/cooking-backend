@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,13 @@ Route::prefix('department')->middleware(['auth:sanctum', 'token.expiration', 'se
     Route::post('/', [DepartmentController::class, 'store']);
     Route::put('/', [DepartmentController::class, 'update']);
     Route::delete('/{id}', [DepartmentController::class, 'destroy']);
+});
+
+Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
+    Route::get('/', [SupplierController::class, 'index']);
+    Route::post('/', [SupplierController::class, 'store']);
+    Route::put('/', [SupplierController::class, 'update']);
+    Route::delete('/{id}', [SupplierController::class, 'destroy']);
 });
 
 Route::prefix('user')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
