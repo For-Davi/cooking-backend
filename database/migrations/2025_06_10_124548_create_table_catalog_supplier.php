@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->unsignedBigInteger('enterprise_id');
             $table->foreign('enterprise_id')->references('id')->on('enterprises');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

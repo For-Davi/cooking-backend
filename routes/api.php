@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CatalogSupplierController;
+use App\Http\Controllers\CategorySupplierController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
@@ -21,6 +23,20 @@ Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.
     Route::post('/', [SupplierController::class, 'store']);
     Route::put('/', [SupplierController::class, 'update']);
     Route::delete('/{id}', [SupplierController::class, 'destroy']);
+
+    Route::prefix('category')->group(function () {
+        Route::get('/', [CategorySupplierController::class, 'index']);
+        Route::post('/', [CategorySupplierController::class, 'store']);
+        Route::put('/', [CategorySupplierController::class, 'update']);
+        Route::delete('/{id}', [CategorySupplierController::class, 'destroy']);
+    });
+
+    Route::prefix('catalog')->group(function () {
+        Route::get('/', [CatalogSupplierController::class, 'index']);
+        Route::post('/', [CatalogSupplierController::class, 'store']);
+        Route::put('/', [CatalogSupplierController::class, 'update']);
+        Route::delete('/{id}', [CatalogSupplierController::class, 'destroy']);
+    });
 });
 
 Route::prefix('user')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {

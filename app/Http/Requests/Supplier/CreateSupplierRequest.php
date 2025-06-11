@@ -29,7 +29,7 @@ class CreateSupplierRequest extends FormRequest
             'neighborhood' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:100',
             'number' => 'nullable|string|max:10',
-            'categorie_supplier_id' => 'nullable|exists:categories_supplier,id',
+            'category_supplier_id' => 'nullable|exists:categories_supplier,id',
             'description' => 'nullable|string|max:500',
         ];
     }

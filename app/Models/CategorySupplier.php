@@ -9,7 +9,7 @@ class CategorySupplier extends Model
 {
     use Notifiable;
 
-    protected $table = 'categories_suppliers';
+    protected $table = 'categories_supplier';
 
     protected $fillable = [
         'name',
