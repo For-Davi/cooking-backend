@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\DTO\Supplier\Category\CreateCategorySupplierDTO;
 use App\DTO\Supplier\Category\UpdateCategorySupplierDTO;
+use App\Helpers\CategorySupplierHelper;
 use App\Repositories\CategorySupplierRepository;
-use CategorySupplierHelper;
 
 class CategorySupplierService
 {
@@ -19,7 +19,7 @@ class CategorySupplierService
     public function create($request)
     {
         CategorySupplierHelper::existsCategory(
-            $request->id,
+            $request->get('enterprise_id'),
             $request->name,
             'create'
         );
@@ -35,9 +35,10 @@ class CategorySupplierService
     public function update($request)
     {
         CategorySupplierHelper::existsCategory(
-            $request->id,
+            $request->get('enterprise_id'),
             $request->name,
-            'update'
+            'update',
+            $request->id
         );
 
         $categoryDTO = UpdateCategorySupplierDTO::fromRequest([
