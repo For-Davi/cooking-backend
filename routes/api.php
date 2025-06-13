@@ -20,6 +20,7 @@ Route::prefix('department')->middleware(['auth:sanctum', 'token.expiration', 'se
 
 Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
     Route::get('/', [SupplierController::class, 'index']);
+    Route::get('/{id}', [SupplierController::class, 'show']);
     Route::post('/', [SupplierController::class, 'store']);
     Route::put('/', [SupplierController::class, 'update']);
     Route::delete('/{id}', [SupplierController::class, 'destroy']);
@@ -33,6 +34,7 @@ Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.
 
     Route::prefix('catalog')->group(function () {
         Route::get('/', [CatalogSupplierController::class, 'index']);
+        Route::get('/{id}', [CatalogSupplierController::class, 'show']);
         Route::post('/', [CatalogSupplierController::class, 'store']);
         Route::put('/', [CatalogSupplierController::class, 'update']);
         Route::delete('/{id}', [CatalogSupplierController::class, 'destroy']);
