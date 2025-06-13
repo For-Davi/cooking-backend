@@ -22,7 +22,7 @@ class UpdateSupplierRequest extends FormRequest
             'state_registration' => 'nullable|string|max:20',
             'municipal_registration' => 'nullable|string|max:20',
             'phone' => 'nullable|string|max:20',
-            'site' => 'nullable|url|max:100',
+            'site' => 'nullable|max:100',
             'country' => 'nullable|string|max:50',
             'state' => 'nullable|string|max:2',
             'city' => 'nullable|string|max:50',

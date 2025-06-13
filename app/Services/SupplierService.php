@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Supplier\CreateSupplierDTO;
+use App\DTO\Supplier\UpdateSupplierDTO;
 use App\Repositories\SupplierRepository;
 
 class SupplierService
@@ -44,17 +45,30 @@ class SupplierService
 
     public function update($request)
     {
-        DepartmentHelper::existsDepartment(
-            $request->input('id'),
-            $request->input('name'),
-            $request->get('enterprise_id'),
-            'update'
-        );
-
-        $departmentDTO = UpdateDepartmentDTO::fromRequest([
-            ...$request->only(['name', 'parentId']),
+        $supplierDTO = UpdateSupplierDTO::fromRequest([
+            ...$request->only([
+                'name',
+                'email',
+                'cpf',
+                'cnpj',
+                'stateRegistration',
+                'municipalRegistration',
+                'phone',
+                'site',
+                'country',
+                'state',
+                'city',
+                'cep',
+                'neighborhood',
+                'address',
+                'number',
+                'categorySupplierId',
+                'description',
+                'active'
+            ]),
+            'enterpriseId' => $request->get('enterprise_id'),
         ]);
 
-        return $this->repository->update($request->input('id'), $departmentDTO->toArray());
+        return $this->repository->update($request->id, $supplierDTO->toArray());
     }
 }
