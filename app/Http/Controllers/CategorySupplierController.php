@@ -24,10 +24,9 @@ class CategorySupplierController
         $this->repository = $repository;
     }
 
-    public function index2(Request $request)
+    public function index(Request $request)
     {
         try {
-            // dd('teste');
             $categories = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
             return response()->json(['categories' => $categories], 200);

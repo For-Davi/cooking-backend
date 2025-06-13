@@ -14,7 +14,7 @@ class UpdateCategorySupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'categoryId' => 'required|exists:categories_supplier,id',
+            'id' => 'required|exists:categories_supplier,id',
             'name' => 'required|string|min:1|max:100',
         ];
     }
@@ -22,8 +22,8 @@ class UpdateCategorySupplierRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'categoryId.required' => 'O ID da categoria é obrigatório',
-            'categoryId.exists' => 'O ID da categoria informado não existe.',
+            'id.required' => 'O ID da categoria é obrigatório',
+            'id.exists' => 'O ID da categoria informado não existe.',
             'name.required' => 'O nome da categoria é obrigatório',
             'name.string' => 'O nome deve ser um texto',
             'name.min' => 'O nome da categoria deve ter pelo menos 1 caractere',

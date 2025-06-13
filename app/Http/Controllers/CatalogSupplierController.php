@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Supplier\Catalog\CreateCatalogSupplierRequest;
 use App\Http\Requests\Supplier\Catalog\DeleteCatalogSupplierRequest;
 use App\Http\Requests\Supplier\Catalog\ShowCatalogSupplierRequest;
-use App\Http\Requests\Supplier\Catalog\UpdateCatalogSupplierRequest;
+use App\Http\Requests\Supplier\UpdateSupplierRequest;
 use App\Repositories\CatalogSupplierRepository;
 use App\Services\CatalogSupplierService;
 use App\Utils\ErrorLogger;
@@ -73,7 +73,7 @@ class CatalogSupplierController
         }
     }
 
-    public function update(UpdateCatalogSupplierRequest $request)
+    public function update(UpdateSupplierRequest $request)
     {
         try {
             DB::beginTransaction();

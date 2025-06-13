@@ -19,12 +19,6 @@ Route::prefix('department')->middleware(['auth:sanctum', 'token.expiration', 'se
 });
 
 Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
-    Route::get('/', [SupplierController::class, 'index']);
-    Route::get('/{supplierId}', [SupplierController::class, 'show']);
-    Route::post('/', [SupplierController::class, 'store']);
-    Route::put('/', [SupplierController::class, 'update']);
-    Route::delete('/{supplierId}', [SupplierController::class, 'destroy']);
-
     Route::prefix('category')->group(function () {
         Route::get('/', [CategorySupplierController::class, 'index']);
         Route::get('/{categoryId}', [CategorySupplierController::class, 'show']);
@@ -40,6 +34,12 @@ Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.
         Route::put('/', [CatalogSupplierController::class, 'update']);
         Route::delete('/{catalogId}', [CatalogSupplierController::class, 'destroy']);
     });
+
+    Route::get('/', [SupplierController::class, 'index']);
+    Route::get('/{supplierId}', [SupplierController::class, 'show']);
+    Route::post('/', [SupplierController::class, 'store']);
+    Route::put('/', [SupplierController::class, 'update']);
+    Route::delete('/{supplierId}', [SupplierController::class, 'destroy']);
 });
 
 Route::prefix('user')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {

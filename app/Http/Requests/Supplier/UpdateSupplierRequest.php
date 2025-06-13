@@ -14,7 +14,7 @@ class UpdateSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'supplierId' => 'required|exists:suppliers,id',
+            'id' => 'required|exists:suppliers,id',
             'name' => 'required|string|min:1|max:100',
             'email' => 'nullable|email|max:100',
             'cpf' => 'nullable|string|size:11',
@@ -39,8 +39,8 @@ class UpdateSupplierRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'supplierId.required' => 'O ID do fornecedor é obrigatório',
-            'supplierId.exists' => 'O ID do fornecedor informado não existe.',
+            'id.required' => 'O ID do fornecedor é obrigatório',
+            'id.exists' => 'O ID do fornecedor informado não existe.',
             // Name
             'name.required' => 'O nome do fornecedor é obrigatório',
             'name.string' => 'O nome deve ser um texto',

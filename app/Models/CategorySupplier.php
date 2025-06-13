@@ -18,6 +18,6 @@ class CategorySupplier extends Model
 
     public function enterprise()
     {
-        return $this->belongsTo(Enterprise::class,'enterprise_id');
+        return $this->belongsTo(Enterprise::class, 'enterprise_id');
     }
 }
