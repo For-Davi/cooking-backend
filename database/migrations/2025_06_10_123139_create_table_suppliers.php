@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->nullable();
-            $table->string('cpf')->nullable();
-            $table->string('cnpj')->nullable();
+            $table->unsignedBigInteger('cpf')->nullable();
+            $table->unsignedBigInteger('cnpj')->nullable();
             $table->string('state_registration')->nullable();
             $table->string('municipal_registration')->nullable();
             $table->string('phone')->nullable();
@@ -21,13 +21,13 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
-            $table->string('cep')->nullable();
+            $table->unsignedBigInteger('cep')->nullable();
             $table->string('neighborhood')->nullable();
             $table->string('address')->nullable();
-            $table->string('number')->nullable();
+            $table->unsignedBigInteger('number')->nullable();
             $table->integer('active')->default(1);
-            $table->unsignedBigInteger('categorie_supplier_id')->nullable();
-            $table->foreign('categorie_supplier_id')->references('id')->on('categories_supplier');
+            $table->unsignedBigInteger('category_supplier_id')->nullable();
+            $table->foreign('category_supplier_id')->references('id')->on('categories_supplier');
             $table->unsignedBigInteger('enterprise_id');
             $table->foreign('enterprise_id')->references('id')->on('enterprises');
             $table->text('description');

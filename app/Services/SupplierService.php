@@ -17,7 +17,8 @@ class SupplierService
     public function create($request)
     {
         $supplierDTO = CreateSupplierDTO::fromRequest([
-            ...$request->only(['name',
+            ...$request->only([
+                'name',
                 'email',
                 'cpf',
                 'cnpj',
@@ -37,6 +38,8 @@ class SupplierService
             ]),
             'enterpriseId' => $request->get('enterprise_id'),
         ]);
+
+        // dd($supplierDTO->toArray());
 
         return $this->repository->create($supplierDTO->toArray());
     }

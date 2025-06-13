@@ -27,7 +27,7 @@ class Supplier extends Model
         'address',
         'number',
         'active',
-        'categorie_supplier_id',
+        'category_supplier_id',
         'enterprise_id',
         'description',
     ];

@@ -56,7 +56,6 @@ class SupplierController
         try {
             DB::beginTransaction();
             $supplier = $this->service->create($request);
-
             if ($supplier) {
                 DB::commit();
 
