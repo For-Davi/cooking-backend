@@ -14,7 +14,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:users,id',
+            'userId' => 'required|exists:users,id',
             'name' => 'required|string|min:3|max:30',
             'email' => 'required|string|email|max:50|unique:users,email,'.$this->id,
             'active' => 'required|in:0,1',
@@ -24,8 +24,8 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do usuário é obrigatório',
-            'id.exists' => 'O ID do usuário informado não existe.',
+            'userId.required' => 'O ID do usuário é obrigatório',
+            'userId.exists' => 'O ID do usuário informado não existe.',
             'name.required' => 'O nome é obrigatório',
             'name.string' => 'O nome deve ser uma string',
             'name.min' => 'O nome não pode ter menos de 3 caracteres',

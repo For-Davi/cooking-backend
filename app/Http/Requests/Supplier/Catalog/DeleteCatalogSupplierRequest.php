@@ -14,15 +14,15 @@ class DeleteCatalogSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:catalog_supplier,id',
+            'catalogId' => 'required|exists:catalog_supplier,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do item de catálogo é obrigatório.',
-            'id.exists' => 'O item informado não existe.',
+            'catalogId.required' => 'O ID do item de catálogo é obrigatório.',
+            'catalogId.exists' => 'O item informado não existe.',
         ];
     }
 

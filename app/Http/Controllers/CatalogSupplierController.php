@@ -40,7 +40,7 @@ class CatalogSupplierController
     public function show(ShowCatalogSupplierRequest $request)
     {
         try {
-            $item = $this->repository->findById($request->id);
+            $item = $this->repository->findById($request->route('catalogId'));
 
             return response()->json(['item' => $item], 200);
 
@@ -100,7 +100,7 @@ class CatalogSupplierController
         try {
             DB::beginTransaction();
 
-            $catalog = $this->repository->delete($request->route('id'));
+            $catalog = $this->repository->delete($request->route('catalogId'));
 
             if ($catalog) {
                 DB::commit();

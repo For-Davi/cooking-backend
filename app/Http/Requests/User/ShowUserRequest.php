@@ -14,15 +14,15 @@ class ShowUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:users,id',
+            'userId' => 'required|exists:users,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do usuário é obrigatório',
-            'id.exists' => 'O ID do usuário informado não existe.',
+            'userId.required' => 'O ID do usuário é obrigatório',
+            'userId.exists' => 'O ID do usuário informado não existe.',
         ];
     }
 

@@ -14,15 +14,15 @@ class ShowSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:suppliers,id',
+            'supplierId' => 'required|exists:suppliers,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do fornecedor é obrigatório',
-            'id.exists' => 'O ID do fornecedor informado não existe.',
+            'supplierId.required' => 'O ID do fornecedor é obrigatório',
+            'supplierId.exists' => 'O ID do fornecedor informado não existe.',
         ];
     }
 

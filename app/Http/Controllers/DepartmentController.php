@@ -81,7 +81,7 @@ class DepartmentController
         try {
             DB::beginTransaction();
 
-            $department = $this->repository->delete($request->route('id'));
+            $department = $this->repository->delete($request->route('departmentId'));
 
             if ($department) {
                 DB::commit();

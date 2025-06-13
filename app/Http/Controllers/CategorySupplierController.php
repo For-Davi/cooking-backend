@@ -24,9 +24,10 @@ class CategorySupplierController
         $this->repository = $repository;
     }
 
-    public function index(Request $request)
+    public function index2(Request $request)
     {
         try {
+            // dd('teste');
             $categories = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
             return response()->json(['categories' => $categories], 200);
@@ -40,7 +41,7 @@ class CategorySupplierController
     public function show(ShowCategorySupplierRequest $request)
     {
         try {
-            $category = $this->repository->findById($request->id);
+            $category = $this->repository->findById($request->route('categoryId'));
 
             return response()->json(['category' => $category], 200);
 
@@ -100,7 +101,7 @@ class CategorySupplierController
         try {
             DB::beginTransaction();
 
-            $category = $this->repository->delete($request->route('id'));
+            $category = $this->repository->delete($request->route('categoryId'));
 
             if ($category) {
                 DB::commit();
