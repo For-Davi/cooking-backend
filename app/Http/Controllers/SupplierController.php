@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\Supplier\FilterSupplierDTO;
 use App\Http\Requests\Supplier\CreateSupplierRequest;
 use App\Http\Requests\Supplier\DeleteSupplierRequest;
+use App\Http\Requests\Supplier\FilterSupplierRequest;
 use App\Http\Requests\Supplier\ShowSupplierRequest;
 use App\Http\Requests\Supplier\UpdateSupplierRequest;
 use App\Repositories\SupplierRepository;
@@ -46,6 +48,24 @@ class SupplierController
 
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar fornecedor:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function filter(FilterSupplierRequest $request)
+    {
+        try {
+            $supplierFilterDTO = FilterSupplierDTO::fromRequest([
+                ...$request->only(['name', 'email', 'cpf', 'cnpj', 'active', 'country', 'state', 'city', 'category']),
+                'enterprise_id' => $request->get('enterprise_id'),
+            ]);
+            $suppliers = $this->repository->getAllWithFilter($supplierFilterDTO);
+
+            return response()->json(['suppliers' => $suppliers], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao filtrar fornecedores:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

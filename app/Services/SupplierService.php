@@ -64,7 +64,7 @@ class SupplierService
                 'number',
                 'categorySupplierId',
                 'description',
-                'active'
+                'active',
             ]),
             'enterpriseId' => $request->get('enterprise_id'),
         ]);

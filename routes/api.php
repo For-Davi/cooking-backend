@@ -38,6 +38,7 @@ Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.
     Route::get('/', [SupplierController::class, 'index']);
     Route::get('/{supplierId}', [SupplierController::class, 'show']);
     Route::post('/', [SupplierController::class, 'store']);
+    Route::post('/filter', [SupplierController::class, 'filter']);
     Route::put('/', [SupplierController::class, 'update']);
     Route::delete('/{supplierId}', [SupplierController::class, 'destroy']);
 });
