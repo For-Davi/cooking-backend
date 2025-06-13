@@ -30,7 +30,7 @@ return new class extends Migration
             $table->foreign('category_supplier_id')->references('id')->on('categories_supplier');
             $table->unsignedBigInteger('enterprise_id');
             $table->foreign('enterprise_id')->references('id')->on('enterprises');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

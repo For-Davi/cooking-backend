@@ -39,8 +39,6 @@ class SupplierService
             'enterpriseId' => $request->get('enterprise_id'),
         ]);
 
-        // dd($supplierDTO->toArray());
-
         return $this->repository->create($supplierDTO->toArray());
     }
 
