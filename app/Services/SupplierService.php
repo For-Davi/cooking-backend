@@ -36,6 +36,7 @@ class SupplierService
                 'number',
                 'categorySupplierId',
                 'description',
+                'complement',
             ]),
             'enterpriseId' => $request->get('enterprise_id'),
         ]);
@@ -65,6 +66,7 @@ class SupplierService
                 'categorySupplierId',
                 'description',
                 'active',
+                'complement',
             ]),
             'enterpriseId' => $request->get('enterprise_id'),
         ]);

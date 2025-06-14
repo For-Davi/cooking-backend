@@ -15,6 +15,7 @@ class Supplier extends Model
         'name',
         'email',
         'cpf',
+        'cnpj',
         'state_registration',
         'municipal_registration',
         'phone',
@@ -30,6 +31,7 @@ class Supplier extends Model
         'category_supplier_id',
         'enterprise_id',
         'description',
+        'complement',
     ];
 
     public function enterprise()

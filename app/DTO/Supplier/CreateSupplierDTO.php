@@ -22,6 +22,7 @@ class CreateSupplierDTO
         public readonly ?int $number,
         public readonly ?int $category_supplier_id,
         public readonly ?string $description,
+        public readonly string $complement,
         public readonly string $enterprise_id,
     ) {}
 
@@ -45,6 +46,7 @@ class CreateSupplierDTO
             number: $data['number'],
             category_supplier_id: $data['categorySupplierId'],
             description: $data['description'],
+            complement: $data['complement'],
             enterprise_id: $data['enterpriseId']
         );
     }
@@ -69,6 +71,7 @@ class CreateSupplierDTO
             'number' => $this->number,
             'category_supplier_id' => $this->category_supplier_id,
             'description' => $this->description,
+            'complement' => $this->complement,
             'enterprise_id' => $this->enterprise_id,
         ];
     }

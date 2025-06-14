@@ -31,6 +31,7 @@ class CreateSupplierRequest extends FormRequest
             'number' => 'nullable|numeric',
             'category_supplier_id' => 'nullable|exists:categories_supplier,id',
             'description' => 'nullable|string|max:500',
+            'complement' => 'nullable|string|max:100',
         ];
     }
 
@@ -100,6 +101,9 @@ class CreateSupplierRequest extends FormRequest
             // Description
             'description.string' => 'A descrição deve ser um texto.',
             'description.max' => 'A descrição não pode exceder 500 caracteres.',
+
+            'complement.string' => 'O complemento do fornecedor deve ser um texto.',
+            'complement.max' => 'O complement fornecedor não pode exceder 100 caracteres.',
         ];
     }
 }

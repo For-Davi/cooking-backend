@@ -22,6 +22,7 @@ class UpdateSupplierDTO
         public readonly ?int $number,
         public readonly ?int $category_supplier_id,
         public readonly ?string $description,
+        public readonly ?string $complement,
         public readonly string $enterprise_id,
         public readonly int $active,
     ) {}
@@ -46,6 +47,7 @@ class UpdateSupplierDTO
             number: $data['number'],
             category_supplier_id: $data['categorySupplierId'],
             description: $data['description'],
+            complement: $data['complement'],
             enterprise_id: $data['enterpriseId'],
             active: $data['active'],
         );
@@ -71,6 +73,7 @@ class UpdateSupplierDTO
             'number' => $this->number,
             'category_supplier_id' => $this->category_supplier_id,
             'description' => $this->description,
+            'complement' => $this->complement,
             'enterprise_id' => $this->enterprise_id,
             'active' => $this->active,
         ];
