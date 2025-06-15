@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CatalogSupplierController;
 use App\Http\Controllers\CategorySupplierController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
@@ -50,6 +51,15 @@ Route::prefix('user')->middleware(['auth:sanctum', 'token.expiration', 'set.ente
     Route::post('/filter', [UserController::class, 'filter']);
     Route::put('/', [UserController::class, 'update']);
     Route::delete('/{userId}', [UserController::class, 'destroy']);
+});
+
+Route::prefix('client')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
+    Route::get('/', [ClientController::class, 'index']);
+    Route::get('/{clientId}', [ClientController::class, 'show']);
+    Route::post('/', [ClientController::class, 'store']);
+    Route::post('/filter', [ClientController::class, 'filter']);
+    Route::put('/', [ClientController::class, 'update']);
+    Route::delete('/{clientId}', [ClientController::class, 'destroy']);
 });
 
 Route::prefix('role')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
