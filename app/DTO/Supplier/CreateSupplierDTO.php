@@ -22,7 +22,7 @@ class CreateSupplierDTO
         public readonly ?int $number,
         public readonly ?int $category_supplier_id,
         public readonly ?string $description,
-        public readonly string $complement,
+        public readonly ?string $complement,
         public readonly string $enterprise_id,
     ) {}
 

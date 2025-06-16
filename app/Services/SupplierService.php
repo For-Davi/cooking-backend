@@ -68,7 +68,6 @@ class SupplierService
                 'active',
                 'complement',
             ]),
-            'enterpriseId' => $request->get('enterprise_id'),
         ]);
 
         return $this->repository->update($request->id, $supplierDTO->toArray());
