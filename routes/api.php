@@ -4,6 +4,7 @@ use App\Http\Controllers\CatalogSupplierController;
 use App\Http\Controllers\CategorySupplierController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -60,6 +61,15 @@ Route::prefix('client')->middleware(['auth:sanctum', 'token.expiration', 'set.en
     Route::post('/filter', [ClientController::class, 'filter']);
     Route::put('/', [ClientController::class, 'update']);
     Route::delete('/{clientId}', [ClientController::class, 'destroy']);
+});
+
+Route::prefix('employee')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
+    Route::get('/', [EmployeeController::class, 'index']);
+    Route::get('/{employeeId}', [EmployeeController::class, 'show']);
+    Route::post('/', [EmployeeController::class, 'store']);
+    Route::post('/filter', [EmployeeController::class, 'filter']);
+    Route::put('/', [EmployeeController::class, 'update']);
+    Route::delete('/{employeeId}', [EmployeeController::class, 'destroy']);
 });
 
 Route::prefix('role')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
