@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\CategorySupplier;
+use Illuminate\Support\Facades\DB;
 
 class CategorySupplierRepository
 {
@@ -45,6 +46,11 @@ class CategorySupplierRepository
         $category = $this->findById($id);
 
         if ($category) {
+            DB::table('suppliers')
+                ->where('enterprise_id', $category->enterprise_id)
+                ->where('category_supplier_id', $category->id)
+                ->update(['category_supplier_id' => null]);
+
             return $category->delete();
         }
 
