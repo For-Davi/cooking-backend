@@ -21,7 +21,7 @@ class CreateClientDTO
         public readonly ?string $neighborhood,
         public readonly ?string $address,
         public readonly ?int $number,
-        public readonly string $complement,
+        public readonly ?string $complement,
         public readonly ?string $description,
         public readonly string $enterprise_id,
     ) {}
@@ -48,7 +48,6 @@ class CreateClientDTO
             complement: $data['complement'],
             description: $data['description'],
             enterprise_id: $data['enterpriseId'],
-
         );
     }
 
