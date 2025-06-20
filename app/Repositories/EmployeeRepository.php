@@ -24,7 +24,7 @@ class EmployeeRepository
         return $this->model->find($id);
     }
 
-    public function getAllWithFilter(FilterEmployeeDTo $filters)
+    public function getAllWithFilter(FilterEmployeeDTO $filters)
     {
         $query = $this->model->where('enterprise_id', $filters->enterprise_id);
 
@@ -43,12 +43,20 @@ class EmployeeRepository
             $query->where('cnpj', 'like', "%{$filters->cnpj}%");
         }
 
+        if ($filters->sex !== null) {
+            $query->where('sex', $filters->sex);
+        }
+
         if ($filters->active !== null) {
             $query->where('active', $filters->active);
         }
 
-        if ($filters->active !== null) {
+        if ($filters->has_access_login !== null) {
             $query->where('has_access_login', $filters->has_access_login);
+        }
+
+        if ($filters->department_id !== null) {
+            $query->where('department_id', $filters->department_id);
         }
 
         return $query->get();

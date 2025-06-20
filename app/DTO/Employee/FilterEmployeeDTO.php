@@ -7,10 +7,12 @@ class FilterEmployeeDTO
     public function __construct(
         public readonly ?string $name,
         public readonly ?string $email,
+        public readonly ?string $sex,
         public readonly ?int $cpf,
         public readonly ?int $cnpj,
         public readonly ?int $active,
         public readonly ?int $has_access_login,
+        public readonly ?int $department_id,
         public readonly ?int $enterprise_id,
     ) {}
 
@@ -21,8 +23,10 @@ class FilterEmployeeDTO
             email: $data['email'] !== '' ? $data['email'] : null,
             cpf: $data['cpf'] !== '' ? $data['cpf'] : null,
             cnpj: $data['cnpj'] !== '' ? $data['cnpj'] : null,
+            sex: $data['sex'],
             active: $data['active'],
             has_access_login: $data['hasAccessLogin'],
+            department_id: $data['department'],
             enterprise_id: $data['enterprise_id'],
         );
     }
@@ -34,8 +38,10 @@ class FilterEmployeeDTO
             'email' => $this->email,
             'cpf' => $this->cpf,
             'cnpj' => $this->cnpj,
+            'sex' => $this->sex,
             'active' => $this->active,
             'has_access_login' => $this->has_access_login,
+            'department_id' => $this->department_id,
             'enterprise_id' => $this->enterprise_id,
         ];
     }

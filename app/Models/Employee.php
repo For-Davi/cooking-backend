@@ -31,10 +31,16 @@ class Employee extends Model
         'has_login_access',
         'active',
         'enterprise_id',
+        'department_id',
     ];
 
     public function enterprise()
     {
         return $this->belongsTo(Enterprise::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 }

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->nullable();
-            $table->enum('sex', ['M', 'F']);
+            $table->enum('sex', ['M', 'F'])->nullable();
             $table->string('phone')->nullable();
             $table->string('cpf')->nullable();
             $table->string('cnpj')->nullable();
@@ -31,6 +31,11 @@ return new class extends Migration
             $table->boolean('has_login_access')->default(0);
             $table->unsignedBigInteger('enterprise_id');
             $table->foreign('enterprise_id')->references('id')->on('enterprises');
+            $table->unsignedBigInteger('department_id')->nullable();
+            $table->foreign('department_id')->references('id')->on('departments');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
