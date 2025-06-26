@@ -26,7 +26,7 @@ class FilterEmployeeDTO
             sex: $data['sex'],
             active: $data['active'],
             has_access_login: $data['hasAccessLogin'],
-            department_id: $data['department'],
+            department_id: $data['departmentId'],
             enterprise_id: $data['enterprise_id'],
         );
     }

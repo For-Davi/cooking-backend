@@ -8,6 +8,7 @@ use App\Http\Requests\Employee\DeleteEmployeeRequest;
 use App\Http\Requests\Employee\FilterEmployeeRequest;
 use App\Http\Requests\Employee\ShowEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
+use App\Http\Resources\Employee\EmployeeTableResource;
 use App\Repositories\EmployeeRepository;
 use App\Services\EmployeeService;
 use App\Utils\ErrorLogger;
@@ -31,7 +32,7 @@ class EmployeeController
         try {
             $employees = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-            return response()->json(['employees' => $employees], 200);
+            return response()->json(['employees' => EmployeeTableResource::collection($employees)], 200);
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar funcionários:', $e, $request);
 
@@ -62,7 +63,7 @@ class EmployeeController
             ]);
             $employees = $this->repository->getAllWithFilter($employeeFilterDTO);
 
-            return response()->json(['employees' => $employees], 200);
+            return response()->json(['employees' => EmployeeTableResource::collection($employees)], 200);
 
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao filtrar funcionários:', $e, $request);
@@ -81,7 +82,7 @@ class EmployeeController
 
                 $employees = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['employees' => $employees, 'message' => 'Funcionário cadastrado'], 200);
+                return response()->json(['employees' => EmployeeTableResource::collection($employees), 'message' => 'Funcionário cadastrado'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -103,7 +104,7 @@ class EmployeeController
 
                 $employees = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['employees' => $employees, 'message' => 'Funcionário atualizado'], 200);
+                return response()->json(['employees' => EmployeeTableResource::collection($employees), 'message' => 'Funcionário atualizado'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -125,7 +126,7 @@ class EmployeeController
                 DB::commit();
                 $employees = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['employees' => $employees, 'message' => 'Funcionário excluído'], 200);
+                return response()->json(['employees' => EmployeeTableResource::collection($employees), 'message' => 'Funcionário excluído'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();

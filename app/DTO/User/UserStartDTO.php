@@ -21,7 +21,7 @@ class UserStartDTO
             email: $data['email'],
             enterprise_id: $data['enterprise_id'],
             password: Hash::make($data['password']),
-            role_id: $data['role_id']
+            role_id: $data['roleId']
         );
     }
 

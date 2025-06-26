@@ -14,8 +14,10 @@ class Employee extends Model
     protected $fillable = [
         'name',
         'email',
+        'sex',
         'cpf',
         'cnpj',
+        'date_birthday',
         'state_registration',
         'municipal_registration',
         'phone',
@@ -30,8 +32,10 @@ class Employee extends Model
         'complement',
         'has_login_access',
         'active',
+        'description',
         'enterprise_id',
         'department_id',
+        'user_id',
     ];
 
     public function enterprise()
