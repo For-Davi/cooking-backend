@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\DTO\User\FilterUserDTO;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository
 {
@@ -143,10 +144,17 @@ class UserRepository
         return null;
     }
 
+    private function updateInfoAccessLogin($userId)
+    {
+        DB::table('employees')->where('user_id', $userId)->update(['user_id' => null, 'has_login_access' => 0]);
+    }
+
     public function delete($id)
     {
         $user = $this->findById($id);
         if ($user) {
+            $this->updateInfoAccessLogin($id);
+
             return $user->delete();
         }
 
