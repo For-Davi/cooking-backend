@@ -14,7 +14,7 @@ class UpdateEmployeeRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'id' => 'required|exists:employeers,id',
+            'id' => 'required|exists:employees,id',
             'name' => 'required|string|min:1|max:100',
             'email' => 'nullable|email|max:100',
             'sex' => 'nullable|in:M,F',
@@ -32,15 +32,9 @@ class UpdateEmployeeRequest extends FormRequest
             'address' => 'nullable|string|max:100',
             'number' => 'nullable|numeric',
             'complement' => 'nullable|string|max:100',
-            'hasLoginAccess' => 'required|in:0,1',
             'departmentId' => 'nullable|exists:departments,id',
             'description' => 'nullable|string|max:500',
         ];
-
-        if ($this->input('hasLoginAccess') == 1) {
-            $rules['password'] = 'required|string|min:8';
-            $rules['roleId'] = 'required|exists:roles,id';
-        }
 
         return $rules;
     }
@@ -80,16 +74,9 @@ class UpdateEmployeeRequest extends FormRequest
             'number.numeric' => 'O número deve conter apenas números.',
             'complement.string' => 'O complemento deve ser um texto.',
             'complement.max' => 'O complemento não pode ter mais de 100 caracteres.',
-            'hasLoginAccess.required' => 'A informação de acesso ao login é obrigatória.',
-            'hasLoginAccess.in' => 'O acesso ao login deve ser 0 (não) ou 1 (sim).',
             'departmentId.exists' => 'O departamento selecionado é inválido.',
-            'roleId.exists' => 'A permissão selecionado é inválida.',
             'description.string' => 'A descrição deve ser um texto.',
             'description.max' => 'A descrição não pode ter mais de 500 caracteres.',
-            'password.required' => 'A senha é obrigatória quando o funcionário tem acesso ao sistema.',
-            'password.string' => 'A senha deve ser um texto.',
-            'password.min' => 'A senha deve ter no mínimo 8 caracteres.',
-            'roleId.required' => 'O perfil de acesso é obrigatório quando o funcionário tem acesso ao sistema.',
         ];
     }
 }

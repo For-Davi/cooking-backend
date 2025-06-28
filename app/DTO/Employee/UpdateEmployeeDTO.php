@@ -22,7 +22,6 @@ class UpdateEmployeeDTO
         public readonly ?string $address,
         public readonly ?int $number,
         public readonly ?string $complement,
-        public readonly int $has_login_access,
         public readonly ?string $description,
         public readonly ?string $department_id,
     ) {}
@@ -48,7 +47,6 @@ class UpdateEmployeeDTO
             number: $data['number'],
             complement: $data['complement'],
             description: $data['description'],
-            has_login_access: $data['hasLoginAccess'],
             department_id: $data['departmentId'],
         );
     }
@@ -75,7 +73,6 @@ class UpdateEmployeeDTO
             'complement' => $this->complement,
             'description' => $this->description,
             'department_id' => $this->department_id,
-            'has_login_access' => $this->has_login_access,
         ];
     }
 }

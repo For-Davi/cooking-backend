@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\DTO\Employee\FilterEmployeeDTO;
+use App\Http\Requests\Employee\Action\CreateAccessLoginRequest;
+use App\Http\Requests\Employee\CheckIDEmployeeRequest;
 use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Requests\Employee\DeleteEmployeeRequest;
 use App\Http\Requests\Employee\FilterEmployeeRequest;
@@ -49,6 +51,48 @@ class EmployeeController
 
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar funcionário:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function removeAccessLogin(CheckIDEmployeeRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $employee = $this->service->removeAccessLogin($request->route('employeeId'));
+
+            if ($employee) {
+                DB::commit();
+                $employees = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json(['employees' => EmployeeTableResource::collection($employees), 'message' => 'Removido acesso ao sistema'], 200);
+            }
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao remover acesso ao sistema:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function createAccessLogin(CreateAccessLoginRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $employee = $this->service->createAccessLogin($request);
+
+            if ($employee) {
+                DB::commit();
+                $employees = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json(['employees' => EmployeeTableResource::collection($employees), 'message' => 'Removido acesso ao sistema'], 200);
+            }
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao remover acesso ao sistema:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

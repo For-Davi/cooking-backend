@@ -93,11 +93,33 @@ class EmployeeService
                 'number',
                 'complement',
                 'description',
-                'hasLoginAccess',
                 'departmentId',
             ]),
         ]);
 
         return $this->repository->update($request->id, $employeeDTO->toArray());
+    }
+
+    public function createAccessLogin($request)
+    {
+        $employee = $this->repository->findById($request->employeId);
+
+        $userDTO = UserStartDTO::fromRequest([
+            'name' => $employee->name,
+            'email' => $employee->email,
+            'roleId' => $employee->roleId,
+            'departmentId' => $employee->departmentId,
+            'password' => $employee->password,
+            'enterprise_id' => $request->get('enterprise_id'),
+        ]);
+
+        return $this->createUser($userDTO->toArray());
+    }
+
+    public function removeAccessLogin($employeeID)
+    {
+        $employee = $this->repository->findById($employeeID);
+
+        return $this->userRepository->delete($employee->user_id);
     }
 }

@@ -70,6 +70,11 @@ Route::prefix('employee')->middleware(['auth:sanctum', 'token.expiration', 'set.
     Route::post('/filter', [EmployeeController::class, 'filter']);
     Route::put('/', [EmployeeController::class, 'update']);
     Route::delete('/{employeeId}', [EmployeeController::class, 'destroy']);
+
+    Route::prefix('action')->group(function () {
+        Route::post('/create-access-login', [EmployeeController::class, 'createAccessLogin']);
+        Route::post('/remove-access-login', [EmployeeController::class, 'removeAccessLogin']);
+    });
 });
 
 Route::prefix('role')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
