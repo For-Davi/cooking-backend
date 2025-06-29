@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\DTO\Employee\StartEmployeeDTO;
 use App\DTO\Enterprise\EnterpriseStartDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
+use App\Repositories\EmployeeRepository;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
@@ -21,13 +23,17 @@ class UserService
 
     protected $roleRepository;
 
+    protected $employeeRepository;
+
     public function __construct(
         UserRepository $repository,
         EnterpriseRepository $enterpriseRepository,
-        RoleRepository $roleRepository
+        RoleRepository $roleRepository,
+        EmployeeRepository $employeeRepository
     ) {
         $this->repository = $repository;
         $this->roleRepository = $roleRepository;
+        $this->employeeRepository = $employeeRepository;
         $this->enterpriseRepository = $enterpriseRepository;
     }
 
@@ -67,6 +73,11 @@ class UserService
         return $this->enterpriseRepository->create($enterpriseDTO);
     }
 
+    private function createEmployee($employeeDTO)
+    {
+        return $this->employeeRepository->create($employeeDTO);
+    }
+
     private function startRole($roleDTO)
     {
         return $this->roleRepository->create($roleDTO);
@@ -96,7 +107,24 @@ class UserService
             'enterprise_id' => $request->get('enterprise_id'),
         ]);
 
-        return $this->createUser($userDTO->toArray());
+        $user = $this->createUser($userDTO->toArray());
+
+        if ($request->createEmployee) {
+            $employeeDTO = StartEmployeeDTO::fromRequest([
+                ...$request->only([
+                    'name',
+                    'email',
+                    'departmentId',
+                ]),
+                'userId' => $user->id,
+                'hasLoginAccess' => 1,
+                'enterpriseId' => $request->get('enterprise_id'),
+            ]);
+
+            $this->createEmployee($employeeDTO->toArray());
+        }
+
+        return true;
     }
 
     public function update($request)
