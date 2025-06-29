@@ -34,6 +34,7 @@ class UpdateEmployeeRequest extends FormRequest
             'complement' => 'nullable|string|max:100',
             'departmentId' => 'nullable|exists:departments,id',
             'description' => 'nullable|string|max:500',
+            'active' => 'required|in:0,1',
         ];
 
         return $rules;
@@ -77,6 +78,8 @@ class UpdateEmployeeRequest extends FormRequest
             'departmentId.exists' => 'O departamento selecionado é inválido.',
             'description.string' => 'A descrição deve ser um texto.',
             'description.max' => 'A descrição não pode ter mais de 500 caracteres.',
+            'active.required' => 'O status ativo/inativo é obrigatório',
+            'active.in' => 'O status ativo deve ser 0 (inativo) ou 1 (ativo)',
         ];
     }
 }

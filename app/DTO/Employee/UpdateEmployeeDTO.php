@@ -23,6 +23,7 @@ class UpdateEmployeeDTO
         public readonly ?int $number,
         public readonly ?string $complement,
         public readonly ?string $description,
+        public readonly int $active,
         public readonly ?string $department_id,
     ) {}
 
@@ -47,6 +48,7 @@ class UpdateEmployeeDTO
             number: $data['number'],
             complement: $data['complement'],
             description: $data['description'],
+            active: $data['active'],
             department_id: $data['departmentId'],
         );
     }
@@ -72,6 +74,7 @@ class UpdateEmployeeDTO
             'number' => $this->number,
             'complement' => $this->complement,
             'description' => $this->description,
+            'active' => $this->active,
             'department_id' => $this->department_id,
         ];
     }

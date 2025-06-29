@@ -95,6 +95,7 @@ class EmployeeService
                 'complement',
                 'description',
                 'departmentId',
+                'active',
             ]),
         ]);
 
