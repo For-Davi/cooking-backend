@@ -61,7 +61,7 @@ class EmployeeController
         try {
             DB::beginTransaction();
 
-            $employee = $this->service->removeAccessLogin($request->route('employeeId'));
+            $employee = $this->service->removeAccessLogin($request->employeeId);
 
             if ($employee) {
                 DB::commit();
@@ -88,11 +88,11 @@ class EmployeeController
                 DB::commit();
                 $employees = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['employees' => EmployeeTableResource::collection($employees), 'message' => 'Removido acesso ao sistema'], 200);
+                return response()->json(['employees' => EmployeeTableResource::collection($employees), 'message' => 'Criado acesso ao sistema'], 201);
             }
 
         } catch (\Exception $e) {
-            ErrorLogger::log('Erro ao remover acesso ao sistema:', $e, $request);
+            ErrorLogger::log('Erro ao criar acesso ao sistema:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

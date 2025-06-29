@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\DTO\Employee\FilterEmployeeDTO;
 use App\Models\Employee;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeRepository
 {
@@ -79,12 +80,21 @@ class EmployeeRepository
         return null;
     }
 
+    public function clearDepartment($departmentId)
+    {
+        $this->model->where('department_id', $departmentId)->update(['department_id' => null]);
+    }
+
     public function delete($id)
     {
         $employee = $this->findById($id);
 
         if ($employee) {
-            return $employee->delete();
+
+            $employee->delete();
+            DB::table('users')->where('id', $employee->user_id)->delete();
+
+            return true;
         }
 
         return false;

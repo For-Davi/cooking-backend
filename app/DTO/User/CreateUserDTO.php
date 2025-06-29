@@ -10,9 +10,9 @@ class CreateUserDTO
         public string $name,
         public string $email,
         public string $password,
-        public string $enterprise_id,
-        public ?string $department_id,
-        public string $role_id
+        public int $enterprise_id,
+        public ?int $department_id,
+        public int $role_id
     ) {}
 
     public static function fromRequest($data): self

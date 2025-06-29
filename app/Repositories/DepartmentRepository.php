@@ -11,10 +11,13 @@ class DepartmentRepository
 
     protected $userRepository;
 
-    public function __construct(Department $department, UserRepository $userRepository)
+    protected $employeeRepository;
+
+    public function __construct(Department $department, UserRepository $userRepository, EmployeeRepository $employeeRepository)
     {
         $this->model = $department;
         $this->userRepository = $userRepository;
+        $this->employeeRepository = $employeeRepository;
     }
 
     public function getAll()
@@ -67,9 +70,14 @@ class DepartmentRepository
         }
     }
 
-    private function updateDepartmentUser($departmentId)
+    private function clearDepartmentUser($departmentId)
     {
-        $this->userRepository->updateDepartment($departmentId);
+        $this->userRepository->clearDepartment($departmentId);
+    }
+
+    private function clearDepartmentEmployee($departmentId)
+    {
+        $this->employeeRepository->clearDepartment($departmentId);
     }
 
     public function delete($id)
@@ -78,7 +86,7 @@ class DepartmentRepository
 
         if ($department) {
             $this->deleteChildren($department->id);
-            $this->updateDepartmentUser($department->id);
+            $this->clearDepartmentUser($department->id);
 
             return $department->delete();
         }

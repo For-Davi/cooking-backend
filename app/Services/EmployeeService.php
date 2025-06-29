@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\Employee\CreateEmployeeDTO;
 use App\DTO\Employee\UpdateEmployeeDTO;
+use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\UserRepository;
@@ -102,18 +103,20 @@ class EmployeeService
 
     public function createAccessLogin($request)
     {
-        $employee = $this->repository->findById($request->employeId);
+        $employee = $this->repository->findById($request->employeeId);
 
-        $userDTO = UserStartDTO::fromRequest([
+        $userDTO = CreateUserDTO::fromRequest([
             'name' => $employee->name,
             'email' => $employee->email,
-            'roleId' => $employee->roleId,
-            'departmentId' => $employee->departmentId,
-            'password' => $employee->password,
+            'roleId' => $request->roleId,
+            'departmentId' => $employee->department_id,
+            'password' => $request->password,
             'enterprise_id' => $request->get('enterprise_id'),
         ]);
 
-        return $this->createUser($userDTO->toArray());
+        $user = $this->createUser($userDTO->toArray());
+
+        return $this->repository->update($request->employeeId, ['user_id' => $user->id, 'has_login_access' => 1]);
     }
 
     public function removeAccessLogin($employeeID)

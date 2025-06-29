@@ -80,7 +80,7 @@ class UserRepository
         return null;
     }
 
-    public function updateDepartment($departmentId)
+    public function clearDepartment($departmentId)
     {
         $this->model->where('department_id', $departmentId)->update(['department_id' => null]);
     }
