@@ -11,7 +11,7 @@ class FilterEmployeeDTO
         public readonly ?int $cpf,
         public readonly ?int $cnpj,
         public readonly ?int $active,
-        public readonly ?int $has_access_login,
+        public readonly ?int $has_login_access,
         public readonly ?int $department_id,
         public readonly ?int $enterprise_id,
     ) {}
@@ -25,8 +25,8 @@ class FilterEmployeeDTO
             cnpj: $data['cnpj'] !== '' ? $data['cnpj'] : null,
             sex: $data['sex'],
             active: $data['active'],
-            has_access_login: $data['hasAccessLogin'],
-            department_id: $data['departmentId'],
+            has_login_access: $data['hasLoginAccess'],
+            department_id: $data['department'],
             enterprise_id: $data['enterprise_id'],
         );
     }
@@ -40,7 +40,7 @@ class FilterEmployeeDTO
             'cnpj' => $this->cnpj,
             'sex' => $this->sex,
             'active' => $this->active,
-            'has_access_login' => $this->has_access_login,
+            'has_access_login' => $this->has_login_access,
             'department_id' => $this->department_id,
             'enterprise_id' => $this->enterprise_id,
         ];

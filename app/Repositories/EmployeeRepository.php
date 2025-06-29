@@ -52,8 +52,8 @@ class EmployeeRepository
             $query->where('active', $filters->active);
         }
 
-        if ($filters->has_access_login !== null) {
-            $query->where('has_access_login', $filters->has_access_login);
+        if ($filters->has_login_access !== null) {
+            $query->where('has_login_access', $filters->has_login_access);
         }
 
         if ($filters->department_id !== null) {
