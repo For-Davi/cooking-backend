@@ -40,12 +40,13 @@ class ColorController
     {
         try {
             DB::beginTransaction();
-            $department = $this->service->create($request);
+            $color = $this->service->create($request);
 
-            if ($department) {
+            if ($color) {
                 DB::commit();
+                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['message' => 'Cor cadastrada'], 201);
+                return response()->json(['colors' => $colors, 'message' => 'Cor cadastrada'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -60,12 +61,14 @@ class ColorController
     {
         try {
             DB::beginTransaction();
-            $department = $this->service->update($request);
+            $color = $this->service->update($request);
 
-            if ($department) {
+            if ($color) {
                 DB::commit();
 
-                return response()->json(['message' => 'Cor atualizada'], 200);
+                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json(['colors' => $colors, 'message' => 'Cor atualizada'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();

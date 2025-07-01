@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\GridController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -26,6 +27,22 @@ Route::prefix('color')->middleware(['auth:sanctum', 'token.expiration', 'set.ent
     Route::post('/', [ColorController::class, 'store']);
     Route::put('/', [ColorController::class, 'update']);
     Route::delete('/{colorId}', [ColorController::class, 'destroy']);
+});
+
+Route::prefix('grid')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
+
+    Route::prefix('item')->group(function () {
+        Route::get('/{itemID}', [GridController::class, 'showItem']);
+        Route::post('/', [GridController::class, 'storeItem']);
+        Route::put('/', [GridController::class, 'updateItem']);
+        Route::delete('/{itemID}', [GridController::class, 'destroyItem']);
+    });
+
+    Route::get('/', [GridController::class, 'index']);
+    Route::get('/get-itens/{gridID}', [GridController::class, 'indexItens']);
+    Route::post('/', [GridController::class, 'store']);
+    Route::put('/', [GridController::class, 'update']);
+    Route::delete('/{gridID}', [GridController::class, 'destroy']);
 });
 
 Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
