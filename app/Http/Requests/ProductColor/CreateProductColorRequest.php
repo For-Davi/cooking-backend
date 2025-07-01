@@ -15,6 +15,7 @@ class CreateProductColorRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:1|max:20',
+            'hexColorCode' => 'nullable|string|min:6|max:6',
         ];
     }
 
@@ -25,6 +26,9 @@ class CreateProductColorRequest extends FormRequest
             'name.string' => 'O nome deve ser uma string',
             'name.min' => 'O nome da cor não pode ter menos de 1 caracteres',
             'name.max' => 'O nome da cor não pode ter mais de 20 caracteres',
+            'hexColorCode.string' => 'O código da cor deve ser uma string',
+            'hexColorCode.min' => 'O código da cor deve ter 6 caracteres',
+            'hexColorCode.max' => 'O código da cor deve ter 6 caracteres',
         ];
     }
 }

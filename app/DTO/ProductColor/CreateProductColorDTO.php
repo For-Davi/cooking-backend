@@ -6,6 +6,7 @@ class CreateProductColorDTO
 {
     public function __construct(
         public readonly string $name,
+        public readonly ?string $hex_color_code,
         public readonly string $enterprise_id,
     ) {}
 
@@ -13,7 +14,8 @@ class CreateProductColorDTO
     {
         return new self(
             name: $data['name'],
-            enterprise_id: $data['enterprise_id']
+            hex_color_code: $data['hexColorCode'],
+            enterprise_id: $data['enterpriseID'],
         );
     }
 
@@ -21,6 +23,7 @@ class CreateProductColorDTO
     {
         return [
             'name' => $this->name,
+            'hex_color_code' => $this->hex_color_code,
             'enterprise_id' => $this->enterprise_id,
         ];
     }
