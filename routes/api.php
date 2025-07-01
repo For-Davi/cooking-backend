@@ -3,6 +3,7 @@
 use App\Http\Controllers\CatalogSupplierController;
 use App\Http\Controllers\CategorySupplierController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RoleController;
@@ -18,6 +19,13 @@ Route::prefix('department')->middleware(['auth:sanctum', 'token.expiration', 'se
     Route::post('/', [DepartmentController::class, 'store']);
     Route::put('/', [DepartmentController::class, 'update']);
     Route::delete('/{departmentId}', [DepartmentController::class, 'destroy']);
+});
+
+Route::prefix('color')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
+    Route::get('/', [ColorController::class, 'index']);
+    Route::post('/', [ColorController::class, 'store']);
+    Route::put('/', [ColorController::class, 'update']);
+    Route::delete('/{colorId}', [ColorController::class, 'destroy']);
 });
 
 Route::prefix('supplier')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
