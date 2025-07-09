@@ -16,7 +16,8 @@ class UpdateProductColorRequest extends FormRequest
         return [
             'id' => 'required|exists:product_colors,id',
             'name' => 'required|string|min:3|max:20',
-            'hexColorCode' => 'nullable|string|min:6|max:6',
+            'hexColorCode' => 'nullable|string|min:7|max:7',
+            'active' => 'required|in:0,1',
         ];
     }
 
@@ -30,8 +31,10 @@ class UpdateProductColorRequest extends FormRequest
             'name.min' => 'O nome da cor não pode ter menos de 3 caracteres',
             'name.max' => 'O nome da cor não pode ter mais de 20 caracteres',
             'hexColorCode.string' => 'O código da cor deve ser uma string',
-            'hexColorCode.min' => 'O código da cor deve ter 6 caracteres',
-            'hexColorCode.max' => 'O código da cor deve ter 6 caracteres',
+            'hexColorCode.min' => 'O código da cor deve ter 7 caracteres',
+            'hexColorCode.max' => 'O código da cor deve ter 7 caracteres',
+            'active.required' => 'O status ativo/inativo é obrigatório',
+            'active.in' => 'O status ativo deve ser 0 (inativo) ou 1 (ativo)',
         ];
     }
 }

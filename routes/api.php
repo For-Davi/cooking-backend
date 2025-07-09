@@ -26,7 +26,7 @@ Route::prefix('color')->middleware(['auth:sanctum', 'token.expiration', 'set.ent
     Route::get('/', [ColorController::class, 'index']);
     Route::post('/', [ColorController::class, 'store']);
     Route::put('/', [ColorController::class, 'update']);
-    Route::delete('/{colorId}', [ColorController::class, 'destroy']);
+    Route::delete('/{colorID}', [ColorController::class, 'destroy']);
 });
 
 Route::prefix('grid')->middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
