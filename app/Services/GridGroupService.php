@@ -33,15 +33,15 @@ class GridGroupService
         ]);
 
         $gridGroup = $this->repository->create($gridGroupDTO->toArray());
-        $this->createItem($gridGroup->id, $request->itens, 'create');
+        $this->createItem($gridGroup->id, $request->items, 'create');
 
         return true;
     }
 
-    private function createItem(int $gridGroupID, array $itens, $mode)
+    private function createItem(int $gridGroupID, array $items, $mode)
     {
         if ($mode === 'create') {
-            foreach ($itens as $item) {
+            foreach ($items as $item) {
                 $gridItemDTO = CreateGridItemDTO::fromRequest([
                     'size' => $item['size'],
                     'order' => $item['order'],
@@ -53,7 +53,7 @@ class GridGroupService
             }
         }
         if ($mode === 'update') {
-            foreach ($itens as $item) {
+            foreach ($items as $item) {
                 $gridItemDTO = UpdateGridItemDTO::fromRequest([
                     'size' => $item['size'],
                     'order' => $item['order'],
