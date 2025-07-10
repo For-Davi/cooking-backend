@@ -53,7 +53,7 @@ class GridGroupRepository
 
         if ($gridGroup) {
 
-            DB::table('grid_itens')
+            DB::table('grid_items')
                 ->where('grid_group_id', $gridGroup->id)
                 ->delete();
 
