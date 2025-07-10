@@ -9,7 +9,7 @@ class GridItem extends Model
 {
     use Notifiable;
 
-    protected $table = 'grid_itens';
+    protected $table = 'grid_items';
 
     protected $fillable = [
         'size',

@@ -19,6 +19,6 @@ class GridGroup extends Model
 
     public function items()
     {
-        return $this->hasMany(GridItem::class, 'group_id', 'id');
+        return $this->hasMany(GridItem::class, 'grid_group_id', 'id')->orderBy('order');
     }
 }

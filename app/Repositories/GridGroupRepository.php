@@ -5,8 +5,6 @@ namespace App\Repositories;
 use App\Models\GridGroup;
 use Illuminate\Support\Facades\DB;
 
-// use Illuminate\Support\Facades\DB;
-
 class GridGroupRepository
 {
     protected $model;

@@ -12,8 +12,8 @@ class CreateGridGroupDTO
     public static function fromRequest($data): self
     {
         return new self(
-            name: $data['name'],
-            enterprise_id: $data['enterprise_id']
+            name: $data['gridName'],
+            enterprise_id: $data['enterpriseID']
         );
     }
 

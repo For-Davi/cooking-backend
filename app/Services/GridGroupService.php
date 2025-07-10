@@ -15,6 +15,8 @@ class GridGroupService
 
     protected $gridItemRepository;
 
+    protected $enterpriseID = null;
+
     public function __construct(GridGroupRepository $repository, GridItemRepository $gridItemRepository)
     {
         $this->repository = $repository;
@@ -23,53 +25,61 @@ class GridGroupService
 
     public function create($request)
     {
+        $this->enterpriseID = $request->get('enterprise_id');
+
         $gridGroupDTO = CreateGridGroupDTO::fromRequest([
-            ...$request->only(['name']),
-            'enterprise_id' => $request->get('enterprise_id'),
+            ...$request->only(['gridName']),
+            'enterpriseID' => $request->get('enterprise_id'),
         ]);
 
         $gridGroup = $this->repository->create($gridGroupDTO->toArray());
-        $this->createItem($gridGroup->id, $request->itens);
+        $this->createItem($gridGroup->id, $request->itens, 'create');
 
         return true;
     }
 
-    private function createItem(int $gridGroupID, array $itens)
+    private function createItem(int $gridGroupID, array $itens, $mode)
     {
-        foreach ($itens as $item) {
-            $gridItemDTO = CreateGridItemDTO::fromRequest([
-                'size' => $item['size'],
-                'order' => $item['order'],
-                'enterpriseID' => $item['enterprise_id'],
-                'gridGroupID' => $gridGroupID,
-            ]);
+        if ($mode === 'create') {
+            foreach ($itens as $item) {
+                $gridItemDTO = CreateGridItemDTO::fromRequest([
+                    'size' => $item['size'],
+                    'order' => $item['order'],
+                    'enterpriseID' => $this->enterpriseID,
+                    'gridGroupID' => $gridGroupID,
+                ]);
 
-            $this->gridItemRepository->create($gridItemDTO->toArray());
+                $this->gridItemRepository->create($gridItemDTO->toArray());
+            }
+        }
+        if ($mode === 'update') {
+            foreach ($itens as $item) {
+                $gridItemDTO = UpdateGridItemDTO::fromRequest([
+                    'size' => $item['size'],
+                    'order' => $item['order'],
+                    'active' => $item['active'],
+                    'enterpriseID' => $this->enterpriseID,
+                    'gridGroupID' => $gridGroupID,
+                ]);
+
+                $this->gridItemRepository->create($gridItemDTO->toArray());
+            }
         }
     }
 
     public function update($request)
     {
+        $this->enterpriseID = $request->get('enterprise_id');
+
         $gridGroupDTO = UpdateGridGroupDTO::fromRequest([
-            ...$request->only(['name', 'active']),
+            ...$request->only(['gridName', 'active']),
         ]);
 
         $this->repository->update($request->id, $gridGroupDTO->toArray());
-        $this->updateItem($request->itens);
+
+        $this->gridItemRepository->deleteAllByGroup($request->id);
+        $this->createItem($request->id, $request->items, 'update');
 
         return true;
-    }
-
-    public function updateItem(array $itens)
-    {
-        foreach ($itens as $item) {
-            $gridItemDTO = UpdateGridItemDTO::fromRequest([
-                'size' => $item['size'],
-                'order' => $item['order'],
-                'enterpriseID' => $item['enterprise_id'],
-            ]);
-
-            $this->gridItemRepository->update($item['id'], $gridItemDTO->toArray());
-        }
     }
 }

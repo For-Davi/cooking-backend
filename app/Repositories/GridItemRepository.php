@@ -50,6 +50,11 @@ class GridItemRepository
         return null;
     }
 
+    public function deleteAllByGroup($groupId)
+    {
+        $this->model->where('grid_group_id', $groupId)->delete();
+    }
+
     public function delete($id)
     {
         $gridItem = $this->findById($id);

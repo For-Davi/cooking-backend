@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Department\DeleteGridGroupRequest;
-use App\Http\Requests\Department\DeleteGridItemRequest;
-use App\Http\Requests\Department\UpdateGridItemRequest;
+use App\Http\Requests\Grid\Group\CreateGridGroupRequest;
+use App\Http\Requests\Grid\Group\DeleteGridGroupRequest;
 use App\Http\Requests\Grid\Group\UpdateGridGroupRequest;
 use App\Http\Requests\Grid\Item\CreateGridItemRequest;
+use App\Http\Requests\Grid\Item\DeleteGridItemRequest;
 use App\Http\Requests\Grid\Item\ShowAllGridItemRequest;
 use App\Http\Requests\Grid\Item\ShowGridItemRequest;
+use App\Http\Requests\Grid\Item\UpdateGridItemRequest;
 use App\Repositories\GridGroupRepository;
 use App\Repositories\GridItemRepository;
 use App\Services\GridGroupService;
@@ -40,7 +41,7 @@ class GridController
         try {
             $gridGroups = $this->gridGroupRepository->getAllByEnterprise($request->get('enterprise_id'), 'items');
 
-            return response()->json(['gridGroups' => $gridGroups], 200);
+            return response()->json(['grids' => $gridGroups], 200);
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar grupos de tamanhos:', $e, $request);
 
@@ -74,25 +75,25 @@ class GridController
         }
     }
 
-    public function store(CreateGridItemRequest $request)
+    public function store(CreateGridGroupRequest $request)
     {
         try {
             DB::beginTransaction();
-            $grid = $this->gridItemService->create($request);
+            $grid = $this->gridGroupService->create($request);
 
             if ($grid) {
                 DB::commit();
 
-                $gridItens = $this->gridItemRepository->getAllByGroup($request->route('gridID'));
+                $gridGroups = $this->gridGroupRepository->getAllByEnterprise($request->get('enterprise_id'), 'items');
 
-                return response()->json(['gridItens' => $gridItens, 'message' => 'Item da grade atualizada'], 200);
+                return response()->json(['grids' => $gridGroups, 'message' => 'Grade de tamanhos cadastrada'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao atualiza item da grade:', $e, $request);
+            ErrorLogger::log('Erro ao cadastrar grade:', $e, $request);
 
-            return response()->json(['message' => 'Erro ao atualizar item da grade'], 500);
+            return response()->json(['message' => 'Erro ao cadastrar grade'], 500);
         }
     }
 
@@ -128,7 +129,7 @@ class GridController
                 DB::commit();
                 $gridGroups = $this->gridGroupRepository->getAllByEnterprise($request->get('enterprise_id'), 'items');
 
-                return response()->json(['gridGroups' => $gridGroups, 'message' => 'Grade de tamanhos atualizada'], 200);
+                return response()->json(['grids' => $gridGroups, 'message' => 'Grade de tamanhos atualizada'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -171,7 +172,7 @@ class GridController
                 DB::commit();
                 $gridGroups = $this->gridGroupRepository->getAllByEnterprise($request->get('enterprise_id'), 'items');
 
-                return response()->json(['gridGroups' => $gridGroups, 'message' => 'Grade de tamanhos excluída'], 200);
+                return response()->json(['grids' => $gridGroups, 'message' => 'Grade de tamanhos excluída'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();

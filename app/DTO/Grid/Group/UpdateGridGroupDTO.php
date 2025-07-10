@@ -12,7 +12,7 @@ class UpdateGridGroupDTO
     public static function fromRequest($data): self
     {
         return new self(
-            name: $data['name'],
+            name: $data['gridName'],
             active: $data['active'],
         );
     }

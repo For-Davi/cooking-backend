@@ -15,11 +15,11 @@ class UpdateGridGroupRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:grid_groups,id',
-            'name' => 'required|string|min:1|max:20',
-            'itens' => 'required|array',
-            'itens.*.id' => 'required|exists:grid_itens,id',
-            'itens.*.size' => 'required|string',
-            'itens.*.order' => 'required|integer|min:0',
+            'gridName' => 'required|string|min:2|max:20',
+            'items' => 'required|array',
+            'items.*.active' => 'required|in:0,1',
+            'items.*.size' => 'required|string',
+            'items.*.order' => 'required|integer|min:0',
         ];
     }
 
@@ -30,12 +30,12 @@ class UpdateGridGroupRequest extends FormRequest
             'id.exists' => 'O ID da grade informada não existe.',
             'name.required' => 'O nome do grupo de tamanhos é obrigatório',
             'name.string' => 'O nome do grupo de tamanhos deve ser uma string',
-            'name.min' => 'O nome do grupo de tamanhos não pode ter menos de 1 caractere',
+            'name.min' => 'O nome do grupo de tamanhos não pode ter menos de 2 caracteres',
             'name.max' => 'O nome do grupo de tamanhos não pode ter mais de 20 caracteres',
             'itens.required' => 'É necessário pelo menos um item no grupo',
             'itens.array' => 'Os itens devem ser enviados como uma lista',
-            'itens.*.id.required' => 'O ID do item é obrigatório',
-            'itens.*.id.exists' => 'O ID do item informado não existe.',
+            'itens.*.active.required' => 'O status ativo/inativo do item é obrigatório',
+            'itens.*.active.in' => 'O status ativo deve ser 0 (inativo) ou 1 (ativo) do item',
             'itens.*.size.required' => 'O tamanho do item é obrigatório',
             'itens.*.size.string' => 'O tamanho do item deve ser um texto',
             'itens.*.order.required' => 'A ordem do item é obrigatória',

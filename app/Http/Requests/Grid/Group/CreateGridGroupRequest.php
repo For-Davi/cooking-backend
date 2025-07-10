@@ -14,7 +14,7 @@ class CreateGridGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:1|max:20',
+            'gridName' => 'required|string|min:2|max:20',
             'itens' => 'required|array|min:1',
             'itens.*.size' => 'required|string',
             'itens.*.order' => 'required|integer|min:0',
@@ -24,10 +24,10 @@ class CreateGridGroupRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'O nome do grupo de tamanhos é obrigatório',
-            'name.string' => 'O nome do grupo de tamanhos deve ser uma string',
-            'name.min' => 'O nome do grupo de tamanhos não pode ter menos de 1 caractere',
-            'name.max' => 'O nome do grupo de tamanhos não pode ter mais de 20 caracteres',
+            'gridName.required' => 'O nome do grupo de tamanhos é obrigatório',
+            'gridName.string' => 'O nome do grupo de tamanhos deve ser uma string',
+            'gridName.min' => 'O nome do grupo de tamanhos não pode ter menos de 1 caractere',
+            'gridName.max' => 'O nome do grupo de tamanhos não pode ter mais de 20 caracteres',
             'itens.required' => 'É necessário pelo menos um item no grupo',
             'itens.array' => 'Os itens devem ser enviados como uma lista',
             'itens.min' => 'Deve haver pelo menos um item no grupo',

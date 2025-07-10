@@ -7,8 +7,8 @@ class CreateGridItemDTO
     public function __construct(
         public readonly string $size,
         public readonly int $order,
-        public readonly string $enterprise_id,
-        public readonly string $grid_group_id,
+        public readonly int $enterprise_id,
+        public readonly int $grid_group_id,
     ) {}
 
     public static function fromRequest($data): self
