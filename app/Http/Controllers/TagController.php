@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\Tag\CreateTagRequest;
+use App\Http\Requests\Tag\DeleteTagRequest;
+use App\Http\Requests\Tag\UpdateTagRequest;
+use App\Repositories\TagRepository;
+use App\Services\TagService;
+use App\Utils\ErrorLogger;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class TagController
+{
+    public function __construct(
+        private TagService $service,
+        private TagRepository $repository
+    ) {}
+
+    public function index(Request $request)
+    {
+        try {
+            $tags = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+            return response()->json(['tags' => $tags], 200);
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao buscar tags:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao buscar tags'], 500);
+        }
+    }
+
+    public function store(CreateTagRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $tag = $this->service->create($request);
+
+            if ($tag) {
+                DB::commit();
+                $tags = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json(['tags' => $tags, 'message' => 'Tag cadastrada'], 201);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao cadastrar tag:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao cadastrar tag'], 500);
+        }
+    }
+
+    public function update(UpdateTagRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $color = $this->service->update($request);
+
+            if ($color) {
+                DB::commit();
+
+                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json(['colors' => $colors, 'message' => 'Cor atualizada'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao atualizar cor:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao atualizar cor'], 500);
+        }
+    }
+
+    public function destroy(DeleteTagRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $color = $this->repository->delete($request->route('colorID'));
+
+            if ($color) {
+                DB::commit();
+                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json(['colors' => $colors, 'message' => 'Cor excluída'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao excluir cor:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao excluir cor'], 500);
+        }
+    }
+}

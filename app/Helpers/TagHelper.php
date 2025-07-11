@@ -5,25 +5,25 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-class CategorySupplierHelper
+class TagHelper
 {
-    public static function existsCategory($enterpriseId, $name, $mode, $categoryId = null)
+    public static function existsTag($enterpriseId, $name, $mode, $tagID = null)
     {
-        $existingCategory = DB::table('categories_supplier')
+        $existingTag = DB::table('tags')
             ->where('enterprise_id', $enterpriseId)
             ->where('name', $name)
             ->first();
 
         if ($mode === 'create') {
-            if ($existingCategory) {
+            if ($existingTag) {
                 throw ValidationException::withMessages([
-                    'name' => ['Já existe uma categoria com esse nome.'],
+                    'name' => ['Já existe uma tag com esse nome'],
                 ]);
             }
         } else {
-            if ($existingCategory && $existingCategory->id !== $categoryId) {
+            if ($existingTag && $existingTag->id !== $tagID) {
                 throw ValidationException::withMessages([
-                    'name' => ['Já existe outra categoria com esse nome.'],
+                    'name' => ['Já existe outra tag com esse nome'],
                 ]);
             }
         }

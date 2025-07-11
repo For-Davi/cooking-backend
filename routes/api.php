@@ -9,6 +9,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GridController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,9 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         ->parameters(['client' => 'clientId']);
 
     Route::post('client/filter', [ClientController::class, 'filter']);
+
+    Route::apiResource('tag', TagController::class)
+        ->parameters(['tag' => 'tagID']);
 
     Route::apiResource('employee', EmployeeController::class)
         ->parameters(['employee' => 'employeeId']);
