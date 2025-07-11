@@ -17,19 +17,11 @@ Route::post('/register', [UserController::class, 'register']);
 
 Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
 
-    Route::prefix('department')->group(function () {
-        Route::get('/', [DepartmentController::class, 'index']);
-        Route::post('/', [DepartmentController::class, 'store']);
-        Route::put('/', [DepartmentController::class, 'update']);
-        Route::delete('/{departmentId}', [DepartmentController::class, 'destroy']);
-    });
+    Route::apiResource('department', DepartmentController::class)
+        ->parameters(['department' => 'departmentId']);
 
-    Route::prefix('color')->group(function () {
-        Route::get('/', [ColorController::class, 'index']);
-        Route::post('/', [ColorController::class, 'store']);
-        Route::put('/', [ColorController::class, 'update']);
-        Route::delete('/{colorID}', [ColorController::class, 'destroy']);
-    });
+    Route::apiResource('color', ColorController::class)
+        ->parameters(['color' => 'colorID']);
 
     Route::prefix('grid')->group(function () {
         Route::prefix('item')->group(function () {
@@ -46,64 +38,38 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::delete('/{gridID}', [GridController::class, 'destroy']);
     });
 
-    Route::prefix('supplier')->group(function () {
-        Route::prefix('category')->group(function () {
-            Route::get('/', [CategorySupplierController::class, 'index']);
-            Route::get('/{categoryId}', [CategorySupplierController::class, 'show']);
-            Route::post('/', [CategorySupplierController::class, 'store']);
-            Route::put('/', [CategorySupplierController::class, 'update']);
-            Route::delete('/{categoryId}', [CategorySupplierController::class, 'destroy']);
-        });
+    Route::apiResource('supplier.category', CategorySupplierController::class)
+        ->shallow()
+        ->parameters(['category' => 'categoryId']);
 
-        Route::prefix('catalog')->group(function () {
-            Route::get('/', [CatalogSupplierController::class, 'index']);
-            Route::get('/{catalogId}', [CatalogSupplierController::class, 'show']);
-            Route::post('/', [CatalogSupplierController::class, 'store']);
-            Route::put('/', [CatalogSupplierController::class, 'update']);
-            Route::delete('/{catalogId}', [CatalogSupplierController::class, 'destroy']);
-        });
+    Route::apiResource('supplier.catalog', CatalogSupplierController::class)
+        ->shallow()
+        ->parameters(['catalog' => 'catalogId']);
 
-        Route::get('/', [SupplierController::class, 'index']);
-        Route::get('/{supplierId}', [SupplierController::class, 'show']);
-        Route::post('/', [SupplierController::class, 'store']);
-        Route::post('/filter', [SupplierController::class, 'filter']);
-        Route::put('/', [SupplierController::class, 'update']);
-        Route::delete('/{supplierId}', [SupplierController::class, 'destroy']);
+    Route::apiResource('supplier', SupplierController::class)
+        ->parameters(['supplier' => 'supplierId']);
+
+    Route::post('supplier/filter', [SupplierController::class, 'filter']);
+
+    Route::apiResource('user', UserController::class)
+        ->parameters(['user' => 'userId']);
+
+    Route::post('user/filter', [UserController::class, 'filter']);
+
+    Route::apiResource('client', ClientController::class)
+        ->parameters(['client' => 'clientId']);
+
+    Route::post('client/filter', [ClientController::class, 'filter']);
+
+    Route::apiResource('employee', EmployeeController::class)
+        ->parameters(['employee' => 'employeeId']);
+
+    Route::post('employee/filter', [EmployeeController::class, 'filter']);
+
+    Route::prefix('employee/action')->group(function () {
+        Route::post('create-access-login', [EmployeeController::class, 'createAccessLogin']);
+        Route::post('remove-access-login', [EmployeeController::class, 'removeAccessLogin']);
     });
 
-    Route::prefix('user')->group(function () {
-        Route::get('/', [UserController::class, 'index']);
-        Route::get('/{userId}', [UserController::class, 'show']);
-        Route::post('/', [UserController::class, 'store']);
-        Route::post('/filter', [UserController::class, 'filter']);
-        Route::put('/', [UserController::class, 'update']);
-        Route::delete('/{userId}', [UserController::class, 'destroy']);
-    });
-
-    Route::prefix('client')->group(function () {
-        Route::get('/', [ClientController::class, 'index']);
-        Route::get('/{clientId}', [ClientController::class, 'show']);
-        Route::post('/', [ClientController::class, 'store']);
-        Route::post('/filter', [ClientController::class, 'filter']);
-        Route::put('/', [ClientController::class, 'update']);
-        Route::delete('/{clientId}', [ClientController::class, 'destroy']);
-    });
-
-    Route::prefix('employee')->group(function () {
-        Route::get('/', [EmployeeController::class, 'index']);
-        Route::get('/{employeeId}', [EmployeeController::class, 'show']);
-        Route::post('/', [EmployeeController::class, 'store']);
-        Route::post('/filter', [EmployeeController::class, 'filter']);
-        Route::put('/', [EmployeeController::class, 'update']);
-        Route::delete('/{employeeId}', [EmployeeController::class, 'destroy']);
-
-        Route::prefix('action')->group(function () {
-            Route::post('/create-access-login', [EmployeeController::class, 'createAccessLogin']);
-            Route::post('/remove-access-login', [EmployeeController::class, 'removeAccessLogin']);
-        });
-    });
-
-    Route::prefix('role')->group(function () {
-        Route::get('/list-select', [RoleController::class, 'indexSelect']);
-    });
+    Route::get('role/list-select', [RoleController::class, 'indexSelect']);
 });
