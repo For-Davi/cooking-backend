@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\DTO\ProductColor\CreateProductColorDTO;
-use App\DTO\ProductColor\UpdateProductColorDTO;
+use App\DTO\Tag\CreateTagDTO;
+use App\DTO\Tag\UpdateTagDTO;
+use App\Helpers\TagHelper;
 use App\Repositories\TagRepository;
 
 class TagService
@@ -12,33 +13,33 @@ class TagService
 
     public function create($request)
     {
-        ProductColorHelper::existsColor(
+        TagHelper::existsTag(
             $request->get('enterprise_id'),
             $request->name,
             'create'
         );
 
-        $productColorDTO = CreateProductColorDTO::fromRequest([
-            ...$request->only(['name', 'hexColorCode']),
+        $tagDTO = CreateTagDTO::fromRequest([
+            ...$request->only(['name']),
             'enterpriseID' => $request->get('enterprise_id'),
         ]);
 
-        return $this->repository->create($productColorDTO->toArray());
+        return $this->repository->create($tagDTO->toArray());
     }
 
     public function update($request)
     {
-        ProductColorHelper::existsColor(
+        TagHelper::existsTag(
             $request->get('enterprise_id'),
             $request->name,
             'update',
             $request->id
         );
 
-        $productColorDTO = UpdateProductColorDTO::fromRequest([
-            ...$request->only(['name', 'active', 'hexColorCode']),
+        $tagDTO = UpdateTagDTO::fromRequest([
+            ...$request->only(['name', 'active']),
         ]);
 
-        return $this->repository->update($request->id, $productColorDTO->toArray());
+        return $this->repository->update($request->id, $tagDTO->toArray());
     }
 }

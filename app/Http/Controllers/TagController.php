@@ -61,16 +61,16 @@ class TagController
             if ($color) {
                 DB::commit();
 
-                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $tags = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['colors' => $colors, 'message' => 'Cor atualizada'], 200);
+                return response()->json(['tags' => $tags, 'message' => 'Tag atualizada'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao atualizar cor:', $e, $request);
+            ErrorLogger::log('Erro ao atualizar tag:', $e, $request);
 
-            return response()->json(['message' => 'Erro ao atualizar cor'], 500);
+            return response()->json(['message' => 'Erro ao atualizar tag'], 500);
         }
     }
 
@@ -79,20 +79,20 @@ class TagController
         try {
             DB::beginTransaction();
 
-            $color = $this->repository->delete($request->route('colorID'));
+            $tag = $this->repository->delete($request->route('tagID'));
 
-            if ($color) {
+            if ($tag) {
                 DB::commit();
-                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $tags = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['colors' => $colors, 'message' => 'Cor excluída'], 200);
+                return response()->json(['tags' => $tags, 'message' => 'Tag excluída'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao excluir cor:', $e, $request);
+            ErrorLogger::log('Erro ao excluir tag:', $e, $request);
 
-            return response()->json(['message' => 'Erro ao excluir cor'], 500);
+            return response()->json(['message' => 'Erro ao excluir tag'], 500);
         }
     }
 }
