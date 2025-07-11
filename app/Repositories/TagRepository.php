@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DTO\Tag\FilterTagDTO;
 use App\Models\Tag;
 
 class TagRepository
@@ -21,6 +22,21 @@ class TagRepository
     public function findById($id)
     {
         return $this->model->find($id);
+    }
+
+    public function getAllWithFilter(FilterTagDTO $filters)
+    {
+        $query = $this->model->where('enterprise_id', $filters->enterprise_id);
+
+        if ($filters->name !== null) {
+            $query->where('name', 'like', "%{$filters->name}%");
+        }
+
+        if ($filters->active !== null) {
+            $query->where('active', $filters->active);
+        }
+
+        return $query->get();
     }
 
     public function create($data)

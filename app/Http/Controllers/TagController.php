@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\Tag\FilterTagDTO;
 use App\Http\Requests\Tag\CreateTagRequest;
 use App\Http\Requests\Tag\DeleteTagRequest;
+use App\Http\Requests\Tag\FilterTagRequest;
 use App\Http\Requests\Tag\UpdateTagRequest;
 use App\Repositories\TagRepository;
 use App\Services\TagService;
@@ -49,6 +51,24 @@ class TagController
             ErrorLogger::log('Erro ao cadastrar tag:', $e, $request);
 
             return response()->json(['message' => 'Erro ao cadastrar tag'], 500);
+        }
+    }
+
+    public function filter(FilterTagRequest $request)
+    {
+        try {
+            $tagDTO = FilterTagDTO::fromRequest([
+                ...$request->only(['name', 'active']),
+                'enterpriseID' => $request->get('enterprise_id'),
+            ]);
+            $tags = $this->repository->getAllWithFilter($tagDTO);
+
+            return response()->json(['tags' => $tags], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao filtrar tags:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 

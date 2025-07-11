@@ -65,6 +65,8 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
     Route::apiResource('tag', TagController::class)
         ->parameters(['tag' => 'tagID']);
 
+    Route::post('tag/filter', [TagController::class, 'filter']);
+
     Route::apiResource('employee', EmployeeController::class)
         ->parameters(['employee' => 'employeeId']);
 
