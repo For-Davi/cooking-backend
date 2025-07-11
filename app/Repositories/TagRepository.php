@@ -6,7 +6,7 @@ use App\Models\Tag;
 
 class TagRepository
 {
-    public function __construct(protected Tag $model){}
+    public function __construct(protected Tag $model) {}
 
     public function getAll()
     {

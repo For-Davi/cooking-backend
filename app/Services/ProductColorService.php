@@ -9,12 +9,7 @@ use App\Repositories\ProductColorRepository;
 
 class ProductColorService
 {
-    protected $repository;
-
-    public function __construct(ProductColorRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(protected ProductColorRepository $repository) {}
 
     public function create($request)
     {

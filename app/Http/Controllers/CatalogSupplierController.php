@@ -14,15 +14,10 @@ use Illuminate\Support\Facades\DB;
 
 class CatalogSupplierController
 {
-    private $service;
-
-    private $repository;
-
-    public function __construct(CatalogSupplierService $service, CatalogSupplierRepository $repository)
-    {
-        $this->service = $service;
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private CatalogSupplierService $service,
+        private CatalogSupplierRepository $repository
+    ) {}
 
     public function index(Request $request)
     {

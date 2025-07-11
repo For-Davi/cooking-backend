@@ -20,21 +20,12 @@ use Illuminate\Support\Facades\DB;
 
 class GridController
 {
-    private $gridGroupService;
-
-    private $gridItemService;
-
-    private $gridGroupRepository;
-
-    private $gridItemRepository;
-
-    public function __construct(GridGroupService $gridGroupService, GridItemService $gridItemService, GridGroupRepository $gridGroupRepository, GridItemRepository $gridItemRepository)
-    {
-        $this->gridGroupService = $gridGroupService;
-        $this->gridItemService = $gridItemService;
-        $this->gridGroupRepository = $gridGroupRepository;
-        $this->gridItemRepository = $gridItemRepository;
-    }
+    public function __construct(
+        private GridGroupService $gridGroupService,
+        private GridItemService $gridItemService,
+        private GridGroupRepository $gridGroupRepository,
+        private GridItemRepository $gridItemRepository
+    ) {}
 
     public function index(Request $request)
     {

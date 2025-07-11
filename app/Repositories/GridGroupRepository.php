@@ -7,12 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class GridGroupRepository
 {
-    protected $model;
-
-    public function __construct(GridGroup $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected GridGroup $model) {}
 
     public function getAllByEnterprise($enterpriseId, $relations = null)
     {

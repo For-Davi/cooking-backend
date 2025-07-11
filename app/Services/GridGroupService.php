@@ -11,17 +11,12 @@ use App\Repositories\GridItemRepository;
 
 class GridGroupService
 {
-    protected $repository;
+    protected ?int $enterpriseID = null;
 
-    protected $gridItemRepository;
-
-    protected $enterpriseID = null;
-
-    public function __construct(GridGroupRepository $repository, GridItemRepository $gridItemRepository)
-    {
-        $this->repository = $repository;
-        $this->gridItemRepository = $gridItemRepository;
-    }
+    public function __construct(
+        protected GridGroupRepository $repository,
+        protected GridItemRepository $gridItemRepository
+    ) {}
 
     public function create($request)
     {

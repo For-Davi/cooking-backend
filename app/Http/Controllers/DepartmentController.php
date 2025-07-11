@@ -13,15 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class DepartmentController
 {
-    private $service;
-
-    private $repository;
-
-    public function __construct(DepartmentService $service, DepartmentRepository $repository)
-    {
-        $this->service = $service;
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private DepartmentService $service,
+        private DepartmentRepository $repository
+    ) {}
 
     public function index(Request $request)
     {

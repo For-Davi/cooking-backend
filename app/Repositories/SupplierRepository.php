@@ -7,12 +7,7 @@ use App\Models\Supplier;
 
 class SupplierRepository
 {
-    protected $model;
-
-    public function __construct(Supplier $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected Supplier $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

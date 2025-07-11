@@ -14,15 +14,10 @@ use Illuminate\Support\Facades\DB;
 
 class CategorySupplierController
 {
-    private $service;
-
-    private $repository;
-
-    public function __construct(CategorySupplierService $service, CategorySupplierRepository $repository)
-    {
-        $this->service = $service;
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private CategorySupplierService $service,
+        private CategorySupplierRepository $repository
+    ) {}
 
     public function index(Request $request)
     {

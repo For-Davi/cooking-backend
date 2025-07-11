@@ -9,14 +9,7 @@ use Illuminate\Http\Request;
 
 class RoleController
 {
-    private $service;
-
-    private $repository;
-
-    public function __construct(RoleRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(private RoleRepository $repository) {}
 
     public function indexSelect(Request $request)
     {

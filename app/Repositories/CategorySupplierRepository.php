@@ -7,12 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class CategorySupplierRepository
 {
-    protected $model;
-
-    public function __construct(CategorySupplier $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected CategorySupplier $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

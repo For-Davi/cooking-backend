@@ -9,12 +9,7 @@ use App\Repositories\CategorySupplierRepository;
 
 class CategorySupplierService
 {
-    protected $repository;
-
-    public function __construct(CategorySupplierRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(protected CategorySupplierRepository $repository) {}
 
     public function create($request)
     {

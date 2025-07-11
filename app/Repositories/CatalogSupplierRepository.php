@@ -6,12 +6,7 @@ use App\Models\CatalogSupplier;
 
 class CatalogSupplierRepository
 {
-    protected $model;
-
-    public function __construct(CatalogSupplier $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected CatalogSupplier $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

@@ -4,16 +4,9 @@ namespace App\Repositories;
 
 use App\Models\ProductColor;
 
-// use Illuminate\Support\Facades\DB;
-
 class ProductColorRepository
 {
-    protected $model;
-
-    public function __construct(ProductColor $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected ProductColor $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

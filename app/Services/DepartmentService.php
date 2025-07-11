@@ -9,12 +9,7 @@ use App\Repositories\DepartmentRepository;
 
 class DepartmentService
 {
-    protected $repository;
-
-    public function __construct(DepartmentRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(protected DepartmentRepository $repository) {}
 
     public function create($request)
     {

@@ -11,17 +11,10 @@ use App\Repositories\UserRepository;
 
 class EmployeeService
 {
-    protected $repository;
-
-    protected $userRepository;
-
     public function __construct(
-        EmployeeRepository $repository,
-        UserRepository $userRepository,
-    ) {
-        $this->repository = $repository;
-        $this->userRepository = $userRepository;
-    }
+        protected EmployeeRepository $repository,
+        protected UserRepository $userRepository
+    ) {}
 
     private function createUser($userDTO)
     {

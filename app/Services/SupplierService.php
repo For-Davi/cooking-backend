@@ -8,12 +8,7 @@ use App\Repositories\SupplierRepository;
 
 class SupplierService
 {
-    protected $repository;
-
-    public function __construct(SupplierRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(protected SupplierRepository $repository) {}
 
     public function create($request)
     {

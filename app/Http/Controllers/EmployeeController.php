@@ -19,15 +19,10 @@ use Illuminate\Support\Facades\DB;
 
 class EmployeeController
 {
-    private $service;
-
-    private $repository;
-
-    public function __construct(EmployeeService $service, EmployeeRepository $repository)
-    {
-        $this->service = $service;
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private EmployeeService $service,
+        private EmployeeRepository $repository
+    ) {}
 
     public function index(Request $request)
     {

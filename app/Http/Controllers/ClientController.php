@@ -16,15 +16,10 @@ use Illuminate\Support\Facades\DB;
 
 class ClientController
 {
-    private $service;
-
-    private $repository;
-
-    public function __construct(ClientService $service, ClientRepository $repository)
-    {
-        $this->service = $service;
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private ClientService $service,
+        private ClientRepository $repository
+    ) {}
 
     public function index(Request $request)
     {

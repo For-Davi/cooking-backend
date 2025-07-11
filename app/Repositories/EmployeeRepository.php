@@ -8,12 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class EmployeeRepository
 {
-    protected $model;
-
-    public function __construct(Employee $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected Employee $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

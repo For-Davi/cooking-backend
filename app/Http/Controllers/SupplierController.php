@@ -16,15 +16,10 @@ use Illuminate\Support\Facades\DB;
 
 class SupplierController
 {
-    private $service;
-
-    private $repository;
-
-    public function __construct(SupplierService $service, SupplierRepository $repository)
-    {
-        $this->service = $service;
-        $this->repository = $repository;
-    }
+    public function __construct(
+        protected SupplierService $service,
+        protected SupplierRepository $repository
+    ) {}
 
     public function index(Request $request)
     {

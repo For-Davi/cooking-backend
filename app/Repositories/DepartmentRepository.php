@@ -7,18 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class DepartmentRepository
 {
-    protected $model;
-
-    protected $userRepository;
-
-    protected $employeeRepository;
-
-    public function __construct(Department $department, UserRepository $userRepository, EmployeeRepository $employeeRepository)
-    {
-        $this->model = $department;
-        $this->userRepository = $userRepository;
-        $this->employeeRepository = $employeeRepository;
-    }
+    public function __construct(
+        protected Department $model,
+        protected UserRepository $userRepository,
+        protected EmployeeRepository $employeeRepository
+    ) {}
 
     public function getAll()
     {

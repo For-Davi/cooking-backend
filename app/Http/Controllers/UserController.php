@@ -21,20 +21,11 @@ use Illuminate\Support\Facades\DB;
 
 class UserController
 {
-    private $service;
-
-    private $rule;
-
-    private $repository;
-
-    private $enterpriseRepository;
-
-    public function __construct(UserService $service, UserRepository $repository, EnterpriseRepository $enterpriseRepository)
-    {
-        $this->service = $service;
-        $this->repository = $repository;
-        $this->enterpriseRepository = $enterpriseRepository;
-    }
+    public function __construct(
+        protected UserService $service,
+        protected UserRepository $repository,
+        protected EnterpriseRepository $enterpriseRepository
+    ) {}
 
     private function configureToken($user)
     {

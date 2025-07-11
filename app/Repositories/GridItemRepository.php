@@ -4,16 +4,9 @@ namespace App\Repositories;
 
 use App\Models\GridItem;
 
-// use Illuminate\Support\Facades\DB;
-
 class GridItemRepository
 {
-    protected $model;
-
-    public function __construct(GridItem $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected GridItem $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

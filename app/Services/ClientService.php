@@ -8,12 +8,7 @@ use App\Repositories\ClientRepository;
 
 class ClientService
 {
-    protected $repository;
-
-    public function __construct(ClientRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(protected ClientRepository $repository) {}
 
     public function create($request)
     {

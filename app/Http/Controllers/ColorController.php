@@ -13,15 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class ColorController
 {
-    private $service;
-
-    private $repository;
-
-    public function __construct(ProductColorService $service, ProductColorRepository $repository)
-    {
-        $this->service = $service;
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private ProductColorService $service,
+        private ProductColorRepository $repository
+    ) {}
 
     public function index(Request $request)
     {

@@ -7,12 +7,7 @@ use App\Models\Client;
 
 class ClientRepository
 {
-    protected $model;
-
-    public function __construct(Client $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected Client $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

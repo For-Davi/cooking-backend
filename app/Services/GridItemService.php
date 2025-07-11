@@ -8,12 +8,7 @@ use App\Repositories\GridItemRepository;
 
 class GridItemService
 {
-    protected $repository;
-
-    public function __construct(GridItemRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(protected GridItemRepository $repository) {}
 
     public function create($request)
     {

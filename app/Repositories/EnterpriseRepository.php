@@ -7,12 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class EnterpriseRepository
 {
-    protected $model;
-
-    public function __construct(Enterprise $enterprise)
-    {
-        $this->model = $enterprise;
-    }
+    public function __construct(protected Enterprise $model) {}
 
     public function getAll()
     {

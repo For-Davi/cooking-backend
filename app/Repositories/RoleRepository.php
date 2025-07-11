@@ -6,12 +6,7 @@ use App\Models\Role;
 
 class RoleRepository
 {
-    protected $model;
-
-    public function __construct(Role $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected Role $model) {}
 
     public function getAll()
     {

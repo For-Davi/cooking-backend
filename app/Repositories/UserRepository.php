@@ -8,12 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserRepository
 {
-    protected $model;
-
-    public function __construct(User $user)
-    {
-        $this->model = $user;
-    }
+    public function __construct(public User $model) {}
 
     public function getAll()
     {

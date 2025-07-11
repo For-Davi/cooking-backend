@@ -17,25 +17,12 @@ use Illuminate\Validation\ValidationException;
 
 class UserService
 {
-    protected $repository;
-
-    protected $enterpriseRepository;
-
-    protected $roleRepository;
-
-    protected $employeeRepository;
-
     public function __construct(
-        UserRepository $repository,
-        EnterpriseRepository $enterpriseRepository,
-        RoleRepository $roleRepository,
-        EmployeeRepository $employeeRepository
-    ) {
-        $this->repository = $repository;
-        $this->roleRepository = $roleRepository;
-        $this->employeeRepository = $employeeRepository;
-        $this->enterpriseRepository = $enterpriseRepository;
-    }
+        protected UserRepository $repository,
+        protected EnterpriseRepository $enterpriseRepository,
+        protected RoleRepository $roleRepository,
+        protected EmployeeRepository $employeeRepository
+    ) {}
 
     public function login($request)
     {
