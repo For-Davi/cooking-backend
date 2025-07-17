@@ -14,15 +14,15 @@ class ShowClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'clientId' => 'required|exists:clients,id',
+            'clientID' => 'required|exists:clients,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'clientId.required' => 'O ID do cliente é obrigatório',
-            'clientId.exists' => 'O ID do cliente informado não existe.',
+            'clientID.required' => 'O ID do cliente é obrigatório',
+            'clientID.exists' => 'O ID do cliente informado não existe.',
         ];
     }
 

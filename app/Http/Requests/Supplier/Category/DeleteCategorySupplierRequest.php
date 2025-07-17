@@ -14,15 +14,15 @@ class DeleteCategorySupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'categoryId' => 'required|exists:categories_supplier,id',
+            'categoryID' => 'required|exists:categories_supplier,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'categoryId.required' => 'O ID da categoria é obrigatório.',
-            'categoryId.exists' => 'A categoria informado não existe.',
+            'categoryID.required' => 'O ID da categoria é obrigatório.',
+            'categoryID.exists' => 'A categoria informado não existe.',
         ];
     }
 

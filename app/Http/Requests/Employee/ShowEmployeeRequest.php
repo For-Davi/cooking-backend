@@ -14,15 +14,15 @@ class ShowEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'employeeId' => 'required|exists:employees,id',
+            'employeeID' => 'required|exists:employees,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'employeeId.required' => 'O ID do funcionário é obrigatório',
-            'employeeId.exists' => 'O ID do funcionário informado não existe.',
+            'employeeID.required' => 'O ID do funcionário é obrigatório',
+            'employeeID.exists' => 'O ID do funcionário informado não existe.',
         ];
     }
 

@@ -35,7 +35,7 @@ class CategorySupplierController
     public function show(ShowCategorySupplierRequest $request)
     {
         try {
-            $category = $this->repository->findById($request->route('categoryId'));
+            $category = $this->repository->findById($request->route('categoryID'));
 
             return response()->json(['category' => $category], 200);
 
@@ -95,7 +95,7 @@ class CategorySupplierController
         try {
             DB::beginTransaction();
 
-            $category = $this->repository->delete($request->route('categoryId'));
+            $category = $this->repository->delete($request->route('categoryID'));
 
             if ($category) {
                 DB::commit();

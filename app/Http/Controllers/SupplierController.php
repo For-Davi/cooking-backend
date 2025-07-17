@@ -37,7 +37,7 @@ class SupplierController
     public function show(ShowSupplierRequest $request)
     {
         try {
-            $supplier = $this->repository->findById($request->route('supplierId'));
+            $supplier = $this->repository->findById($request->route('supplierID'));
 
             return response()->json(['supplier' => $supplier], 200);
 
@@ -114,7 +114,7 @@ class SupplierController
         try {
             DB::beginTransaction();
 
-            $supplier = $this->repository->delete($request->route('supplierId'));
+            $supplier = $this->repository->delete($request->route('supplierID'));
 
             if ($supplier) {
                 DB::commit();

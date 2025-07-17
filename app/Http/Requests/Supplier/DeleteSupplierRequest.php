@@ -14,15 +14,15 @@ class DeleteSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'supplierId' => 'required|exists:suppliers,id',
+            'supplierID' => 'required|exists:suppliers,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'supplierId.required' => 'O ID do fornecedor é obrigatório.',
-            'supplierId.exists' => 'O fornecedor informado não existe.',
+            'supplierID.required' => 'O ID do fornecedor é obrigatório.',
+            'supplierID.exists' => 'O fornecedor informado não existe.',
         ];
     }
 

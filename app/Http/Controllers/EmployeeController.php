@@ -159,7 +159,7 @@ class EmployeeController
         try {
             DB::beginTransaction();
 
-            $employee = $this->repository->delete($request->route('employeeId'));
+            $employee = $this->repository->delete($request->route('employeeID'));
 
             if ($employee) {
                 DB::commit();

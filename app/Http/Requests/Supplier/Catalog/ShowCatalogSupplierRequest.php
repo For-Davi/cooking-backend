@@ -14,15 +14,15 @@ class ShowCatalogSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'catalogId' => 'required|exists:catalog_supplier,id',
+            'catalogID' => 'required|exists:catalog_supplier,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'catalogId.required' => 'O ID do item de catálogo é obrigatório',
-            'catalogId.exists' => 'O ID do item do catálogo informado não existe.',
+            'catalogID.required' => 'O ID do item de catálogo é obrigatório',
+            'catalogID.exists' => 'O ID do item do catálogo informado não existe.',
         ];
     }
 

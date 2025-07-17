@@ -37,7 +37,7 @@ class ClientController
     public function show(ShowClientRequest $request)
     {
         try {
-            $client = $this->repository->findById($request->route('clientId'));
+            $client = $this->repository->findById($request->route('clientID'));
 
             return response()->json(['client' => $client], 200);
 
@@ -114,7 +114,7 @@ class ClientController
         try {
             DB::beginTransaction();
 
-            $client = $this->repository->delete($request->route('clientId'));
+            $client = $this->repository->delete($request->route('clientID'));
 
             if ($client) {
                 DB::commit();

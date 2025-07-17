@@ -14,15 +14,15 @@ class DeleteDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'departmentId' => 'required|exists:departments,id',
+            'departmentID' => 'required|exists:departments,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'departmentId.required' => 'O ID do departamento é obrigatório.',
-            'departmentId.exists' => 'O departamento informado não existe.',
+            'departmentID.required' => 'O ID do departamento é obrigatório.',
+            'departmentID.exists' => 'O departamento informado não existe.',
         ];
     }
 

@@ -18,11 +18,19 @@ Route::post('/register', [UserController::class, 'register']);
 
 Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
 
-    Route::apiResource('department', DepartmentController::class)
-        ->parameters(['department' => 'departmentId']);
+    Route::prefix('department')->group(function () {
+        Route::get('/', [DepartmentController::class, 'index']);
+        Route::post('/', [DepartmentController::class, 'store']);
+        Route::put('/', [DepartmentController::class, 'update']);
+        Route::delete('/{departmentID}', [DepartmentController::class, 'destroy']);
+    });
 
-    Route::apiResource('color', ColorController::class)
-        ->parameters(['color' => 'colorID']);
+    Route::prefix('color')->group(function () {
+        Route::get('/', [ColorController::class, 'index']);
+        Route::post('/', [ColorController::class, 'store']);
+        Route::put('/', [ColorController::class, 'update']);
+        Route::delete('/{colorID}', [ColorController::class, 'destroy']);
+    });
 
     Route::prefix('grid')->group(function () {
         Route::prefix('item')->group(function () {
@@ -39,36 +47,69 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::delete('/{gridID}', [GridController::class, 'destroy']);
     });
 
-    Route::apiResource('supplier.category', CategorySupplierController::class)
-        ->shallow()
-        ->parameters(['category' => 'categoryId']);
+    Route::prefix('supplier')->group(function () {
+        Route::prefix('category')->group(function () {
+            Route::get('/', [CategorySupplierController::class, 'index']);
+            Route::get('/{categoryID}', [CategorySupplierController::class, 'show']);
+            Route::post('/', [CategorySupplierController::class, 'store']);
+            Route::put('/', [CategorySupplierController::class, 'update']);
+            Route::delete('/{categoryID}', [CategorySupplierController::class, 'destroy']);
+        });
 
-    Route::apiResource('supplier.catalog', CatalogSupplierController::class)
-        ->shallow()
-        ->parameters(['catalog' => 'catalogId']);
+        Route::prefix('catalog')->group(function () {
+            Route::get('/', [CatalogSupplierController::class, 'index']);
+            Route::get('/{catalogID}', [CatalogSupplierController::class, 'show']);
+            Route::post('/', [CatalogSupplierController::class, 'store']);
+            Route::put('/', [CatalogSupplierController::class, 'update']);
+            Route::delete('/{catalogID}', [CatalogSupplierController::class, 'destroy']);
+        });
 
-    Route::apiResource('supplier', SupplierController::class)
-        ->parameters(['supplier' => 'supplierId']);
+        Route::get('/', [SupplierController::class, 'index']);
+        Route::get('/{supplierID}', [SupplierController::class, 'show']);
+        Route::post('/', [SupplierController::class, 'store']);
+        Route::post('/filter', [SupplierController::class, 'filter']);
+        Route::put('/', [SupplierController::class, 'update']);
+        Route::delete('/{supplierID}', [SupplierController::class, 'destroy']);
+    });
 
-    Route::post('supplier/filter', [SupplierController::class, 'filter']);
+    Route::prefix('user')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{userID}', [UserController::class, 'show']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::post('/filter', [UserController::class, 'filter']);
+        Route::put('/', [UserController::class, 'update']);
+        Route::delete('/{userID}', [UserController::class, 'destroy']);
+    });
 
-    Route::apiResource('user', UserController::class)
-        ->parameters(['user' => 'userId']);
+    Route::prefix('client')->group(function () {
+        Route::get('/', [ClientController::class, 'index']);
+        Route::get('/{clientID}', [ClientController::class, 'show']);
+        Route::post('/', [ClientController::class, 'store']);
+        Route::post('/filter', [ClientController::class, 'filter']);
+        Route::put('/', [ClientController::class, 'update']);
+        Route::delete('/{clientID}', [ClientController::class, 'destroy']);
+    });
 
-    Route::post('user/filter', [UserController::class, 'filter']);
+    Route::prefix('tag')->group(function () {
+        Route::get('/', [TagController::class, 'index']);
+        Route::post('/', [TagController::class, 'store']);
+        Route::put('/', [TagController::class, 'update']);
+        Route::delete('/{tagID}', [TagController::class, 'destroy']);
+    });
 
-    Route::apiResource('client', ClientController::class)
-        ->parameters(['client' => 'clientId']);
+    Route::prefix('employee')->group(function () {
+        Route::get('/', [EmployeeController::class, 'index']);
+        Route::get('/{employeeID}', [EmployeeController::class, 'show']);
+        Route::post('/', [EmployeeController::class, 'store']);
+        Route::post('/filter', [EmployeeController::class, 'filter']);
+        Route::put('/', [EmployeeController::class, 'update']);
+        Route::delete('/{employeeID}', [EmployeeController::class, 'destroy']);
 
-    Route::post('client/filter', [ClientController::class, 'filter']);
-
-    Route::apiResource('tag', TagController::class)
-        ->parameters(['tag' => 'tagID']);
-
-    Route::post('tag/filter', [TagController::class, 'filter']);
-
-    Route::apiResource('employee', EmployeeController::class)
-        ->parameters(['employee' => 'employeeId']);
+        Route::prefix('action')->group(function () {
+            Route::post('/create-access-login', [EmployeeController::class, 'createAccessLogin']);
+            Route::post('/remove-access-login', [EmployeeController::class, 'removeAccessLogin']);
+        });
+    });
 
     Route::post('employee/filter', [EmployeeController::class, 'filter']);
 
@@ -77,5 +118,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::post('remove-access-login', [EmployeeController::class, 'removeAccessLogin']);
     });
 
-    Route::get('role/list-select', [RoleController::class, 'indexSelect']);
+    Route::prefix('role')->group(function () {
+        Route::get('/list-select', [RoleController::class, 'indexSelect']);
+    });
 });

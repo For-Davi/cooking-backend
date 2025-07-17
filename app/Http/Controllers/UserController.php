@@ -124,7 +124,7 @@ class UserController
     public function show(ShowUserRequest $request)
     {
         try {
-            $user = $this->repository->findById($request->route('userId'));
+            $user = $this->repository->findById($request->route('userID'));
 
             return response()->json(['user' => $user], 200);
 
@@ -185,7 +185,7 @@ class UserController
         try {
             DB::beginTransaction();
 
-            $user = $this->repository->delete($request->route('userId'));
+            $user = $this->repository->delete($request->route('userID'));
 
             if ($user) {
                 DB::commit();
