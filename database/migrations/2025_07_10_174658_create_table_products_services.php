@@ -13,8 +13,6 @@ return new class extends Migration
             $table->string('name');
             $table->enum('type', ['product', 'service']);
             $table->boolean('active')->default(1);
-            $table->unsignedBigInteger('measure_id')->nullable();
-            $table->foreign('measure_id')->references('id')->on('measures');
             $table->unsignedBigInteger('enterprise_id');
             $table->foreign('enterprise_id')->references('id')->on('enterprises');
             $table->text('description')->nullable();
