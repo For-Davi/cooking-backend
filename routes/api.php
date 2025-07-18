@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CatalogSupplierController;
-use App\Http\Controllers\CategorySupplierController;
+use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DepartmentController;
@@ -57,11 +57,11 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
 
     Route::prefix('supplier')->group(function () {
         Route::prefix('category')->group(function () {
-            Route::get('/', [CategorySupplierController::class, 'index']);
-            Route::get('/{categoryID}', [CategorySupplierController::class, 'show']);
-            Route::post('/', [CategorySupplierController::class, 'store']);
-            Route::put('/', [CategorySupplierController::class, 'update']);
-            Route::delete('/{categoryID}', [CategorySupplierController::class, 'destroy']);
+            Route::get('/', [SupplierCategoryController::class, 'index']);
+            Route::get('/{categoryID}', [SupplierCategoryController::class, 'show']);
+            Route::post('/', [SupplierCategoryController::class, 'store']);
+            Route::put('/', [SupplierCategoryController::class, 'update']);
+            Route::delete('/{categoryID}', [SupplierCategoryController::class, 'destroy']);
         });
 
         Route::prefix('catalog')->group(function () {

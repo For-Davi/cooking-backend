@@ -4,7 +4,7 @@ namespace App\Http\Requests\Supplier\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCategorySupplierRequest extends FormRequest
+class CreateSupplierCategoryRequest extends FormRequest
 {
     public function authorize(): bool
     {

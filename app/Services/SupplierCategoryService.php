@@ -2,26 +2,26 @@
 
 namespace App\Services;
 
-use App\DTO\Supplier\Category\CreateCategorySupplierDTO;
-use App\DTO\Supplier\Category\UpdateCategorySupplierDTO;
-use App\Helpers\CategorySupplierHelper;
-use App\Repositories\CategorySupplierRepository;
+use App\DTO\Supplier\Category\CreateSupplierCategoryDTO;
+use App\DTO\Supplier\Category\UpdateSupplierCategoryDTO;
+use App\Helpers\SupplierCategoryHelper;
+use App\Repositories\SupplierCategoryRepository;
 
-class CategorySupplierService
+class SupplierCategoryService
 {
-    public function __construct(protected CategorySupplierRepository $repository) {}
+    public function __construct(protected SupplierCategoryRepository $repository) {}
 
     public function create($request)
     {
-        CategorySupplierHelper::existsCategory(
+        SupplierCategoryHelper::existsCategory(
             $request->get('enterprise_id'),
             $request->name,
             'create'
         );
 
-        $categoryDTO = CreateCategorySupplierDTO::fromRequest([
+        $categoryDTO = CreateSupplierCategoryDTO::fromRequest([
             ...$request->only(['name']),
-            'enterprise_id' => $request->get('enterprise_id'),
+            'enterpriseID' => $request->get('enterprise_id'),
         ]);
 
         return $this->repository->create($categoryDTO->toArray());
@@ -29,14 +29,14 @@ class CategorySupplierService
 
     public function update($request)
     {
-        CategorySupplierHelper::existsCategory(
+        SupplierCategoryHelper::existsCategory(
             $request->get('enterprise_id'),
             $request->name,
             'update',
             $request->id
         );
 
-        $categoryDTO = UpdateCategorySupplierDTO::fromRequest([
+        $categoryDTO = UpdateSupplierCategoryDTO::fromRequest([
             ...$request->only(['name']),
         ]);
 

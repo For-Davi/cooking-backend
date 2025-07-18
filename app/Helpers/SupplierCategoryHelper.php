@@ -5,7 +5,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-class CategorySupplierHelper
+class SupplierCategoryHelper
 {
     public static function existsCategory($enterpriseId, $name, $mode, $categoryId = null)
     {

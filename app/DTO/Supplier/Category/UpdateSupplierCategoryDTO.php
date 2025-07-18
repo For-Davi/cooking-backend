@@ -2,7 +2,7 @@
 
 namespace App\DTO\Supplier\Category;
 
-class UpdateCategorySupplierDTO
+class UpdateSupplierCategoryDTO
 {
     public function __construct(
         public string $name,

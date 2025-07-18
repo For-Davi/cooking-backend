@@ -4,7 +4,7 @@ namespace App\Http\Requests\Supplier\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCategorySupplierRequest extends FormRequest
+class UpdateSupplierCategoryRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,7 @@ class UpdateCategorySupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:categories_supplier,id',
+            'id' => 'required|exists:supplier_categories,id',
             'name' => 'required|string|min:1|max:100',
         ];
     }

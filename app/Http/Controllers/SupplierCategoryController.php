@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Supplier\Category\CreateCategorySupplierRequest;
-use App\Http\Requests\Supplier\Category\DeleteCategorySupplierRequest;
-use App\Http\Requests\Supplier\Category\ShowCategorySupplierRequest;
-use App\Http\Requests\Supplier\Category\UpdateCategorySupplierRequest;
-use App\Repositories\CategorySupplierRepository;
-use App\Services\CategorySupplierService;
+use App\Http\Requests\Supplier\Category\CreateSupplierCategoryRequest;
+use App\Http\Requests\Supplier\Category\DeleteSupplierCategoryRequest;
+use App\Http\Requests\Supplier\Category\ShowSupplierCategoryRequest;
+use App\Http\Requests\Supplier\Category\UpdateSupplierCategoryRequest;
+use App\Repositories\SupplierCategoryRepository;
+use App\Services\SupplierCategoryService;
 use App\Utils\ErrorLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CategorySupplierController
+class SupplierCategoryController
 {
     public function __construct(
-        private CategorySupplierService $service,
-        private CategorySupplierRepository $repository
+        private SupplierCategoryService $service,
+        private SupplierCategoryRepository $repository
     ) {}
 
     public function index(Request $request)
@@ -32,7 +32,7 @@ class CategorySupplierController
         }
     }
 
-    public function show(ShowCategorySupplierRequest $request)
+    public function show(ShowSupplierCategoryRequest $request)
     {
         try {
             $category = $this->repository->findById($request->route('categoryID'));
@@ -46,7 +46,7 @@ class CategorySupplierController
         }
     }
 
-    public function store(CreateCategorySupplierRequest $request)
+    public function store(CreateSupplierCategoryRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -68,7 +68,7 @@ class CategorySupplierController
         }
     }
 
-    public function update(UpdateCategorySupplierRequest $request)
+    public function update(UpdateSupplierCategoryRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -90,7 +90,7 @@ class CategorySupplierController
         }
     }
 
-    public function destroy(DeleteCategorySupplierRequest $request)
+    public function destroy(DeleteSupplierCategoryRequest $request)
     {
         try {
             DB::beginTransaction();

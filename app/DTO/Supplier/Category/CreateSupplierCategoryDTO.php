@@ -2,7 +2,7 @@
 
 namespace App\DTO\Supplier\Category;
 
-class CreateCategorySupplierDTO
+class CreateSupplierCategoryDTO
 {
     public function __construct(
         public readonly string $name,
@@ -13,7 +13,7 @@ class CreateCategorySupplierDTO
     {
         return new self(
             name: $data['name'],
-            enterprise_id: $data['enterprise_id']
+            enterprise_id: $data['enterpriseID']
         );
     }
 
