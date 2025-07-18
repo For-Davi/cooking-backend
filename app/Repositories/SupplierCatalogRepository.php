@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\CatalogSupplier;
+use App\Models\SupplierCatalog;
 
-class CatalogSupplierRepository
+class SupplierCatalogRepository
 {
-    public function __construct(protected CatalogSupplier $model) {}
+    public function __construct(protected SupplierCatalog $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

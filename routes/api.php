@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\CatalogSupplierController;
-use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DepartmentController;
@@ -9,6 +7,8 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GridController;
 use App\Http\Controllers\ProductServiceController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SupplierCatalogController;
+use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -65,11 +65,11 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         });
 
         Route::prefix('catalog')->group(function () {
-            Route::get('/', [CatalogSupplierController::class, 'index']);
-            Route::get('/{catalogID}', [CatalogSupplierController::class, 'show']);
-            Route::post('/', [CatalogSupplierController::class, 'store']);
-            Route::put('/', [CatalogSupplierController::class, 'update']);
-            Route::delete('/{catalogID}', [CatalogSupplierController::class, 'destroy']);
+            Route::get('/', [SupplierCatalogController::class, 'index']);
+            Route::get('/{catalogID}', [SupplierCatalogController::class, 'show']);
+            Route::post('/', [SupplierCatalogController::class, 'store']);
+            Route::put('/', [SupplierCatalogController::class, 'update']);
+            Route::delete('/{catalogID}', [SupplierCatalogController::class, 'destroy']);
         });
 
         Route::get('/', [SupplierController::class, 'index']);
@@ -117,13 +117,6 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::post('/create-access-login', [EmployeeController::class, 'createAccessLogin']);
             Route::post('/remove-access-login', [EmployeeController::class, 'removeAccessLogin']);
         });
-    });
-
-    Route::post('employee/filter', [EmployeeController::class, 'filter']);
-
-    Route::prefix('employee/action')->group(function () {
-        Route::post('create-access-login', [EmployeeController::class, 'createAccessLogin']);
-        Route::post('remove-access-login', [EmployeeController::class, 'removeAccessLogin']);
     });
 
     Route::prefix('role')->group(function () {

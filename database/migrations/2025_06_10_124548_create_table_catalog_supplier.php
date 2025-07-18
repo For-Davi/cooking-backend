@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('catalog_supplier', function (Blueprint $table) {
+        Schema::create('supplier_catalog', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('type')->default(SupplierType::PRODUCT->value);
@@ -24,6 +24,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('catalog_supplier');
+        Schema::dropIfExists('supplier_catalog');
     }
 };
