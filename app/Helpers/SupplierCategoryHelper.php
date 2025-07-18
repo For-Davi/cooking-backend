@@ -9,7 +9,7 @@ class SupplierCategoryHelper
 {
     public static function existsCategory($enterpriseId, $name, $mode, $categoryId = null)
     {
-        $existingCategory = DB::table('categories_supplier')
+        $existingCategory = DB::table('supplier_categories')
             ->where('enterprise_id', $enterpriseId)
             ->where('name', $name)
             ->first();

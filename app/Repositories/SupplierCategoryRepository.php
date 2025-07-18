@@ -43,8 +43,8 @@ class SupplierCategoryRepository
         if ($category) {
             DB::table('suppliers')
                 ->where('enterprise_id', $category->enterprise_id)
-                ->where('category_supplier_id', $category->id)
-                ->update(['category_supplier_id' => null]);
+                ->where('supplier_category_id', $category->id)
+                ->update(['supplier_category_id' => null]);
 
             return $category->delete();
         }
