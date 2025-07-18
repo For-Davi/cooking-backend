@@ -23,7 +23,7 @@ class CreateProductCategoryRequest extends FormRequest
         return [
             'name.required' => 'O nome da categoria é obrigatório',
             'name.string' => 'O nome deve ser uma string',
-            'name.min' => 'O nome da categoria não pode ter menos de 1 caracteres',
+            'name.min' => 'O nome da categoria deve ter pelo menos 1 caractere',
             'name.max' => 'O nome da categoria não pode ter mais de 20 caracteres',
         ];
     }

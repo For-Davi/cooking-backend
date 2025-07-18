@@ -14,15 +14,15 @@ class DeleteProductCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'productID' => 'required|exists:product_categories,id',
+            'categoryID' => 'required|exists:product_categories,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'productID.required' => 'O ID do produto é obrigatório.',
-            'productID.exists' => 'O produto informada não existe.',
+            'categoryID.required' => 'O ID do categoria é obrigatório.',
+            'categoryID.exists' => 'A categoria informada não existe.',
         ];
     }
 

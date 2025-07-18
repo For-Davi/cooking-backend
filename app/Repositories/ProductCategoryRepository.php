@@ -2,12 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Models\SupplierCategory;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 
 class ProductCategoryRepository
 {
-    public function __construct(protected SupplierCategory $model) {}
+    public function __construct(protected ProductCategory $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {
@@ -43,8 +43,8 @@ class ProductCategoryRepository
         if ($category) {
             DB::table('products')
                 ->where('enterprise_id', $category->enterprise_id)
-                ->where('category_product_id', $category->id)
-                ->update(['category_product_id' => null]);
+                ->where('product_category_id', $category->id)
+                ->update(['product_category_id' => null]);
 
             return $category->delete();
         }

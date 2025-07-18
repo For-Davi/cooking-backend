@@ -1,13 +1,13 @@
 <?php
 
-namespace App\DTO\ProductColor;
+namespace App\DTO\Product\Color;
 
-class CreateProductColorDTO
+class UpdateProductColorDTO
 {
     public function __construct(
         public readonly string $name,
-        public readonly ?string $hex_color_code,
-        public readonly string $enterprise_id,
+        public readonly string $hex_color_code,
+        public readonly int $active,
     ) {}
 
     public static function fromRequest($data): self
@@ -15,7 +15,7 @@ class CreateProductColorDTO
         return new self(
             name: $data['name'],
             hex_color_code: $data['hexColorCode'],
-            enterprise_id: $data['enterpriseID'],
+            active: $data['active'],
         );
     }
 
@@ -24,7 +24,7 @@ class CreateProductColorDTO
         return [
             'name' => $this->name,
             'hex_color_code' => $this->hex_color_code,
-            'enterprise_id' => $this->enterprise_id,
+            'active' => $this->active,
         ];
     }
 }

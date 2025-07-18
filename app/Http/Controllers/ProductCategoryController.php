@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Supplier\Category\CreateProductCategoryRequest;
+use App\Http\Requests\Product\Category\CreateProductCategoryRequest;
 use App\Http\Requests\Product\Category\DeleteProductCategoryRequest;
-use App\Http\Requests\Product\Category\ShowProductCategoryRequest;
 use App\Http\Requests\Product\Category\UpdateProductCategoryRequest;
 use App\Repositories\ProductCategoryRepository;
 use App\Services\ProductCategoryService;
@@ -32,7 +31,7 @@ class ProductCategoryController
         }
     }
 
-    public function store(\App\Http\Requests\ProductCategory\CreateProductCategoryRequest $request)
+    public function store(CreateProductCategoryRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -54,7 +53,7 @@ class ProductCategoryController
         }
     }
 
-    public function update(UpdateSupplierCategoryRequest $request)
+    public function update(UpdateProductCategoryRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -76,7 +75,7 @@ class ProductCategoryController
         }
     }
 
-    public function destroy(DeleteSupplierCategoryRequest $request)
+    public function destroy(DeleteProductCategoryRequest $request)
     {
         try {
             DB::beginTransaction();

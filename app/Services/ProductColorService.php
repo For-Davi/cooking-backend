@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\DTO\ProductColor\CreateProductColorDTO;
-use App\DTO\ProductColor\UpdateProductColorDTO;
+use App\DTO\Product\Color\CreateProductColorDTO;
+use App\DTO\Product\Color\UpdateProductColorDTO;
 use App\Helpers\ProductColorHelper;
 use App\Repositories\ProductColorRepository;
 

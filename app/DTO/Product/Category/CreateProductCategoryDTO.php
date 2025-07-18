@@ -1,21 +1,19 @@
 <?php
 
-namespace App\DTO\ProductColor;
+namespace App\DTO\Product\Category;
 
-class UpdateProductColorDTO
+class CreateProductCategoryDTO
 {
     public function __construct(
         public readonly string $name,
-        public readonly string $hex_color_code,
-        public readonly int $active,
+        public readonly string $enterprise_id,
     ) {}
 
     public static function fromRequest($data): self
     {
         return new self(
             name: $data['name'],
-            hex_color_code: $data['hexColorCode'],
-            active: $data['active'],
+            enterprise_id: $data['enterpriseID']
         );
     }
 
@@ -23,8 +21,7 @@ class UpdateProductColorDTO
     {
         return [
             'name' => $this->name,
-            'hex_color_code' => $this->hex_color_code,
-            'active' => $this->active,
+            'enterprise_id' => $this->enterprise_id,
         ];
     }
 }
