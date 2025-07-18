@@ -7,7 +7,7 @@ use App\Utils\ErrorLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ProductServiceController
+class ProductController
 {
     public function __construct(
         private ProductService $service,

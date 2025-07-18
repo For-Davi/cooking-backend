@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ProductService;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteProductServiceRequest extends FormRequest
+class ShowProductRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -21,8 +21,8 @@ class DeleteProductServiceRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'supplierID.required' => 'O ID do fornecedor é obrigatório.',
-            'supplierID.exists' => 'O fornecedor informado não existe.',
+            'supplierID.required' => 'O ID do fornecedor é obrigatório',
+            'supplierID.exists' => 'O ID do fornecedor informado não existe.',
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\ProductColor;
+namespace App\Http\Requests\Product\Color;
 
 use Illuminate\Foundation\Http\FormRequest;
 

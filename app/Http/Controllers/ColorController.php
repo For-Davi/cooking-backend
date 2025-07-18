@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductColor\CreateProductColorRequest;
-use App\Http\Requests\ProductColor\DeleteProductColorRequest;
-use App\Http\Requests\ProductColor\UpdateProductColorRequest;
+use App\Http\Requests\Product\Color\CreateProductColorRequest;
+use App\Http\Requests\Product\Color\DeleteProductColorRequest;
+use App\Http\Requests\Product\Color\UpdateProductColorRequest;
 use App\Repositories\ProductColorRepository;
 use App\Services\ProductColorService;
 use App\Utils\ErrorLogger;

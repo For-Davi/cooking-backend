@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierCatalogController;
 use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -78,6 +79,23 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::post('/filter', [SupplierController::class, 'filter']);
         Route::put('/', [SupplierController::class, 'update']);
         Route::delete('/{supplierID}', [SupplierController::class, 'destroy']);
+    });
+
+    Route::prefix('product')->group(function () {
+        Route::prefix('category')->group(function () {
+            Route::get('/', [ProductCategoryController::class, 'index']);
+            Route::get('/{categoryID}', [ProductCategoryController::class, 'show']);
+            Route::post('/', [ProductCategoryController::class, 'store']);
+            Route::put('/', [ProductCategoryController::class, 'update']);
+            Route::delete('/{categoryID}', [ProductCategoryController::class, 'destroy']);
+        });
+
+        // Route::get('/', [SupplierController::class, 'index']);
+        // Route::get('/{supplierID}', [SupplierController::class, 'show']);
+        // Route::post('/', [SupplierController::class, 'store']);
+        // Route::post('/filter', [SupplierController::class, 'filter']);
+        // Route::put('/', [SupplierController::class, 'update']);
+        // Route::delete('/{supplierID}', [SupplierController::class, 'destroy']);
     });
 
     Route::prefix('user')->group(function () {
