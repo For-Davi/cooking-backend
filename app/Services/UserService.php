@@ -80,8 +80,8 @@ class UserService
 
         $userDTO = UserStartDTO::fromRequest([
             ...$request->only(['name', 'password', 'email']),
-            'enterprise_id' => $enterprise->id,
-            'role_id' => $role->id,
+            'enterpriseID' => $enterprise->id,
+            'roleID' => $role->id,
         ]);
 
         return $this->createUser($userDTO->toArray());

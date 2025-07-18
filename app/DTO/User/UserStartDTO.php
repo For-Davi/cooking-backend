@@ -19,9 +19,9 @@ class UserStartDTO
         return new self(
             name: $data['name'],
             email: $data['email'],
-            enterprise_id: $data['enterprise_id'],
+            enterprise_id: $data['enterpriseID'],
             password: Hash::make($data['password']),
-            role_id: $data['roleId']
+            role_id: $data['roleID']
         );
     }
 

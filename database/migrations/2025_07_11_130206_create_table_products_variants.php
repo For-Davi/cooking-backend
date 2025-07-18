@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('products_services_variants', function (Blueprint $table) {
+        Schema::create('products_variants', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_service_id')->nullable();
-            $table->foreign('product_service_id')->references('id')->on('products_services');
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->foreign('product_id')->references('id')->on('products');
             $table->decimal('price', 10, 2);
             $table->decimal('cost', 10, 2)->nullable();
             $table->decimal('stock_quantity', 15, 3)->default(0);

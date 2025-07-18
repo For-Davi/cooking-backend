@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class CategorySupplier extends Model
+class CategoryProduct extends Model
 {
     use Notifiable;
 
-    protected $table = 'categories_supplier';
+    protected $table = 'categories_product';
 
     protected $fillable = [
         'name',

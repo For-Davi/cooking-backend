@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->unsignedBigInteger('number')->nullable();
             $table->integer('active')->default(1);
-            $table->unsignedBigInteger('category_supplier_id')->nullable();
-            $table->foreign('category_supplier_id')->references('id')->on('categories_supplier');
+            $table->unsignedBigInteger('supplier_category_id')->nullable();
+            $table->foreign('supplier_category_id')->references('id')->on('supplier_categories');
             $table->unsignedBigInteger('enterprise_id');
             $table->foreign('enterprise_id')->references('id')->on('enterprises');
             $table->text('description')->nullable();

@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_tag', function (Blueprint $table) {
-            $table->unsignedBigInteger('product_service_id');
-            $table->foreign('product_service_id')->references('id')->on('products_services');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->unsignedBigInteger('tag_id');
             $table->foreign('tag_id')->references('id')->on('tags');
             $table->unsignedBigInteger('enterprise_id');

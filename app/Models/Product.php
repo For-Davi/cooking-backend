@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class ProductService extends Model
+class Product extends Model
 {
     use Notifiable;
 
-    protected $table = 'products_services';
+    protected $table = 'products';
 
     protected $fillable = [
         'name',
@@ -23,10 +23,5 @@ class ProductService extends Model
     public function enterprise()
     {
         return $this->belongsTo(Enterprise::class);
-    }
-
-    public function measure()
-    {
-        return $this->belongsTo(Measure::class);
     }
 }
