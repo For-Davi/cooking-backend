@@ -6,7 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GridController;
 use App\Http\Controllers\ProductCategoryController;
-use App\Http\Controllers\ProductServiceController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierCatalogController;
 use App\Http\Controllers\SupplierCategoryController;
@@ -90,12 +90,12 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::delete('/{categoryID}', [ProductCategoryController::class, 'destroy']);
         });
 
-        // Route::get('/', [SupplierController::class, 'index']);
-        // Route::get('/{supplierID}', [SupplierController::class, 'show']);
-        // Route::post('/', [SupplierController::class, 'store']);
-        // Route::post('/filter', [SupplierController::class, 'filter']);
-        // Route::put('/', [SupplierController::class, 'update']);
-        // Route::delete('/{supplierID}', [SupplierController::class, 'destroy']);
+        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/{supplierID}', [ProductController::class, 'show']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::post('/filter', [ProductController::class, 'filter']);
+        Route::put('/', [ProductController::class, 'update']);
+        Route::delete('/{supplierID}', [ProductController::class, 'destroy']);
     });
 
     Route::prefix('user')->group(function () {

@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\DTO\Supplier\FilterSupplierDTO;
+// use App\DTO\Supplier\FilterSupplierDTO;
 use App\Models\Product;
 
 class ProductRepository

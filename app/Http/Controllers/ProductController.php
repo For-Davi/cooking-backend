@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Product\CreateProductRequest;
 use App\Repositories\ProductRepository;
 use App\Utils\ErrorLogger;
 use Illuminate\Http\Request;
@@ -31,20 +32,20 @@ class ProductController
     {
         try {
             DB::beginTransaction();
-            $color = $this->service->create($request);
+            $product = $this->service->create($request);
 
-            if ($color) {
+            if ($product) {
                 DB::commit();
-                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $products = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['colors' => $colors, 'message' => 'Cor cadastrada'], 201);
+                return response()->json(['products' => $products, 'message' => 'Produto cadastrado'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao cadastrar cor:', $e, $request);
+            ErrorLogger::log('Erro ao cadastrar produto:', $e, $request);
 
-            return response()->json(['message' => 'Erro ao cadastrar cor'], 500);
+            return response()->json(['message' => 'Erro ao cadastrar produto'], 500);
         }
     }
 
