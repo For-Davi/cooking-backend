@@ -12,8 +12,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('active')->default(1);
-            $table->unsignedBigInteger('enterprise_id');
-            $table->foreign('enterprise_id')->references('id')->on('enterprises');
             $table->timestamps();
         });
     }

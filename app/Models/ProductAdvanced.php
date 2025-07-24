@@ -5,21 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class ProductTag extends Model
+class ProductAdvanced extends Model
 {
     use Notifiable;
 
-    protected $table = 'product_tag';
+    protected $table = 'product_advanced';
 
     protected $fillable = [
         'product_id',
-        'tag_id',
+        'active',
+        'allow_coupon',
+        'allow_discount',
+        'discount_max_percentage',
+        'has_commission',
+        'commission_percentage',
     ];
-
-    public function tag()
-    {
-        return $this->belongsTo(Tag::class);
-    }
 
     public function product()
     {

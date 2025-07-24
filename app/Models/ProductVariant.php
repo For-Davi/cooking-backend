@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class ProductServiceVariant extends Model
+class ProductVariant extends Model
 {
     use Notifiable;
 
-    protected $table = 'products_services_variants';
+    protected $table = 'product_variants';
 
     protected $fillable = [
-        'product_service_id',
+        'product_id',
         'price',
         'cost',
         'stock_quantity',
@@ -29,23 +29,13 @@ class ProductServiceVariant extends Model
         return $this->belongsTo(Enterprise::class);
     }
 
-    public function measure()
-    {
-        return $this->belongsTo(Measure::class);
-    }
-
     public function color()
     {
         return $this->belongsTo(ProductColor::class);
     }
 
-    public function size()
-    {
-        return $this->belongsTo(GridItem::class, 'grid_item_id');
-    }
-
     public function product()
     {
-        return $this->belongsTo(ProductService::class, 'product_service_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

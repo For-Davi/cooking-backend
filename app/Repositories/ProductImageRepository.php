@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\ProductTag;
+use App\Models\ProductImage;
 
-class ProductTagRepository
+class ProductImageRepository
 {
-    public function __construct(protected ProductTag $model) {}
+    public function __construct(protected ProductImage $model) {}
 
     public function getAll()
     {
@@ -18,16 +18,16 @@ class ProductTagRepository
         return $this->model->where('product_id', $productID)->get();
     }
 
-    public function getAllByTagID($tagID)
+    public function getAllByImageID($imageID)
     {
-        return $this->model->where('tag_id', $tagID)->get();
+        return $this->model->where('image_id', $imageID)->get();
     }
 
-    public function getAllByProductAndTag($productID, $tagID)
+    public function getAllByProductAndImage($productID, $imageID)
     {
         return $this->model
             ->where('product_id', $productID)
-            ->where('tag_id', $tagID)
+            ->where('image_id', $imageID)
             ->first();
     }
 
@@ -48,18 +48,18 @@ class ProductTagRepository
             ->delete();
     }
 
-    public function deleteByTagID($tagID)
+    public function deleteByTagID($imageID)
     {
         return $this->model
-            ->where('tag_id', $tagID)
+            ->where('image_id', $imageID)
             ->delete();
     }
 
-    public function deleteByProductAndTag($productID, $tagID)
+    public function deleteByProductAndImage($productID, $imageID)
     {
         return $this->model
             ->where('product_id', $productID)
-            ->where('tag_id', $tagID)
+            ->where('image_id', $imageID)
             ->delete();
     }
 }

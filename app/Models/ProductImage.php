@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class ProductTag extends Model
+class ProductImage extends Model
 {
     use Notifiable;
 
-    protected $table = 'product_tag';
+    protected $table = 'product_image';
 
     protected $fillable = [
         'product_id',
-        'tag_id',
+        'image_id',
     ];
 
-    public function tag()
+    public function image()
     {
-        return $this->belongsTo(Tag::class);
+        return $this->belongsTo(Image::class);
     }
 
     public function product()
