@@ -8,16 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('product_tag', function (Blueprint $table) {
+        Schema::create('product_image', function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->unsignedBigInteger('tag_id');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->unsignedBigInteger('image_id');
+            $table->foreign('image_id')->references('id')->on('images');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('product_tag');
+        Schema::dropIfExists('product_image');
     }
 };
