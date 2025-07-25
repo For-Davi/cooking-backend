@@ -7,33 +7,36 @@ use App\DTO\Product\CreateProductDTO;
 use App\DTO\Product\ProductAdvanced\CreateProductAdvancedDTO;
 use App\DTO\Product\ProductImage\CreateProductImageDTO;
 use App\DTO\Product\ProductTag\CreateProductTagDTO;
+use App\DTO\Product\ProductVariant\CreateProductVariantDTO;
 use App\Helpers\ProductHelper;
 use App\Helpers\ProductLogHelper;
 use App\Repositories\ImageRepository;
 use App\Repositories\ProductAdvancedRepository;
-use App\Repositories\ProductColorRepository;
 use App\Repositories\ProductImageRepository;
+use App\Repositories\ProductRepository;
 use App\Repositories\ProductTagRepository;
 
 class ProductService
 {
     protected ?int $enterpriseID = null;
 
-    public function __construct(protected ProductColorRepository $repository, protected ProductTagRepository $productTagRepository, protected ProductAdvancedRepository $productAdvancedRepository, protected ImageRepository $imageRepository, protected ProductImageRepository $productImageRepository) {}
+    public function __construct(protected ProductRepository $repository, protected ProductTagRepository $productTagRepository, protected ProductAdvancedRepository $productAdvancedRepository, protected ImageRepository $imageRepository, protected ProductImageRepository $productImageRepository) {}
 
     public function create($request)
     {
         $this->enterpriseID = $request->get('enterprise_id');
 
-        // Verifica se tem algum produto com o mesmo nome
         ProductHelper::existsProduct(
             $request->get('enterprise_id'),
-            $request->name,
+            $request->input('basic.name'),
             'create'
         );
 
         $productDTO = CreateProductDTO::fromRequest([
-            ...$request->only(['name', 'type', 'description', 'categoryID']),
+            'name' => $request->input('basic.name'),
+            'type' => $request->input('basic.type'),
+            'description' => $request->input('basic.description'),
+            'categoryID' => $request->input('basic.categoryID'),
             'enterpriseID' => $request->get('enterprise_id'),
         ]);
 
@@ -113,8 +116,8 @@ class ProductService
     private function createVariantForProduct(array $variants, int $productID)
     {
         foreach ($variants as $variant) {
-            if (count($variant->colors) > 0) {
-                foreach ($variant->colors as $color) {
+            if (count($variant['colors']) > 0) {
+                foreach ($variant['colors'] as $color) {
                     $productVariantDTO = CreateProductVariantDTO::fromRequest([
                         'active' => $variant['active'],
                         'sku' => $variant['sku'],

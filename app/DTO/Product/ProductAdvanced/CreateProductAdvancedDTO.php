@@ -31,12 +31,12 @@ class CreateProductAdvancedDTO
     {
         return [
             'product_id' => $this->product_id,
-            'active' => $this->product_id,
-            'allow_coupon' => $this->product_id,
-            'allow_discount' => $this->product_id,
-            'discount_max_percentage' => $this->product_id,
-            'has_commission' => $this->product_id,
-            'commission_percentage' => $this->product_id,
+            'active' => $this->active,
+            'allow_coupon' => $this->allow_coupon,
+            'allow_discount' => $this->allow_discount,
+            'discount_max_percentage' => $this->discount_max_percentage,
+            'has_commission' => $this->has_commission,
+            'commission_percentage' => $this->commission_percentage,
         ];
     }
 }

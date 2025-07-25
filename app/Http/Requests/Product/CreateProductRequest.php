@@ -11,6 +11,25 @@ class CreateProductRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        if ($this->has('variants')) {
+            $this->merge([
+                'variants' => collect($this->input('variants', []))
+                    ->map(fn ($v) => is_string($v) ? json_decode($v, true) : $v)
+                    ->toArray(),
+            ]);
+        }
+
+        if ($this->has('tags')) {
+            $this->merge([
+                'tags' => collect($this->input('tags', []))
+                    ->map(fn ($t) => is_string($t) ? json_decode($t, true) : $t)
+                    ->toArray(),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [

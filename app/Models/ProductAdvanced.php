@@ -11,6 +11,8 @@ class ProductAdvanced extends Model
 
     protected $table = 'product_advanced';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'product_id',
         'active',
