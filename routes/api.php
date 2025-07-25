@@ -35,10 +35,10 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
     });
 
     Route::prefix('product')->group(function () {
-        Route::get('/', [ProductServiceController::class, 'index']);
-        Route::post('/', [ProductServiceController::class, 'store']);
-        Route::put('/', [ProductServiceController::class, 'update']);
-        Route::delete('/{productID}', [ProductServiceController::class, 'destroy']);
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::put('/', [ProductController::class, 'update']);
+        Route::delete('/{productID}', [ProductController::class, 'destroy']);
     });
 
     Route::prefix('grid')->group(function () {
