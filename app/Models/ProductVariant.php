@@ -21,6 +21,8 @@ class ProductVariant extends Model
         'active',
         'grid_item_id',
         'enterprise_id',
+        'description',
+        'location',
         'color_id',
     ];
 

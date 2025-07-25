@@ -91,11 +91,11 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         });
 
         Route::get('/', [ProductController::class, 'index']);
-        Route::get('/{supplierID}', [ProductController::class, 'show']);
+        Route::get('/{productID}', [ProductController::class, 'show']);
         Route::post('/', [ProductController::class, 'store']);
         Route::post('/filter', [ProductController::class, 'filter']);
         Route::put('/', [ProductController::class, 'update']);
-        Route::delete('/{supplierID}', [ProductController::class, 'destroy']);
+        Route::delete('/{productID}', [ProductController::class, 'destroy']);
     });
 
     Route::prefix('user')->group(function () {

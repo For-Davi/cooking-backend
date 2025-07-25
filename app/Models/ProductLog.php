@@ -14,7 +14,6 @@ class ProductLog extends Model
     protected $fillable = [
         'product_id',
         'execution',
-        'target',
         'description',
     ];
 

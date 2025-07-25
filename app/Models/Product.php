@@ -15,7 +15,7 @@ class Product extends Model
         'name',
         'type',
         'active',
-        'measure_id',
+        'product_category_id',
         'enterprise_id',
         'description',
     ];
@@ -23,5 +23,35 @@ class Product extends Model
     public function enterprise()
     {
         return $this->belongsTo(Enterprise::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+    }
+
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class, 'product_id');
+    }
+
+    public function tags()
+    {
+        return $this->hasMany(ProductTag::class, 'product_id');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(ProductLog::class, 'product_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id');
+    }
+
+    public function advanced()
+    {
+        return $this->hasMany(ProductAdvanced::class, 'product_id');
     }
 }
