@@ -15,12 +15,14 @@ use App\Repositories\ProductAdvancedRepository;
 use App\Repositories\ProductImageRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductTagRepository;
+use App\Repositories\ProductVariantRepository;
+use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
     protected ?int $enterpriseID = null;
 
-    public function __construct(protected ProductRepository $repository, protected ProductTagRepository $productTagRepository, protected ProductAdvancedRepository $productAdvancedRepository, protected ImageRepository $imageRepository, protected ProductImageRepository $productImageRepository) {}
+    public function __construct(protected ProductRepository $repository, protected ProductTagRepository $productTagRepository, protected ProductAdvancedRepository $productAdvancedRepository, protected ImageRepository $imageRepository, protected ProductImageRepository $productImageRepository, protected ProductVariantRepository $productVariantRepository) {}
 
     public function create($request)
     {
@@ -50,13 +52,13 @@ class ProductService
         $this->createVariantForProduct($request->variants, $product->id);
 
         // Salva as imagens
-        if (count($request->images) > 0) {
-            foreach ($request->images as $image) {
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
                 $path = $this->savePathImage($image);
 
                 $imageDTO = CreateImageDTO::fromRequest([
                     'url' => $path,
-                    'name' => $image->name,
+                    'name' => $image->getClientOriginalName(),
                     'enterpriseID' => $this->enterpriseID,
                 ]);
 
@@ -79,10 +81,11 @@ class ProductService
         }
 
         // Criação de log do produto
+        $user = $request->user();
         ProductLogHelper::createLog(
             $product->id,
             'create',
-            "O usuário(a) {auth()->user()->name} ({auth()->user()->email}) criou este produto em {now()->format('d/m/Y H:i:s')}"
+            "O usuário(a) {$user->name} ({$user->email}) criou este produto em ".now()->format('d/m/Y H:i:s')
         );
 
         return true;
@@ -132,20 +135,35 @@ class ProductService
                         'productID' => $productID,
                         'enterpriseID' => $this->enterpriseID,
                     ]);
-                    $this->productAdvancedRepository->create($productVariantDTO->toArray());
+                    $this->productVariantRepository->create($productVariantDTO->toArray());
                 }
             }
+            $productVariantDTO = CreateProductVariantDTO::fromRequest([
+                'active' => $variant['active'],
+                'sku' => $variant['sku'],
+                'description' => $variant['description'],
+                'location' => $variant['location'],
+                'gridItemID' => $variant['gridItemID'],
+                'colorID' => null,
+                'price' => $variant['price'],
+                'cost' => $variant['cost'],
+                'stockQuantity' => $variant['stockQuantity'],
+                'minStockQuantity' => $variant['minStockQuantity'],
+                'productID' => $productID,
+                'enterpriseID' => $this->enterpriseID,
+            ]);
+            $this->productVariantRepository->create($productVariantDTO->toArray());
         }
     }
 
     private function savePathImage($image)
     {
-        $path = $image->store('images', config('filesystems.default'));
+        $path = '';
 
         if (app()->environment('local')) {
-            $path = $image->store('public/images');
+            $path = $image->store('images');
 
-            return Storage::url($path);
+            $path = Storage::url($path);
         }
 
         return $path;
