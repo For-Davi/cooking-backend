@@ -116,44 +116,50 @@ class ProductService
         $this->productAdvancedRepository->create($productAdvancedDTO->toArray());
     }
 
-    private function createVariantForProduct(array $variants, int $productID)
+    private function createVariantForProduct(array $variants, int $productID): void
     {
         foreach ($variants as $variant) {
-            if (count($variant['colors']) > 0) {
-                foreach ($variant['colors'] as $color) {
-                    $productVariantDTO = CreateProductVariantDTO::fromRequest([
-                        'active' => $variant['active'],
-                        'sku' => $variant['sku'],
-                        'description' => $variant['description'],
-                        'location' => $variant['location'],
-                        'gridItemID' => $variant['gridItemID'],
-                        'colorID' => $color['id'],
-                        'price' => $variant['price'],
-                        'cost' => $variant['cost'],
-                        'stockQuantity' => $variant['stockQuantity'],
-                        'minStockQuantity' => $variant['minStockQuantity'],
-                        'productID' => $productID,
-                        'enterpriseID' => $this->enterpriseID,
-                    ]);
-                    $this->productVariantRepository->create($productVariantDTO->toArray());
-                }
-            }
-            $productVariantDTO = CreateProductVariantDTO::fromRequest([
-                'active' => $variant['active'],
-                'sku' => $variant['sku'],
-                'description' => $variant['description'],
-                'location' => $variant['location'],
-                'gridItemID' => $variant['gridItemID'],
-                'colorID' => null,
-                'price' => $variant['price'],
-                'cost' => $variant['cost'],
-                'stockQuantity' => $variant['stockQuantity'],
-                'minStockQuantity' => $variant['minStockQuantity'],
-                'productID' => $productID,
-                'enterpriseID' => $this->enterpriseID,
-            ]);
-            $this->productVariantRepository->create($productVariantDTO->toArray());
+            $this->createVariantWithColors($variant, $productID);
+            $this->createBaseVariant($variant, $productID);
         }
+    }
+
+    private function createVariantWithColors(array $variant, int $productID): void
+    {
+        if (empty($variant['colors'])) {
+            return;
+        }
+
+        foreach ($variant['colors'] as $color) {
+            $this->productVariantRepository->create(
+                $this->buildVariantDTO($variant, $productID, $color['id'])->toArray()
+            );
+        }
+    }
+
+    private function createBaseVariant(array $variant, int $productID): void
+    {
+        $this->productVariantRepository->create(
+            $this->buildVariantDTO($variant, $productID)->toArray()
+        );
+    }
+
+    private function buildVariantDTO(array $variant, int $productID, ?int $colorID = null): CreateProductVariantDTO
+    {
+        return CreateProductVariantDTO::fromRequest([
+            'active' => $variant['active'] ?? false,
+            'sku' => $variant['sku'] ?? null,
+            'description' => $variant['description'] ?? null,
+            'location' => $variant['location'] ?? null,
+            'gridItemID' => $variant['gridItemID'],
+            'colorID' => $colorID,
+            'price' => $variant['price'],
+            'cost' => $variant['cost'],
+            'stockQuantity' => $variant['stockQuantity'],
+            'minStockQuantity' => $variant['minStockQuantity'] ?? $variant['stockQuantity'],
+            'productID' => $productID,
+            'enterpriseID' => $this->enterpriseID,
+        ]);
     }
 
     private function savePathImage($image)
