@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\CreateProductRequest;
+use App\Http\Resources\Product\ProductVariantTableResource;
 use App\Repositories\ProductRepository;
+use App\Repositories\ProductVariantRepository;
 use App\Services\ProductService;
 use App\Utils\ErrorLogger;
 use Illuminate\Http\Request;
@@ -13,15 +15,16 @@ class ProductController
 {
     public function __construct(
         private ProductService $service,
-        private ProductRepository $repository
+        private ProductRepository $repository,
+        private ProductVariantRepository $productVariantRepository
     ) {}
 
     public function index(Request $request)
     {
         try {
-            $products = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+            $productsVariants = $this->productVariantRepository->getAllByEnterprise($request->get('enterprise_id'), ['product', 'images', 'color']);
 
-            return response()->json(['products' => $products], 200);
+            return response()->json(['products' => ProductVariantTableResource::collection($productsVariants)], 200);
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar produtos:', $e, $request);
 
@@ -37,9 +40,9 @@ class ProductController
 
             if ($product) {
                 DB::commit();
-                $products = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $productsVariants = $this->productVariantRepository->getAllByEnterprise($request->get('enterprise_id'), ['product', 'images', 'color']);
 
-                return response()->json(['products' => $products, 'message' => 'Produto cadastrado'], 201);
+                return response()->json(['products' => ProductVariantTableResource::collection($productsVariants), 'message' => 'Produto cadastrado'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();

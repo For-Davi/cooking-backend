@@ -157,10 +157,10 @@ class ProductService
         }
 
         return CreateProductVariantDTO::fromRequest([
-            'active' => $variant['active'] ?? false,
+            'active' => $variant['active'],
             'sku' => $sku,
-            'description' => $variant['description'] ?? null,
-            'location' => $variant['location'] ?? null,
+            'description' => $variant['description'],
+            'location' => $variant['location'],
             'gridItemID' => $variant['gridItemID'],
             'colorID' => $colorID,
             'price' => $variant['price'],

@@ -10,9 +10,15 @@ class ProductVariantRepository
 {
     public function __construct(protected ProductVariant $model) {}
 
-    public function getAllByEnterprise($enterpriseId)
+    public function getAllByEnterprise($enterpriseId, $relations = null)
     {
-        return $this->model->where('enterprise_id', $enterpriseId)->get();
+        $query = $this->model->where('enterprise_id', $enterpriseId);
+
+        if ($relations) {
+            $query->with($relations);
+        }
+
+        return $query->get();
     }
 
     public function findById($id)
