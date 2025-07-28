@@ -17,7 +17,6 @@ return new class extends Migration
             $table->decimal('stock_quantity', 15, 3)->default(0);
             $table->decimal('min_stock_alert', 15, 3)->default(1);
             $table->string('sku', 50)->nullable();
-            $table->unique(['sku', 'enterprise_id']);
             $table->boolean('active')->default(1);
             $table->unsignedBigInteger('grid_item_id');
             $table->foreign('grid_item_id')->references('id')->on('grid_items');

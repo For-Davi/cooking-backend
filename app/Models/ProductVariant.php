@@ -26,6 +26,11 @@ class ProductVariant extends Model
         'color_id',
     ];
 
+    public function setNameAttribute($value)
+    {
+        $this->attributes['sku'] = strtoupper($value);
+    }
+
     public function enterprise()
     {
         return $this->belongsTo(Enterprise::class);

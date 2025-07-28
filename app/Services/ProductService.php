@@ -10,8 +10,10 @@ use App\DTO\Product\ProductTag\CreateProductTagDTO;
 use App\DTO\Product\ProductVariant\CreateProductVariantDTO;
 use App\Helpers\ProductHelper;
 use App\Helpers\ProductLogHelper;
+use App\Helpers\SkuHelper;
 use App\Repositories\ImageRepository;
 use App\Repositories\ProductAdvancedRepository;
+use App\Repositories\ProductColorRepository;
 use App\Repositories\ProductImageRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductTagRepository;
@@ -22,7 +24,7 @@ class ProductService
 {
     protected ?int $enterpriseID = null;
 
-    public function __construct(protected ProductRepository $repository, protected ProductTagRepository $productTagRepository, protected ProductAdvancedRepository $productAdvancedRepository, protected ImageRepository $imageRepository, protected ProductImageRepository $productImageRepository, protected ProductVariantRepository $productVariantRepository) {}
+    public function __construct(protected ProductRepository $repository, protected ProductTagRepository $productTagRepository, protected ProductAdvancedRepository $productAdvancedRepository, protected ImageRepository $imageRepository, protected ProductImageRepository $productImageRepository, protected ProductVariantRepository $productVariantRepository, protected ProductColorRepository $productColorRepository) {}
 
     public function create($request)
     {
@@ -119,17 +121,16 @@ class ProductService
     private function createVariantForProduct(array $variants, int $productID): void
     {
         foreach ($variants as $variant) {
-            $this->createVariantWithColors($variant, $productID);
-            $this->createBaseVariant($variant, $productID);
+            if (count($variant['colors']) === 0) {
+                $this->createBaseVariant($variant, $productID);
+            } else {
+                $this->createVariantWithColors($variant, $productID);
+            }
         }
     }
 
     private function createVariantWithColors(array $variant, int $productID): void
     {
-        if (empty($variant['colors'])) {
-            return;
-        }
-
         foreach ($variant['colors'] as $color) {
             $this->productVariantRepository->create(
                 $this->buildVariantDTO($variant, $productID, $color['id'])->toArray()
@@ -146,9 +147,18 @@ class ProductService
 
     private function buildVariantDTO(array $variant, int $productID, ?int $colorID = null): CreateProductVariantDTO
     {
+        $sku = $this->getSku($colorID, $variant['sku']);
+        if ($sku !== null) {
+            SkuHelper::existsSKU(
+                $this->enterpriseID,
+                $this->getSku($colorID, $variant['sku']),
+                'create',
+            );
+        }
+
         return CreateProductVariantDTO::fromRequest([
             'active' => $variant['active'] ?? false,
-            'sku' => $variant['sku'] ?? null,
+            'sku' => $sku,
             'description' => $variant['description'] ?? null,
             'location' => $variant['location'] ?? null,
             'gridItemID' => $variant['gridItemID'],
@@ -156,7 +166,7 @@ class ProductService
             'price' => $variant['price'],
             'cost' => $variant['cost'],
             'stockQuantity' => $variant['stockQuantity'],
-            'minStockQuantity' => $variant['minStockQuantity'] ?? $variant['stockQuantity'],
+            'minStockAlert' => $variant['minStockAlert'],
             'productID' => $productID,
             'enterpriseID' => $this->enterpriseID,
         ]);
@@ -173,6 +183,24 @@ class ProductService
         }
 
         return $path;
+    }
+
+    private function getSKU(?string $colorID, ?string $sku): ?string
+    {
+        if ($sku === null) {
+            return null;
+        }
+
+        if ($colorID === null) {
+            return $sku;
+        }
+
+        $productColor = $this->productColorRepository->findById($colorID);
+        if ($productColor === null) {
+            return $sku;
+        }
+
+        return $sku.'-'.strtoupper($productColor->name);
     }
 
     // public function update($request)

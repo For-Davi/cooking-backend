@@ -16,7 +16,7 @@ class CreateProductVariantDTO
         public readonly float $price,
         public readonly float $cost,
         public readonly float $stock_quantity,
-        public readonly float $min_stock_quantity
+        public readonly float $min_stock_alert
     ) {}
 
     public static function fromRequest($data): self
@@ -32,7 +32,7 @@ class CreateProductVariantDTO
             price: $data['price'],
             cost: $data['cost'],
             stock_quantity: $data['stockQuantity'],
-            min_stock_quantity: $data['minStockQuantity'],
+            min_stock_alert: $data['minStockAlert'],
             enterprise_id: $data['enterpriseID'],
         );
     }
@@ -50,7 +50,7 @@ class CreateProductVariantDTO
             'price' => $this->price,
             'cost' => $this->cost,
             'stock_quantity' => $this->stock_quantity,
-            'min_stock_quantity' => $this->min_stock_quantity,
+            'min_stock_alert' => $this->min_stock_alert,
             'enterprise_id' => $this->enterprise_id,
         ];
     }
