@@ -6,6 +6,7 @@ use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
+use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
 use App\Http\Resources\Product\ProductVariantTableResource;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductVariantRepository;
@@ -32,6 +33,29 @@ class ProductController
             ErrorLogger::log('Erro ao buscar produtos:', $e, $request);
 
             return response()->json(['message' => 'Erro ao buscar produtos'], 500);
+        }
+    }
+
+    public function showVariant(ShowProductVariantRequest $request)
+    {
+        try {
+            $variant = $this->productVariantRepository->findById($request->route('variantID'));
+
+            $variant->load([
+                'product' => function ($query) {
+                    $query->select(['id', 'name', 'type', 'product_category_id']);
+                },
+                'color' => function ($query) {
+                    $query->select(['id', 'name', 'hex_color_code']);
+                },
+            ]);
+
+            return response()->json(['variant' => $variant]);
+        } catch (\Exception $e) {
+
+            ErrorLogger::log('Erro ao buscar variante:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao buscar variante'], 500);
         }
     }
 
