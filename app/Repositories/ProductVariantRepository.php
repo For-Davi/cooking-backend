@@ -29,7 +29,9 @@ class ProductVariantRepository
         ]);
 
         if ($filters->name !== null) {
-            $query->where('name', 'like', "%{$filters->name}%");
+            $query->whereHas('product', function ($q) use ($filters) {
+                $q->where('name', 'like', "%{$filters->name}%");
+            });
         }
 
         if ($filters->sku !== null) {
@@ -41,8 +43,11 @@ class ProductVariantRepository
         }
 
         if ($filters->stockCritical !== null) {
-            $operator = $filters->stockCritical == 1 ? '<=' : '>';
-            $query->whereColumn('stock_quantity', $operator, 'min_stock_alert');
+            $operator = ((int) $filters->stockCritical === 1) ? '<=' : '>';
+            $query->whereRaw("
+                CAST(REPLACE(stock_quantity, '.', '') AS SIGNED) {$operator}
+                CAST(REPLACE(min_stock_alert, '.', '') AS SIGNED)
+            ");
         }
 
         if ($filters->active !== null) {

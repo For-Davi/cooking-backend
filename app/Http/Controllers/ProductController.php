@@ -60,7 +60,7 @@ class ProductController
         try {
             $productFilterDTO = FilterProductDTO::fromRequest([
                 ...$request->only(['name', 'active', 'stockCritical', 'sku', 'category']),
-                'enterprise_id' => $request->get('enterprise_id'),
+                'enterpriseID' => $request->get('enterprise_id'),
             ]);
             $productsVariants = $this->productVariantRepository->getAllWithFilter($productFilterDTO);
 
