@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
+use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Resources\Product\ProductVariantTableResource;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductVariantRepository;
@@ -114,6 +115,28 @@ class ProductController
             ErrorLogger::log('Erro ao excluir cor:', $e, $request);
 
             return response()->json(['message' => 'Erro ao excluir cor'], 500);
+        }
+    }
+
+    public function destroyVariant(DeleteProductVariantRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $variant = $this->productVariantRepository->delete($request->route('variantID'));
+
+            if ($variant) {
+                DB::commit();
+                $productsVariants = $this->productVariantRepository->getAllByEnterprise($request->get('enterprise_id'), ['product', 'images', 'color']);
+
+                return response()->json(['products' => ProductVariantTableResource::collection($productsVariants), 'message' => 'Variante excluída'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao excluir variante:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao excluir variante'], 500);
         }
     }
 }

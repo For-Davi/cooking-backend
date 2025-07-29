@@ -4,8 +4,7 @@ namespace App\Repositories;
 
 use App\DTO\Product\FilterProductDTO;
 use App\Models\ProductVariant;
-
-// use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 
 class ProductVariantRepository
 {
@@ -79,19 +78,32 @@ class ProductVariantRepository
         return null;
     }
 
-    // public function delete($id)
-    // {
-    //     $category = $this->findById($id);
+    public function delete($id)
+    {
+        $variant = $this->findById($id);
 
-    //     if ($category) {
-    //         DB::table('products')
-    //             ->where('enterprise_id', $category->enterprise_id)
-    //             ->where('product_category_id', $category->id)
-    //             ->update(['product_category_id' => null]);
+        if (! $variant) {
+            return false;
+        }
 
-    //         return $category->delete();
-    //     }
+        return DB::transaction(function () use ($variant) {
+            $total = DB::table('product_variants')
+                ->where('enterprise_id', $variant->enterprise_id)
+                ->where('product_id', $variant->product_id)
+                ->count();
 
-    //     return false;
-    // }
+            if ($total >= 2) {
+                return $variant->delete();
+            }
+
+            DB::table('product_log')->where('product_id', $variant->product_id)->delete();
+            DB::table('product_tag')->where('product_id', $variant->product_id)->delete();
+            DB::table('product_image')->where('product_id', $variant->product_id)->delete();
+            DB::table('product_advanced')->where('product_id', $variant->product_id)->delete();
+            DB::table('product_variants')->where('product_id', $variant->product_id)->delete();
+            DB::table('products')->where('id', $variant->product_id)->delete();
+
+            return true;
+        });
+    }
 }
