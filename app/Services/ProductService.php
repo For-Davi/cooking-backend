@@ -76,7 +76,7 @@ class ProductService
         }
 
         // Analisa e cria a relação com as tags
-        if (count($request->tags) > 0) {
+        if ($request->tags && count($request->tags) > 0) {
             foreach ($request->tags as $tag) {
                 $this->createTagForProduct($tag['id'], $product->id);
             }
@@ -98,7 +98,7 @@ class ProductService
         $productTagDTO = CreateProductTagDTO::fromRequest([
             'tagID' => $tagID,
             'productID' => $productID,
-        ]);
+        ]); 
 
         $this->productTagRepository->create($productTagDTO->toArray());
     }
