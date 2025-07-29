@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
+use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Resources\Product\ProductVariantTableResource;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductVariantRepository;
@@ -50,6 +52,24 @@ class ProductController
             ErrorLogger::log('Erro ao cadastrar produto:', $e, $request);
 
             return response()->json(['message' => 'Erro ao cadastrar produto'], 500);
+        }
+    }
+
+    public function filter(FilterProductRequest $request)
+    {
+        try {
+            $productFilterDTO = FilterProductDTO::fromRequest([
+                ...$request->only(['name', 'active', 'stockCritical', 'sku', 'category']),
+                'enterprise_id' => $request->get('enterprise_id'),
+            ]);
+            $productsVariants = $this->productVariantRepository->getAllWithFilter($productFilterDTO);
+
+            return response()->json(['products' => ProductVariantTableResource::collection($productsVariants)], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao filtrar produtos:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 

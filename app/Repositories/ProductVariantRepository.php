@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DTO\Product\FilterProductDTO;
 use App\Models\ProductVariant;
 
 // use Illuminate\Support\Facades\DB;
@@ -16,6 +17,36 @@ class ProductVariantRepository
 
         if ($relations) {
             $query->with($relations);
+        }
+
+        return $query->get();
+    }
+
+    public function getAllWithFilter(FilterProductDTO $filters)
+    {
+        $query = $this->model->where('enterprise_id', $filters->enterpriseID)->with([
+            'product', 'images', 'color',
+        ]);
+
+        if ($filters->name !== null) {
+            $query->where('name', 'like', "%{$filters->name}%");
+        }
+
+        if ($filters->sku !== null) {
+            $query->where('sku', 'like', "%{$filters->sku}%");
+        }
+
+        if ($filters->categoryID !== null) {
+            $query->where('product_category_id', $filters->categoryID);
+        }
+
+        if ($filters->stockCritical !== null) {
+            $operator = $filters->stockCritical == 1 ? '<=' : '>';
+            $query->whereColumn('stock_quantity', $operator, 'min_stock_alert');
+        }
+
+        if ($filters->active !== null) {
+            $query->where('active', $filters->active);
         }
 
         return $query->get();

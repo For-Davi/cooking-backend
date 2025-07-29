@@ -15,28 +15,20 @@ class FilterProductRequest extends FormRequest
     {
         return [
             'name' => 'nullable|string',
-            'email' => 'nullable|string',
-            'cpf' => 'nullable|numeric',
-            'cnpj' => 'nullable|numeric',
+            'sku' => 'nullable|string',
+            'stockCritical' => 'nullable|in:0,1',
             'active' => 'nullable|in:0,1',
-            'country' => 'nullable|string',
-            'state' => 'nullable|string',
-            'city' => 'nullable|string',
-            'category' => 'nullable|exists:categories_supplier,id',
+            'category' => 'nullable|exists:product_categories,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.string' => 'O nome deve ser uma string.',
-            'email.string' => 'O e‑mail deve ser uma string.',
-            'cpf.numeric' => 'O CPF deve conter apenas números.',
-            'cnpj.numeric' => 'O CNPJ deve conter apenas números.',
+            'name.string' => 'O nome deve ser um texto válido.',
+            'sku.string' => 'O SKU deve ser um texto válido.',
+            'stockCritical.in' => 'O estoque crítico deve ser 0 (não) ou 1 (sim).',
             'active.in' => 'O status ativo deve ser 0 (inativo) ou 1 (ativo).',
-            'country.string' => 'O país deve ser uma string.',
-            'state.string' => 'O estado deve ser uma string.',
-            'city.string' => 'A cidade deve ser uma string.',
             'category.exists' => 'A categoria selecionada não existe.',
         ];
     }

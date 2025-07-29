@@ -34,13 +34,6 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::delete('/{colorID}', [ColorController::class, 'destroy']);
     });
 
-    Route::prefix('product')->group(function () {
-        Route::get('/', [ProductController::class, 'index']);
-        Route::post('/', [ProductController::class, 'store']);
-        Route::put('/', [ProductController::class, 'update']);
-        Route::delete('/{productID}', [ProductController::class, 'destroy']);
-    });
-
     Route::prefix('grid')->group(function () {
         Route::prefix('item')->group(function () {
             Route::get('/{itemID}', [GridController::class, 'showItem']);
@@ -88,6 +81,10 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::post('/', [ProductCategoryController::class, 'store']);
             Route::put('/', [ProductCategoryController::class, 'update']);
             Route::delete('/{categoryID}', [ProductCategoryController::class, 'destroy']);
+        });
+
+        Route::prefix('variant')->group(function () {
+            Route::delete('/{variantID}', [ProductController::class, 'destroyVariant']);
         });
 
         Route::get('/', [ProductController::class, 'index']);
