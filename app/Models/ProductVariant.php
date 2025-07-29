@@ -24,6 +24,7 @@ class ProductVariant extends Model
         'description',
         'location',
         'color_id',
+        'offer',
     ];
 
     public function setNameAttribute($value)

@@ -160,6 +160,7 @@ class ProductService
             'active' => $variant['active'],
             'sku' => $sku,
             'description' => $variant['description'],
+            'offer' => $variant['offer'],
             'location' => $variant['location'],
             'gridItemID' => $variant['gridItemID'],
             'colorID' => $colorID,
