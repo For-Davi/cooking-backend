@@ -8,6 +8,7 @@ use App\DTO\Product\ProductAdvanced\CreateProductAdvancedDTO;
 use App\DTO\Product\ProductImage\CreateProductImageDTO;
 use App\DTO\Product\ProductTag\CreateProductTagDTO;
 use App\DTO\Product\ProductVariant\CreateProductVariantDTO;
+use App\DTO\Product\ProductVariant\UpdateProductVariantDTO;
 use App\Helpers\ProductHelper;
 use App\Helpers\ProductLogHelper;
 use App\Helpers\SkuHelper;
@@ -98,7 +99,7 @@ class ProductService
         $productTagDTO = CreateProductTagDTO::fromRequest([
             'tagID' => $tagID,
             'productID' => $productID,
-        ]); 
+        ]);
 
         $this->productTagRepository->create($productTagDTO->toArray());
     }
@@ -204,19 +205,24 @@ class ProductService
         return $sku.'-'.strtoupper($productColor->name);
     }
 
-    // public function update($request)
-    // {
-    //     ProductColorHelper::existsColor(
-    //         $request->get('enterprise_id'),
-    //         $request->name,
-    //         'update',
-    //         $request->id
-    //     );
+    public function updateVariant($request)
+    {
+        $this->enterpriseID = $request->get('enterprise_id');
 
-    //     $productColorDTO = UpdateProductColorDTO::fromRequest([
-    //         ...$request->only(['name', 'active', 'hexColorCode']),
-    //     ]);
+        $sku = $this->getSku($request->colorID, $request->sku);
+        if ($sku !== null) {
+            SkuHelper::existsSKU(
+                $this->enterpriseID,
+                $this->getSku($request->colorID, $request->sku),
+                'update',
+                $request->id
+            );
+        }
 
-    //     return $this->repository->update($request->id, $productColorDTO->toArray());
-    // }
+        $productVariantDTO = UpdateProductVariantDTO::fromRequest([
+            ...$request->only(['active', 'sku', 'description', 'location', 'price', 'cost', 'offer', 'stockQuantity', 'minStockAlert']),
+        ]);
+
+        return $this->repository->update($request->id, $productVariantDTO->toArray());
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
+use App\Http\Requests\Product\Variant\UpdateProductVariantRequest;
 use App\Http\Resources\Product\ProductVariantTableResource;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductVariantRepository;
@@ -117,6 +118,28 @@ class ProductController
             ErrorLogger::log('Erro ao atualizar cor:', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar cor'], 500);
+        }
+    }
+
+    public function updateVariant(UpdateProductVariantRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $variant = $this->service->updateVariant($request);
+
+            if ($variant) {
+                DB::commit();
+
+                $productsVariants = $this->productVariantRepository->getAllByEnterprise($request->get('enterprise_id'), ['product', 'images', 'color']);
+
+                return response()->json(['products' => ProductVariantTableResource::collection($productsVariants), 'message' => 'Produto atualizado'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao atualizar prodputo:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao atualizar produto'], 500);
         }
     }
 
