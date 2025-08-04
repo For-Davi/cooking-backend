@@ -37,7 +37,7 @@ class Product extends Model
 
     public function tags()
     {
-        return $this->hasMany(ProductTag::class, 'product_id');
+        return $this->belongsToMany(Tag::class, 'product_tag', 'product_id', 'tag_id');
     }
 
     public function logs()
@@ -52,6 +52,6 @@ class Product extends Model
 
     public function advanced()
     {
-        return $this->hasMany(ProductAdvanced::class, 'product_id');
+        return $this->hasOne(ProductAdvanced::class, 'product_id');
     }
 }

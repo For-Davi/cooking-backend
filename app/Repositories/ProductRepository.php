@@ -20,9 +20,15 @@ class ProductRepository
         return $query->get();
     }
 
-    public function findById($id)
+    public function findById($id, $relations = null)
     {
-        return $this->model->find($id);
+        $query = $this->model;
+
+        if ($relations) {
+            $query = $query->with($relations);
+        }
+
+        return $query->find($id);
     }
 
     // public function getAllWithFilter(FilterSupplierDTO $filters)

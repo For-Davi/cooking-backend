@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
+use App\Http\Requests\Product\ShowProductRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
 use App\Http\Requests\Product\Variant\UpdateProductVariantRequest;
@@ -34,6 +35,20 @@ class ProductController
             ErrorLogger::log('Erro ao buscar produtos:', $e, $request);
 
             return response()->json(['message' => 'Erro ao buscar produtos'], 500);
+        }
+    }
+
+    public function show(ShowProductRequest $request)
+    {
+        try {
+            $product = $this->repository->findById($request->route('productID'), ['variants', 'tags', 'logs', 'advanced', 'images', 'category']);
+
+            return response()->json(['product' => $product]);
+        } catch (\Exception $e) {
+
+            ErrorLogger::log('Erro ao buscar produto:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao buscar produto'], 500);
         }
     }
 
