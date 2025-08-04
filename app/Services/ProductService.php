@@ -223,6 +223,6 @@ class ProductService
             ...$request->only(['active', 'sku', 'description', 'location', 'price', 'cost', 'offer', 'stockQuantity', 'minStockAlert']),
         ]);
 
-        return $this->repository->update($request->id, $productVariantDTO->toArray());
+        return $this->productVariantRepository->update($request->id, $productVariantDTO->toArray());
     }
 }
