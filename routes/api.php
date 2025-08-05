@@ -12,6 +12,7 @@ use App\Http\Controllers\SupplierCatalogController;
 use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -138,5 +139,15 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
 
     Route::prefix('role')->group(function () {
         Route::get('/list-select', [RoleController::class, 'indexSelect']);
+    });
+
+    Route::prefix('transaction')->group(function () {
+        Route::prefix('category')->group(function () {
+            Route::get('/', [TransactionCategoryController::class, 'index']);
+            Route::get('/{categoryID}', [TransactionCategoryController::class, 'show']);
+            Route::post('/', [TransactionCategoryController::class, 'store']);
+            Route::put('/', [TransactionCategoryController::class, 'update']);
+            Route::delete('/{categoryID}', [TransactionCategoryController::class, 'destroy']);
+        });
     });
 });
