@@ -176,15 +176,15 @@ class ProductService
 
     private function savePathImage($image)
     {
-        $path = '';
-
-        if (app()->environment('local')) {
-            $path = $image->store('images');
-
-            $path = Storage::url($path);
+        // Garante que o diretório existe
+        if (! Storage::disk('public')->exists('images')) {
+            Storage::disk('public')->makeDirectory('images');
         }
 
-        return $path;
+        $path = $image->store('images', 'public');
+        \Log::info('Imagem salva em: '.storage_path('app/public/'.$path));
+
+        return Storage::url($path);
     }
 
     private function getSKU(?string $colorID, ?string $sku): ?string

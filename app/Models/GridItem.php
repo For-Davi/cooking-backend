@@ -18,4 +18,9 @@ class GridItem extends Model
         'grid_group_id',
         'enterprise_id',
     ];
+
+    public function gridGroup()
+    {
+        return $this->belongsTo(GridGroup::class, 'grid_group_id');
+    }
 }

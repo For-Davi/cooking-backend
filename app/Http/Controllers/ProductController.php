@@ -41,11 +41,24 @@ class ProductController
     public function show(ShowProductRequest $request)
     {
         try {
-            $product = $this->repository->findById($request->route('productID'), ['variants', 'tags', 'logs', 'advanced', 'images', 'category']);
+            $product = $this->repository->findById($request->route('productID'), [
+                'variants.gridItem.gridGroup',
+                'variants.color',
+                'tags',
+                'logs',
+                'advanced',
+                'images',
+                'category',
+            ]);
+
+            $product->images->transform(function ($image) {
+                $image->url = asset($image->url);
+
+                return $image;
+            });
 
             return response()->json(['product' => $product]);
         } catch (\Exception $e) {
-
             ErrorLogger::log('Erro ao buscar produto:', $e, $request);
 
             return response()->json(['message' => 'Erro ao buscar produto'], 500);

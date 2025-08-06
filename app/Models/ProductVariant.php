@@ -51,4 +51,9 @@ class ProductVariant extends Model
     {
         return $this->hasMany(ProductImage::class, 'product_id');
     }
+
+    public function gridItem()
+    {
+        return $this->belongsTo(GridItem::class, 'grid_item_id');
+    }
 }
