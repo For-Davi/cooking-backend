@@ -2,13 +2,13 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ColorController;
-use App\Http\Controllers\ColorSettingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GridController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingAppearanceController;
 use App\Http\Controllers\SupplierCatalogController;
 use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
@@ -154,7 +154,8 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
 
     Route::prefix('setting')->group(function () {
         Route::prefix('appearance')->group(function () {
-            Route::put('/', [ColorSettingController::class, 'update']);
+            Route::put('/', [SettingAppearanceController::class, 'update']);
+            Route::get('/', [SettingAppearanceController::class, 'show']);
         });
     });
 });

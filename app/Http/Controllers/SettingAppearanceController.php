@@ -6,6 +6,7 @@ use App\Http\Requests\Setting\Appearance\UpdateSettingAppearanceRequest;
 use App\Repositories\SettingAppearanceRepository;
 use App\Services\SettingAppearanceService;
 use App\Utils\ErrorLogger;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SettingAppearanceController
@@ -14,6 +15,20 @@ class SettingAppearanceController
         private SettingAppearanceService $service,
         private SettingAppearanceRepository $repository
     ) {}
+
+    public function show(Request $request)
+    {
+        try {
+            $appearance = $this->repository->getByEnterprise($request->get('enterprise_id'));
+
+            return response()->json(['appearance' => $appearance], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao buscar aparência:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
     public function update(UpdateSettingAppearanceRequest $request)
     {

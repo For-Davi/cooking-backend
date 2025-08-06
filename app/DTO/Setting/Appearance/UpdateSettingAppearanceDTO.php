@@ -2,12 +2,9 @@
 
 namespace App\DTO\Setting\Appearance;
 
-use Illuminate\Http\Request;
-
-class UpdateSettingAppearance
+class UpdateSettingAppearanceDTO
 {
     public function __construct(
-        public int $enterprise_id,
         public int $navbar_color_default,
         public int $navbar_icon_color_default,
         public int $side_menu_color_default,
@@ -24,10 +21,9 @@ class UpdateSettingAppearance
         public ?string $side_menu_color_code_selected_icon
     ) {}
 
-    public static function fromRequest(Request $request): self
+    public static function fromRequest(array $data): self
     {
         return new self(
-            enterprise_id: $data['enterpriseID'],
             navbar_color_default: $data['navbarColorDefault'],
             navbar_icon_color_default: $data['navbarIconColorDefault'],
             side_menu_color_default: $data['sideMenuColorDefault'],

@@ -17,16 +17,16 @@ class UpdateSettingAppearanceRequest extends FormRequest
             'navbarColorDefault' => 'required|in:0,1',
             'navbarIconColorDefault' => 'required|in:0,1',
             'sideMenuColorDefault' => 'required|in:0,1',
-            'sideMenuColorDefaultNonSelectedItem' => 'required|in:0,1',
+            'sideMenuColorDefaultNotSelectedItem' => 'required|in:0,1',
             'sideMenuColorDefaultSelectedItem' => 'required|in:0,1',
-            'sideMenuColorDefaultNonSelectedIcon' => 'required|in:0,1',
+            'sideMenuColorDefaultNotSelectedIcon' => 'required|in:0,1',
             'sideMenuColorDefaultSelectedIcon' => 'required|in:0,1',
             'navbarColorCode' => 'required_if:navbarColorDefault,0|nullable|string|max:7|min:7',
             'navbarIconColorCode' => 'required_if:navbarIconColorDefault,0|nullable|string|max:7|min:7',
             'sideMenuColorCode' => 'required_if:sideMenuColorDefault,0|nullable|string|max:7|min:7',
-            'sideMenuColorCodeNonSelectedItem' => 'required_if:sideMenuColorDefaultNonSelectedItem,0|nullable|string|max:7|min:7',
+            'sideMenuColorCodeNotSelectedItem' => 'required_if:sideMenuColorDefaultNotSelectedItem,0|nullable|string|max:7|min:7',
             'sideMenuColorCodeSelectedItem' => 'required_if:sideMenuColorDefaultSelectedItem,0|nullable|string|max:7|min:7',
-            'sideMenuColorCodeNonSelectedIcon' => 'required_if:sideMenuColorDefaultNonSelectedIcon,0|nullable|string|max:7|min:7',
+            'sideMenuColorCodeNotSelectedIcon' => 'required_if:sideMenuColorDefaultNotSelectedIcon,0|nullable|string|max:7|min:7',
             'sideMenuColorCodeSelectedIcon' => 'required_if:sideMenuColorDefaultSelectedIcon,0|nullable|string|max:7|min:7',
         ];
     }
@@ -43,14 +43,14 @@ class UpdateSettingAppearanceRequest extends FormRequest
             'sideMenuColorDefault.required' => 'Deve ser requerido o campo do toggle',
             'sideMenuColorDefault.in' => 'O valor do toggle deve ser 0 ou 1',
 
-            'sideMenuColorDefaultNonSelectedItem.required' => 'Deve ser requerido o campo do toggle',
-            'sideMenuColorDefaultNonSelectedItem.in' => 'O valor do toggle deve ser 0 ou 1',
+            'sideMenuColorDefaultNotSelectedItem.required' => 'Deve ser requerido o campo do toggle',
+            'sideMenuColorDefaultNotSelectedItem.in' => 'O valor do toggle deve ser 0 ou 1',
 
             'sideMenuColorDefaultSelectedItem.required' => 'Deve ser requerido o campo do toggle',
             'sideMenuColorDefaultSelectedItem.in' => 'O valor do toggle deve ser 0 ou 1',
 
-            'sideMenuColorDefaultNonSelectedIcon.required' => 'Deve ser requerido o campo do toggle',
-            'sideMenuColorDefaultNonSelectedIcon.in' => 'O valor do toggle deve ser 0 ou 1',
+            'sideMenuColorDefaultNotSelectedIcon.required' => 'Deve ser requerido o campo do toggle',
+            'sideMenuColorDefaultNotSelectedIcon.in' => 'O valor do toggle deve ser 0 ou 1',
 
             'sideMenuColorCodeSelectedIcon.required' => 'Deve ser requerido o campo do toggle',
             'sideMenuColorCodeSelectedIcon.in' => 'O valor do toggle deve ser 0 ou 1',
@@ -67,17 +67,17 @@ class UpdateSettingAppearanceRequest extends FormRequest
             'sideMenuColorCode.min' => 'O código da cor deve conter 7 caracteres',
             'sideMenuColorCode.max' => 'O código da cor deve conter 7 caracteres',
 
-            'sideMenuColorCodeNonSelectedItem.string' => 'O código da cor deve ser uma string',
-            'sideMenuColorCodeNonSelectedItem.min' => 'O código da cor deve conter 7 caracteres',
-            'sideMenuColorCodeNonSelectedItem.max' => 'O código da cor deve conter 7 caracteres',
+            'sideMenuColorCodeNotSelectedItem.string' => 'O código da cor deve ser uma string',
+            'sideMenuColorCodeNotSelectedItem.min' => 'O código da cor deve conter 7 caracteres',
+            'sideMenuColorCodeNotSelectedItem.max' => 'O código da cor deve conter 7 caracteres',
 
             'sideMenuColorCodeSelectedItem.string' => 'O código da cor deve ser uma string',
             'sideMenuColorCodeSelectedItem.min' => 'O código da cor deve conter 7 caracteres',
             'sideMenuColorCodeSelectedItem.max' => 'O código da cor deve conter 7 caracteres',
 
-            'sideMenuColorCodeNonSelectedIcon.string' => 'O código da cor deve ser uma string',
-            'sideMenuColorCodeNonSelectedIcon.min' => 'O código da cor deve conter 7 caracteres',
-            'sideMenuColorCodeNonSelectedIcon.max' => 'O código da cor deve conter 7 caracteres',
+            'sideMenuColorCodeNotSelectedIcon.string' => 'O código da cor deve ser uma string',
+            'sideMenuColorCodeNotSelectedIcon.min' => 'O código da cor deve conter 7 caracteres',
+            'sideMenuColorCodeNotSelectedIcon.max' => 'O código da cor deve conter 7 caracteres',
 
             'sideMenuColorCodeSelectedIcon.string' => 'O código da cor deve ser uma string',
             'sideMenuColorCodeSelectedIcon.min' => 'O código da cor deve conter 7 caracteres',
