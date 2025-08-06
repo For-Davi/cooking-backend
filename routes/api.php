@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\ColorSettingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GridController;
@@ -148,6 +149,12 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::post('/', [TransactionCategoryController::class, 'store']);
             Route::put('/', [TransactionCategoryController::class, 'update']);
             Route::delete('/{categoryID}', [TransactionCategoryController::class, 'destroy']);
+        });
+    });
+
+    Route::prefix('setting')->group(function () {
+        Route::prefix('appearance')->group(function () {
+            Route::put('/', [ColorSettingController::class, 'update']);
         });
     });
 });
