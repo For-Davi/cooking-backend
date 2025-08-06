@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\Employee\StartEmployeeDTO;
 use App\DTO\Enterprise\EnterpriseStartDTO;
 use App\DTO\Role\RoleStartDTO;
+use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
@@ -12,6 +13,7 @@ use App\Helpers\UserHelper;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\SettingAppearanceRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Validation\ValidationException;
 
@@ -21,7 +23,8 @@ class UserService
         protected UserRepository $repository,
         protected EnterpriseRepository $enterpriseRepository,
         protected RoleRepository $roleRepository,
-        protected EmployeeRepository $employeeRepository
+        protected EmployeeRepository $employeeRepository,
+        protected SettingAppearanceRepository $settingAppearanceRepository
     ) {}
 
     public function login($request)
@@ -60,6 +63,13 @@ class UserService
         return $this->enterpriseRepository->create($enterpriseDTO);
     }
 
+    private function createSettingAppearance($enterpriseID)
+    {
+        $settingAppearanceDTO = CreateSettingAppearanceDTO::fromRequest(['enterpriseID' => $enterpriseID]);
+
+        $this->settingAppearanceRepository->create($settingAppearanceDTO->toArray());
+    }
+
     private function createEmployee($employeeDTO)
     {
         return $this->employeeRepository->create($employeeDTO);
@@ -74,6 +84,8 @@ class UserService
     {
         $enterpriseDTO = EnterpriseStartDTO::fromRequest($request->only(['nameEnterprise']));
         $enterprise = $this->createEnterprise($enterpriseDTO->toArray());
+
+        $this->createSettingAppearance($enterprise->id);
 
         $roleDTO = RoleStartDTO::fromRequest(['enterprise_id' => $enterprise->id]);
         $role = $this->startRole($roleDTO->toArray());

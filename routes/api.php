@@ -8,6 +8,7 @@ use App\Http\Controllers\GridController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingAppearanceController;
 use App\Http\Controllers\SupplierCatalogController;
 use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
@@ -148,6 +149,13 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::post('/', [TransactionCategoryController::class, 'store']);
             Route::put('/', [TransactionCategoryController::class, 'update']);
             Route::delete('/{categoryID}', [TransactionCategoryController::class, 'destroy']);
+        });
+    });
+
+    Route::prefix('setting')->group(function () {
+        Route::prefix('appearance')->group(function () {
+            Route::put('/', [SettingAppearanceController::class, 'update']);
+            Route::get('/', [SettingAppearanceController::class, 'show']);
         });
     });
 });
