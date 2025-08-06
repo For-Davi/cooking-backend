@@ -8,6 +8,11 @@ class SettingAppearanceRepository
 {
     public function __construct(protected SettingAppearance $model) {}
 
+    public function create($data)
+    {
+        return $this->model->create($data);
+    }
+    
     public function update($id, array $data)
     {
         $appearance = $this->getByEnterprise($id);
