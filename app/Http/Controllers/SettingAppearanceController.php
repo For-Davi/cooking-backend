@@ -20,6 +20,7 @@ class SettingAppearanceController
     {
         try {
             $appearance = $this->repository->getByEnterprise($request->get('enterprise_id'));
+
             return response()->json(['appearance' => $appearance], 200);
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar aparência:', $e, $request);
@@ -36,8 +37,9 @@ class SettingAppearanceController
 
             if ($appearance) {
                 DB::commit();
-                
+
                 $appearance = $this->repository->getByEnterprise($request->get('enterprise_id'));
+
                 return response()->json(['appearance' => $appearance, 'message' => 'Aparência atualizada'], 200);
             }
         } catch (\Exception $e) {
