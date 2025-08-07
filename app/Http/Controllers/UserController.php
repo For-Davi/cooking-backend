@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\DTO\User\FilterUserDTO;
-use App\Http\Requests\Auth\UpdateProfileDataRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\UpdateProfileDataRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\FilterUserRequest;
@@ -66,11 +66,11 @@ class UserController
             $user = $this->service->register($request);
 
             if ($user) {
-                $token = $this->configureToken($user);
-
                 DB::commit();
 
                 $user->load('enterprise');
+
+                $token = $this->configureToken($user);
 
                 return response()->json([
                     'user' => $user,
@@ -93,19 +93,19 @@ class UserController
     public function updateProfileData(UpdateProfileDataRequest $request)
     {
         try {
-           DB::beginTransaction();
+            DB::beginTransaction();
 
-           $data = $this->service->updateDataProfile($request);
+            //    dd($request);
 
-            if($data) {
+            $user = $this->service->updateDataProfile($request);
+
+            if ($user) {
                 DB::commit();
 
-                $dataProfile = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
-
-                return response()->json([ 'dataProfile' => $dataProfile, 'message' => 'Dados atualizados'])
+                return response()->json(['user' => $user, 'message' => 'Dados atualizados']);
             }
         } catch (\Exception $e) {
-             ErrorLogger::log('Erro ao atualizar dados', $e, $request);
+            ErrorLogger::log('Erro ao atualizar dados', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

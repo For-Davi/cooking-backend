@@ -7,10 +7,10 @@ use App\DTO\Enterprise\EnterpriseStartDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\User\CreateUserDTO;
+use App\DTO\User\UpdateProfileDataDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
-use App\Repositories\EmployeeRepository;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\RoleRepository;
@@ -81,10 +81,7 @@ class UserService
         return $this->roleRepository->create($roleDTO);
     }
 
-    public function updateProfileData($profileDataDTO)
-    {
-        return $this->repository->updateProfileData($userId, $profileDataDTO)
-    }
+    public function updateProfileData($userId, $profileDataDTO) {}
 
     public function register($request)
     {
@@ -143,15 +140,18 @@ class UserService
 
     public function updateDataProfile($request)
     {
-         updateDataProfileHelper::existsEmail(
-            $request->get('enterprise_id'),
+        // dd($request);
+
+        UserHelper::existsEmail(
+            $request->user(),
             $request->email,
         );
 
         $profileDataDTO = UpdateProfileDataDTO::fromRequest(
-             ...$request->only(['name', 'email']),
+            $request->only(['name', 'email']),
         );
 
-        return $this->updateProfileData($request->id, $profileDataDTO->toArray());
+        // dd($request->id);
+        return $this->repository->updateProfileData($request->user()->id, $profileDataDTO->toArray());
     }
 }

@@ -158,14 +158,14 @@ class UserRepository
 
     public function updateProfileData($id, array $data)
     {
-       $user = $this->findById($id);
+        $user = $this->findById($id);
 
-       if($user) {
-        $user->update($data);
+        if ($user) {
+            $user->update($data);
 
-        return $user;
-       }
+            return $user;
+        }
 
-       return null;
+        return null;
     }
 }
