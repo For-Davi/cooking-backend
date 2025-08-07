@@ -12,7 +12,7 @@ class SettingAppearanceRepository
     {
         return $this->model->create($data);
     }
-    
+
     public function update($id, array $data)
     {
         $appearance = $this->getByEnterprise($id);
