@@ -155,4 +155,17 @@ class UserRepository
 
         return false;
     }
+
+    public function updateProfileData($id, array $data)
+    {
+       $user = $this->findById($id);
+
+       if($user) {
+        $user->update($data);
+
+        return $user;
+       }
+
+       return null;
+    }
 }

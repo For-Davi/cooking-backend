@@ -158,4 +158,8 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::get('/', [SettingAppearanceController::class, 'show']);
         });
     });
+    Route::prefix('user')->group(function () {
+        Route::put('/update-data', [UserController::class, 'updateProfileData']);
+         Route::put('/update-password', [UserController::class, 'updatePassword']);
+    })
 });

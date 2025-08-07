@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\User\FilterUserDTO;
+use App\Http\Requests\Auth\UpdateProfileDataRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\CreateUserRequest;
@@ -84,6 +85,27 @@ class UserController
             DB::rollBack();
 
             ErrorLogger::log('Erro ao registrar com usuário:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateProfileData(UpdateProfileDataRequest $request)
+    {
+        try {
+           DB::beginTransaction();
+
+           $data = $this->service->updateDataProfile($request);
+
+            if($data) {
+                DB::commit();
+
+                $dataProfile = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json([ 'dataProfile' => $dataProfile, 'message' => 'Dados atualizados'])
+            }
+        } catch (\Exception $e) {
+             ErrorLogger::log('Erro ao atualizar dados', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

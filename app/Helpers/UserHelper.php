@@ -44,4 +44,19 @@ class UserHelper
             ]);
         }
     }
+
+     public static function existsEmail($userId, $email)
+    {
+        $existEmail = DB::table('users')
+            ->where('email', $email)
+            ->first();
+
+            if ($existEmail) {
+                if($userId !== $existEmail->email) {
+                       throw ValidationException::withMessages([
+                    'name' => ['Este email ja está em uso.'],
+                ]);
+                }
+            }
+    }
 }
