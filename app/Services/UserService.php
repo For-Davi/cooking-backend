@@ -7,9 +7,9 @@ use App\DTO\Enterprise\EnterpriseStartDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\User\CreateUserDTO;
-use App\DTO\User\UpdateUserDataDTO;
+use App\DTO\User\UpdateProfileDataDTO;
+use App\DTO\User\UpdateProfilePasswordDTO;
 use App\DTO\User\UpdateUserDTO;
-use App\DTO\User\UpdateUserPasswordDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
 use App\Repositories\EmployeeRepository;
@@ -83,6 +83,8 @@ class UserService
         return $this->roleRepository->create($roleDTO);
     }
 
+    public function updateProfileData($userId, $profileDataDTO) {}
+
     public function register($request)
     {
         $enterpriseDTO = EnterpriseStartDTO::fromRequest($request->only(['nameEnterprise']));
@@ -138,7 +140,7 @@ class UserService
         return $this->updateUser($request->id, $userDTO->toArray());
     }
 
-    public function updateData($request)
+    public function updateDataProfile($request)
     {
 
         UserHelper::existsEmail(
@@ -146,24 +148,24 @@ class UserService
             $request->email,
         );
 
-        $userDataDTO = UpdateUserDataDTO::fromRequest(
+        $profileDataDTO = UpdateProfileDataDTO::fromRequest(
             $request->only(['name', 'email']),
         );
 
-        return $this->repository->update($request->user()->id, $userDataDTO->toArray());
+        return $this->repository->updateProfileData($request->user()->id, $profileDataDTO->toArray());
     }
 
-    public function updatePassword($request)
+    public function updatePasswordProfile($request)
     {
         UserHelper::isPasswordEqual(
             $request->user(),
-            $request->currentPassword
+            $request->current_password
         );
 
-        $userPasswordDTO = UpdateUserPasswordDTO::fromRequest([
-            'newPassword' => Hash::make($request->newPassword),
+        $profilePasswordDTO = UpdateProfilePasswordDTO::fromRequest([
+            'new_password' => Hash::make($request->new_password),
         ]);
 
-        return $this->repository->update($request->user()->id, $userPasswordDTO->toArray());
+        return $this->repository->updateProfilePassword($request->user()->id, $profilePasswordDTO->toArray());
     }
 }
