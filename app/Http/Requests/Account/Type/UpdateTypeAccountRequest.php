@@ -14,7 +14,7 @@ class UpdateTypeAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:transaction_categories,id',
+            'id' => 'required|exists:types_account,id',
             'name' => 'required|string|min:1|max:20',
         ];
     }

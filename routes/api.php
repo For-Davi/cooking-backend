@@ -14,8 +14,8 @@ use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TransactionCategoryController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\TypeAccountController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
@@ -161,7 +161,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::get('/{typeID}', [TypeAccountController::class, 'show']);
             Route::post('/', [TypeAccountController::class, 'store']);
             Route::put('/', [TypeAccountController::class, 'update']);
-            Route::delete('/{categoryID}', [TypeAccountController::class, 'destroy']);
+            Route::delete('/{typeID}', [TypeAccountController::class, 'destroy']);
         });
     });
 

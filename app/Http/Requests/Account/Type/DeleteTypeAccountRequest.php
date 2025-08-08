@@ -14,7 +14,7 @@ class DeleteTypeAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'typeID' => 'required|exists:transaction_categories,id',
+            'typeID' => 'required|exists:types_account,id',
         ];
     }
 

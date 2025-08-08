@@ -19,12 +19,12 @@ class TypeAccountService
             'create'
         );
 
-        $categoryDTO = CreateTypeAccountDTO::fromRequest([
+        $typesDTO = CreateTypeAccountDTO::fromRequest([
             ...$request->only(['name']),
             'enterpriseID' => $request->get('enterprise_id'),
         ]);
 
-        return $this->repository->create($categoryDTO->toArray());
+        return $this->repository->create($typesDTO->toArray());
     }
 
     public function update($request)
@@ -36,10 +36,10 @@ class TypeAccountService
             $request->id
         );
 
-        $categoryDTO = UpdateTypeAccountDTO::fromRequest([
+        $typesDTO = UpdateTypeAccountDTO::fromRequest([
             ...$request->only(['name']),
         ]);
 
-        return $this->repository->update($request->id, $categoryDTO->toArray());
+        return $this->repository->update($request->id, $typesDTO->toArray());
     }
 }

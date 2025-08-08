@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Account\Type\CreateTypeAccountRequest;
-use App\Http\Requests\Account\Type\UpdateTypeAccountRequest;
 use App\Http\Requests\Account\Type\DeleteTypeAccountRequest;
+use App\Http\Requests\Account\Type\UpdateTypeAccountRequest;
 use App\Repositories\TypeAccountRepository;
 use App\Services\TypeAccountService;
 use App\Utils\ErrorLogger;
@@ -40,14 +40,14 @@ class TypeAccountController
             if ($type) {
                 DB::commit();
 
-                $categories = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $types = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
                 return response()->json(['types' => $types, 'message' => 'Tipo de conta cadastrado'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao cadastrar categoria:', $e, $request);
+            ErrorLogger::log('Erro ao cadastrar tipo:', $e, $request);
 
             return response()->json(['message' => 'Erro ao cadastrar tipo'], 500);
         }
