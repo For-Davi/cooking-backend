@@ -25,11 +25,11 @@ class TypeAccountRepository
 
     public function update($id, array $data)
     {
-        $category = $this->findById($id);
-        if ($category) {
-            $category->update($data);
+        $type = $this->findById($id);
+        if ($type) {
+            $type->update($data);
 
-            return $category;
+            return $type;
         }
 
         return null;
@@ -37,10 +37,10 @@ class TypeAccountRepository
 
     public function delete($id)
     {
-        $category = $this->findById($id);
+        $type = $this->findById($id);
 
-        if ($category) {
-            return $category->delete();
+        if ($type) {
+            return $type->delete();
         }
 
         return false;
