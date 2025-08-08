@@ -2,20 +2,17 @@
 
 namespace App\Helpers;
 
-use App\Models\Department;
-use App\Models\User;
-use App\Repositories\DepartmentRepository;
-use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class DepartmentHelper
 {
     public static function existsDepartment($id, $name, $enterpriseId, $mode)
     {
-        $userRepository = new UserRepository(new User);
-        $departmentRepository = new DepartmentRepository(new Department, $userRepository);
-
-        $department = $departmentRepository->findByName($name, $enterpriseId);
+        $department = DB::table('departments')
+            ->where('name', $name)
+            ->where('enterprise_id', $enterpriseId)
+            ->first();
 
         if ($mode === 'create') {
             if ($department) {
@@ -24,7 +21,7 @@ class DepartmentHelper
                 ]);
             }
         } else {
-            if ($department && $department->id !== $id) {
+            if ($department && $department->id != $id) {
                 throw ValidationException::withMessages([
                     'name' => ['Já existe um departamento igual ou parecido.'],
                 ]);
