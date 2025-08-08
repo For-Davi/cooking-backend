@@ -7,6 +7,7 @@ class CreateImageDTO
     public function __construct(
         public readonly string $name,
         public readonly string $url,
+        public readonly int $size,
         public readonly string $enterprise_id,
     ) {}
 
@@ -14,6 +15,7 @@ class CreateImageDTO
     {
         return new self(
             name: $data['name'],
+            size: $data['size'],
             url: $data['url'],
             enterprise_id: $data['enterpriseID'],
         );
@@ -23,6 +25,7 @@ class CreateImageDTO
     {
         return [
             'name' => $this->name,
+            'size' => $this->size,
             'url' => $this->url,
             'enterprise_id' => $this->enterprise_id,
         ];

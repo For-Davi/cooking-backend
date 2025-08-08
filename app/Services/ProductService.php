@@ -62,6 +62,7 @@ class ProductService
                 $imageDTO = CreateImageDTO::fromRequest([
                     'url' => $path,
                     'name' => $image->getClientOriginalName(),
+                    'size' => $image->getSize(),
                     'enterpriseID' => $this->enterpriseID,
                 ]);
 

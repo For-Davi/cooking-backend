@@ -15,6 +15,7 @@ class Image extends Model
         'name',
         'url',
         'enterprise_id',
+        'size',
     ];
 
     public function enterprise()
