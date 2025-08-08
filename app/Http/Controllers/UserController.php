@@ -6,6 +6,7 @@ use App\DTO\User\FilterUserDTO;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\UpdateProfileDataRequest;
+use App\Http\Requests\Auth\UpdateProfilePasswordRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\FilterUserRequest;
@@ -95,8 +96,6 @@ class UserController
         try {
             DB::beginTransaction();
 
-            //    dd($request);
-
             $user = $this->service->updateDataProfile($request);
 
             if ($user) {
@@ -106,6 +105,25 @@ class UserController
             }
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao atualizar dados', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateProfilePassword(UpdateProfilePasswordRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $password = $this->service->updatePasswordProfile($request);    
+
+            if($password) {
+                DB::commit();
+
+                return response()->json(['message' => 'Senha atualizada']);
+            }
+        } catch (\Exception $e) {
+              ErrorLogger::log('Erro ao atualizar senha', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

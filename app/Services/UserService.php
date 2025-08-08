@@ -8,6 +8,7 @@ use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateProfileDataDTO;
+use App\DTO\User\UpdateProfilePasswordDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
@@ -17,6 +18,8 @@ use App\Repositories\RoleRepository;
 use App\Repositories\SettingAppearanceRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserService
 {
@@ -140,7 +143,6 @@ class UserService
 
     public function updateDataProfile($request)
     {
-        // dd($request);
 
         UserHelper::existsEmail(
             $request->user(),
@@ -151,7 +153,20 @@ class UserService
             $request->only(['name', 'email']),
         );
 
-        // dd($request->id);
         return $this->repository->updateProfileData($request->user()->id, $profileDataDTO->toArray());
+    }
+
+    public function updatePasswordProfile($request)
+    {
+        UserHelper::isPasswordEqual(
+            $request->user(),
+            $request->current_password
+        );
+
+        $profilePasswordDTO = UpdateProfilePasswordDTO::fromRequest([
+            'new_password' => Hash::make($request->new_password)
+        ]);
+
+        return $this->repository->updateProfilePassword($request->user()->id, $profilePasswordDTO->toArray());
     }
 }
