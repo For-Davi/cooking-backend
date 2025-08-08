@@ -2,7 +2,7 @@
 
 namespace App\DTO\User;
 
-class UpdateProfilePasswordDTO
+class UpdateUserPasswordDTO
 {
     public function __construct(
         public string $password,
@@ -11,7 +11,7 @@ class UpdateProfilePasswordDTO
     public static function fromRequest($data): self
     {
         return new self(
-            password: $data['new_password'],
+            password: $data['newPassword'],
         );
     }
 

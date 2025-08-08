@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\DTO\User\FilterUserDTO;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Requests\Auth\UpdateProfileDataRequest;
-use App\Http\Requests\Auth\UpdateProfilePasswordRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\FilterUserRequest;
 use App\Http\Requests\User\ShowUserRequest;
+use App\Http\Requests\User\UpdateUserDataRequest;
+use App\Http\Requests\User\UpdateUserPasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserListResource;
 use App\Repositories\EnterpriseRepository;
@@ -91,12 +91,12 @@ class UserController
         }
     }
 
-    public function updateProfileData(UpdateProfileDataRequest $request)
+    public function updateData(UpdateUserDataRequest $request)
     {
         try {
             DB::beginTransaction();
 
-            $user = $this->service->updateDataProfile($request);
+            $user = $this->service->updateData($request);
 
             if ($user) {
                 DB::commit();
@@ -104,26 +104,30 @@ class UserController
                 return response()->json(['user' => $user, 'message' => 'Dados atualizados']);
             }
         } catch (\Exception $e) {
+            DB::rollBack();
+
             ErrorLogger::log('Erro ao atualizar dados', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
-    public function updateProfilePassword(UpdateProfilePasswordRequest $request)
+    public function updatePassword(UpdateUserPasswordRequest $request)
     {
         try {
             DB::beginTransaction();
 
-            $password = $this->service->updatePasswordProfile($request);    
+            $password = $this->service->updatePassword($request);
 
-            if($password) {
+            if ($password) {
                 DB::commit();
 
                 return response()->json(['message' => 'Senha atualizada']);
             }
         } catch (\Exception $e) {
-              ErrorLogger::log('Erro ao atualizar senha', $e, $request);
+            DB::rollBack();
+            
+            ErrorLogger::log('Erro ao atualizar senha', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProfileDataRequest extends FormRequest
+class UpdateUserDataRequest extends FormRequest
 {
     public function authorize(): bool
     {

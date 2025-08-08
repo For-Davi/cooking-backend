@@ -102,6 +102,8 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/{userID}', [UserController::class, 'show']);
+        Route::put('/update-data', [UserController::class, 'updateData']);
+        Route::put('/update-password', [UserController::class, 'updatePassword']);
         Route::post('/', [UserController::class, 'store']);
         Route::post('/filter', [UserController::class, 'filter']);
         Route::put('/', [UserController::class, 'update']);
@@ -157,9 +159,5 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::put('/', [SettingAppearanceController::class, 'update']);
             Route::get('/', [SettingAppearanceController::class, 'show']);
         });
-    });
-    Route::prefix('user')->group(function () {
-        Route::put('/update-data', [UserController::class, 'updateProfileData']);
-        Route::put('/update-password', [UserController::class, 'updateProfilePassword']);
     });
 });

@@ -2,7 +2,7 @@
 
 namespace App\DTO\User;
 
-class UpdateProfileDataDTO
+class UpdateUserDataDTO
 {
     public function __construct(
         public string $name,
