@@ -126,7 +126,7 @@ class UserController
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             ErrorLogger::log('Erro ao atualizar senha', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);

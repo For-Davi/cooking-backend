@@ -6,6 +6,7 @@ use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Requests\Product\ShowProductRequest;
+use App\Http\Requests\Product\UpdateProductAdvancedRequest;
 use App\Http\Requests\Product\UpdateProductBasicRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
@@ -147,6 +148,26 @@ class ProductController
             ErrorLogger::log('Erro ao atualizar dados básicos de produto:', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar dados básicos de produto'], 500);
+        }
+    }
+
+    public function updateAdvanced(UpdateProductAdvancedRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $advanced = $this->service->updateAdvanced($request);
+
+            if ($advanced) {
+                DB::commit();
+
+                return response()->json(['advanced' => $advanced, 'message' => 'Configurações avançadas de produto atualizado'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao atualizar configurações avançadas de produto:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao atualizar configurações avançadas de produto'], 500);
         }
     }
 

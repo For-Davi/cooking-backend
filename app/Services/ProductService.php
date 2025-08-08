@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\Image\CreateImageDTO;
 use App\DTO\Product\CreateProductDTO;
 use App\DTO\Product\ProductAdvanced\CreateProductAdvancedDTO;
+use App\DTO\Product\ProductAdvanced\UpdateProductAdvancedDTO;
 use App\DTO\Product\ProductImage\CreateProductImageDTO;
 use App\DTO\Product\ProductTag\CreateProductTagDTO;
 use App\DTO\Product\ProductVariant\CreateProductVariantDTO;
@@ -242,5 +243,21 @@ class ProductService
         ]);
 
         return $this->repository->update($request->id, $productBasicDTO->toArray());
+    }
+
+    public function updateAdvanced($request)
+    {
+        $productAdvancedDTO = UpdateProductAdvancedDTO::fromRequest([
+            ...$request->only([
+                'active',
+                'allowCoupon',
+                'allowDiscount',
+                'discountMaxPercentage',
+                'hasCommission',
+                'commissionPercentage',
+            ]),
+        ]);
+
+        return $this->productAdvancedRepository->update($request->id, $productAdvancedDTO->toArray());
     }
 }
