@@ -6,6 +6,7 @@ use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Requests\Product\ShowProductRequest;
+use App\Http\Requests\Product\UpdateProductBasicRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
 use App\Http\Requests\Product\Variant\UpdateProductVariantRequest;
@@ -127,25 +128,25 @@ class ProductController
         }
     }
 
-    public function update(UpdateProductColorRequest $request)
+    public function updateBasic(UpdateProductBasicRequest $request)
     {
         try {
             DB::beginTransaction();
-            $color = $this->service->update($request);
+            $product = $this->service->updateBasic($request);
 
-            if ($color) {
+            if ($product) {
                 DB::commit();
 
-                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $product->load('category');
 
-                return response()->json(['colors' => $colors, 'message' => 'Cor atualizada'], 200);
+                return response()->json(['basic' => $product, 'message' => 'Dados básicos de produto atualizado'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao atualizar cor:', $e, $request);
+            ErrorLogger::log('Erro ao atualizar dados básicos de produto:', $e, $request);
 
-            return response()->json(['message' => 'Erro ao atualizar cor'], 500);
+            return response()->json(['message' => 'Erro ao atualizar dados básicos de produto'], 500);
         }
     }
 

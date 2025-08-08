@@ -9,6 +9,7 @@ use App\DTO\Product\ProductImage\CreateProductImageDTO;
 use App\DTO\Product\ProductTag\CreateProductTagDTO;
 use App\DTO\Product\ProductVariant\CreateProductVariantDTO;
 use App\DTO\Product\ProductVariant\UpdateProductVariantDTO;
+use App\DTO\Product\UpdateProductBasicDTO;
 use App\Helpers\ProductHelper;
 use App\Helpers\ProductLogHelper;
 use App\Helpers\SkuHelper;
@@ -223,5 +224,23 @@ class ProductService
         ]);
 
         return $this->productVariantRepository->update($request->id, $productVariantDTO->toArray());
+    }
+
+    public function updateBasic($request)
+    {
+        $this->enterpriseID = $request->get('enterprise_id');
+
+        ProductHelper::existsProduct(
+            $request->get('enterprise_id'),
+            $request->input('name'),
+            'update',
+            $request->input('id')
+        );
+
+        $productBasicDTO = UpdateProductBasicDTO::fromRequest([
+            ...$request->only(['name', 'type', 'category', 'description']),
+        ]);
+
+        return $this->repository->update($request->id, $productBasicDTO->toArray());
     }
 }
