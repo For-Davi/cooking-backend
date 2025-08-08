@@ -44,4 +44,29 @@ class UserHelper
             ]);
         }
     }
+
+    public static function existsEmail($user, $email)
+    {
+
+        $existEmail = DB::table('users')
+            ->where('email', $email)
+            ->first();
+
+        if ($existEmail) {
+            if ($user->email !== $existEmail->email) {
+                throw ValidationException::withMessages([
+                    'email' => ['Este email ja está em uso.'],
+                ]);
+            }
+        }
+    }
+
+    public static function isPasswordEqual($user, $actualPassword)
+    {
+        if (! Hash::check($actualPassword, $user->password)) {
+            throw ValidationException::withMessages([
+                'password' => ['A senha atual está incorreta.'],
+            ]);
+        }
+    }
 }

@@ -9,6 +9,8 @@ use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\FilterUserRequest;
 use App\Http\Requests\User\ShowUserRequest;
+use App\Http\Requests\User\UpdateUserDataRequest;
+use App\Http\Requests\User\UpdateUserPasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserListResource;
 use App\Repositories\EnterpriseRepository;
@@ -65,11 +67,11 @@ class UserController
             $user = $this->service->register($request);
 
             if ($user) {
-                $token = $this->configureToken($user);
-
                 DB::commit();
 
                 $user->load('enterprise');
+
+                $token = $this->configureToken($user);
 
                 return response()->json([
                     'user' => $user,
@@ -84,6 +86,48 @@ class UserController
             DB::rollBack();
 
             ErrorLogger::log('Erro ao registrar com usuário:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateData(UpdateUserDataRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = $this->service->updateData($request);
+
+            if ($user) {
+                DB::commit();
+
+                return response()->json(['user' => $user, 'message' => 'Dados atualizados']);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao atualizar dados', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updatePassword(UpdateUserPasswordRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $password = $this->service->updatePassword($request);
+
+            if ($password) {
+                DB::commit();
+
+                return response()->json(['message' => 'Senha atualizada']);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            ErrorLogger::log('Erro ao atualizar senha', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

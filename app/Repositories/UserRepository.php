@@ -103,18 +103,6 @@ class UserRepository
         return null;
     }
 
-    public function updateData($id, array $data)
-    {
-        $user = $this->findById($id);
-        if ($user) {
-            $user->update($data);
-
-            return $user;
-        }
-
-        return null;
-    }
-
     public function updatePassword($id, array $data)
     {
         $user = $this->findById($id);

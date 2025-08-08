@@ -7,7 +7,9 @@ use App\DTO\Enterprise\EnterpriseStartDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\User\CreateUserDTO;
+use App\DTO\User\UpdateUserDataDTO;
 use App\DTO\User\UpdateUserDTO;
+use App\DTO\User\UpdateUserPasswordDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
 use App\Repositories\EmployeeRepository;
@@ -15,6 +17,7 @@ use App\Repositories\EnterpriseRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SettingAppearanceRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class UserService
@@ -133,5 +136,34 @@ class UserService
         ]);
 
         return $this->updateUser($request->id, $userDTO->toArray());
+    }
+
+    public function updateData($request)
+    {
+
+        UserHelper::existsEmail(
+            $request->user(),
+            $request->email,
+        );
+
+        $userDataDTO = UpdateUserDataDTO::fromRequest(
+            $request->only(['name', 'email']),
+        );
+
+        return $this->repository->update($request->user()->id, $userDataDTO->toArray());
+    }
+
+    public function updatePassword($request)
+    {
+        UserHelper::isPasswordEqual(
+            $request->user(),
+            $request->currentPassword
+        );
+
+        $userPasswordDTO = UpdateUserPasswordDTO::fromRequest([
+            'newPassword' => Hash::make($request->newPassword),
+        ]);
+
+        return $this->repository->update($request->user()->id, $userPasswordDTO->toArray());
     }
 }
