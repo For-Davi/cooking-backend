@@ -21,6 +21,7 @@ use App\Repositories\ProductImageRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductTagRepository;
 use App\Repositories\ProductVariantRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class ProductService
@@ -91,7 +92,8 @@ class ProductService
         ProductLogHelper::createLog(
             $product->id,
             'create',
-            "O usuário(a) {$user->name} ({$user->email}) criou este produto em ".now()->format('d/m/Y H:i:s')
+            "O usuário(a) {$user->name} ({$user->email}) criou este produto em ".
+            Carbon::now('America/Sao_Paulo')->locale('pt_BR')->translatedFormat('d/m/Y H:i:s')
         );
 
         return true;
@@ -248,7 +250,8 @@ class ProductService
         ProductLogHelper::createLog(
             $request->product_id,
             'update',
-            "O usuário(a) {$user->name} ({$user->email}) atualizou os dados básicos deste produto em ".now()->format('d/m/Y H:i:s')
+            "O usuário(a) {$user->name} ({$user->email}) atualizou os dados básicos deste produto em ".
+            Carbon::now('America/Sao_Paulo')->locale('pt_BR')->translatedFormat('d/m/Y H:i:s')
         );
 
         return $result;
@@ -268,7 +271,8 @@ class ProductService
         ProductLogHelper::createLog(
             $request->productID,
             'update',
-            "O usuário(a) {$user->name} ({$user->email}) atualizou as tags deste produto em ".now()->format('d/m/Y H:i:s')
+            "O usuário(a) {$user->name} ({$user->email}) atualizou as tags deste produto em ".
+            Carbon::now('America/Sao_Paulo')->locale('pt_BR')->translatedFormat('d/m/Y H:i:s')
         );
     }
 
@@ -291,7 +295,8 @@ class ProductService
         ProductLogHelper::createLog(
             $request->product_id,
             'update',
-            "O usuário(a) {$user->name} ({$user->email}) atualizou os dados avnaçados deste produto em ".now()->format('d/m/Y H:i:s')
+            "O usuário(a) {$user->name} ({$user->email}) atualizou os dados avançados deste produto em ".
+            Carbon::now('America/Sao_Paulo')->locale('pt_BR')->translatedFormat('d/m/Y H:i:s')
         );
 
         return $result;
