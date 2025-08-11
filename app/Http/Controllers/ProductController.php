@@ -8,6 +8,7 @@ use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Requests\Product\ShowProductRequest;
 use App\Http\Requests\Product\UpdateProductAdvancedRequest;
 use App\Http\Requests\Product\UpdateProductBasicRequest;
+use App\Http\Requests\Product\UpdateProductTagRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
 use App\Http\Requests\Product\Variant\UpdateProductVariantRequest;
@@ -168,6 +169,29 @@ class ProductController
             ErrorLogger::log('Erro ao atualizar configurações avançadas de produto:', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar configurações avançadas de produto'], 500);
+        }
+    }
+
+    public function updateTag(UpdateProductTagRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->service->updateTag($request);
+
+            DB::commit();
+
+            $product = $this->repository->findById($request->product_id, [
+                'tags',
+            ]);
+
+            return response()->json(['tags' => $product->tags, 'message' => 'Tags do produto atualizada'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao atualizar as tags do produto:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao atualizar as tags do produto'], 500);
         }
     }
 

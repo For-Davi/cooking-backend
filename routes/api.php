@@ -99,6 +99,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::put('/', [ProductController::class, 'update']);
         Route::put('/basic', [ProductController::class, 'updateBasic']);
         Route::put('/advanced', [ProductController::class, 'updateAdvanced']);
+        Route::put('/tag', [ProductController::class, 'updateTag']);
         Route::delete('/{productID}', [ProductController::class, 'destroy']);
     });
 

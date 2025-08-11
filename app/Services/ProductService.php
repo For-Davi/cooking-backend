@@ -242,7 +242,34 @@ class ProductService
             ...$request->only(['name', 'type', 'category', 'description']),
         ]);
 
-        return $this->repository->update($request->id, $productBasicDTO->toArray());
+        $result = $this->repository->update($request->id, $productBasicDTO->toArray());
+
+        $user = $request->user();
+        ProductLogHelper::createLog(
+            $request->product_id,
+            'update',
+            "O usuário(a) {$user->name} ({$user->email}) atualizou os dados básicos deste produto em ".now()->format('d/m/Y H:i:s')
+        );
+
+        return $result;
+    }
+
+    public function updateTag($request)
+    {
+        $this->productTagRepository->deleteByProductID($request->product_id);
+
+        if ($request->tags && count($request->tags) > 0) {
+            foreach ($request->tags as $tag) {
+                $this->createTagForProduct($tag['id'], $request->product_id);
+            }
+        }
+
+        $user = $request->user();
+        ProductLogHelper::createLog(
+            $request->product_id,
+            'update',
+            "O usuário(a) {$user->name} ({$user->email}) atualizou as tags deste produto em ".now()->format('d/m/Y H:i:s')
+        );
     }
 
     public function updateAdvanced($request)
@@ -258,6 +285,15 @@ class ProductService
             ]),
         ]);
 
-        return $this->productAdvancedRepository->update($request->id, $productAdvancedDTO->toArray());
+        $result = $this->productAdvancedRepository->update($request->id, $productAdvancedDTO->toArray());
+
+        $user = $request->user();
+        ProductLogHelper::createLog(
+            $request->product_id,
+            'update',
+            "O usuário(a) {$user->name} ({$user->email}) atualizou os dados avnaçados deste produto em ".now()->format('d/m/Y H:i:s')
+        );
+
+        return $result;
     }
 }
