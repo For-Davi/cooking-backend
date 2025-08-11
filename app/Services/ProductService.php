@@ -256,17 +256,17 @@ class ProductService
 
     public function updateTag($request)
     {
-        $this->productTagRepository->deleteByProductID($request->product_id);
+        $this->productTagRepository->deleteByProductID($request->productID);
 
         if ($request->tags && count($request->tags) > 0) {
             foreach ($request->tags as $tag) {
-                $this->createTagForProduct($tag['id'], $request->product_id);
+                $this->createTagForProduct($tag['id'], $request->productID);
             }
         }
 
         $user = $request->user();
         ProductLogHelper::createLog(
-            $request->product_id,
+            $request->productID,
             'update',
             "O usuário(a) {$user->name} ({$user->email}) atualizou as tags deste produto em ".now()->format('d/m/Y H:i:s')
         );

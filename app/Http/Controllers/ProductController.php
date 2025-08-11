@@ -181,7 +181,7 @@ class ProductController
 
             DB::commit();
 
-            $product = $this->repository->findById($request->product_id, [
+            $product = $this->repository->findById($request->productID, [
                 'tags',
             ]);
 

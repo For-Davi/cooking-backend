@@ -14,7 +14,7 @@ class UpdateProductTagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|exists:products,id',
+            'productID' => 'required|exists:products,id',
             'tags' => 'sometimes|array',
             'tags.*.id' => 'required|exists:tags,id',
         ];
@@ -23,8 +23,8 @@ class UpdateProductTagRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'product_id.required' => 'O ID do produto é obrigatório',
-            'product_id.exists' => 'O ID do produto informado não existe.',
+            'productID.required' => 'O ID do produto é obrigatório',
+            'productID.exists' => 'O ID do produto informado não existe.',
             'tags.*.id.required' => 'O ID da tag é obrigatório.',
             'tags.*.id.exists' => 'A tag selecionada é inválida.',
         ];
