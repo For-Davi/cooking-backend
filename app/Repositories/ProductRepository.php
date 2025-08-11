@@ -107,6 +107,8 @@ class ProductRepository
                 ->select('images.id', 'images.url')
                 ->get();
             if ($imageRecords->isNotEmpty()) {
+                DB::table('product_image')->where('product_id', $id)->delete();
+
                 if (env('APP_ENV') === 'local') {
                     foreach ($imageRecords as $image) {
                         $filePath = public_path($image->url);
@@ -119,7 +121,6 @@ class ProductRepository
                 $imageIds = $imageRecords->pluck('id')->toArray();
                 DB::table('images')->whereIn('id', $imageIds)->delete();
             }
-            DB::table('product_image')->where('product_id', $id)->delete();
 
             DB::table('products')->where('id', $id)->delete();
 
@@ -128,4 +129,5 @@ class ProductRepository
 
         return false;
     }
+
 }
