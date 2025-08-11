@@ -40,7 +40,9 @@ class DepartmentController
             if ($department) {
                 DB::commit();
 
-                return response()->json(['message' => 'Departamento cadastrado'], 201);
+                 $departments = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json(['departments' => $departments, 'message' => 'Departamento cadastrado'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -60,7 +62,9 @@ class DepartmentController
             if ($department) {
                 DB::commit();
 
-                return response()->json(['message' => 'Departamento atualizado'], 200);
+                $departments = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+
+                return response()->json(['departments'=> $departments, 'message' => 'Departamento atualizado'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
