@@ -15,7 +15,7 @@ class ProductAdvancedRepository
 
     public function findByProductID($id)
     {
-        return $this->model->find($id);
+        return $this->model->where('product_id', $id)->first();
     }
 
     public function create($data)

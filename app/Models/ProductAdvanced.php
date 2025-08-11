@@ -13,6 +13,12 @@ class ProductAdvanced extends Model
 
     public $timestamps = false;
 
+    protected $primaryKey = 'product_id';
+
+    public $incrementing = false;
+
+    protected $keyType = 'int';
+
     protected $fillable = [
         'product_id',
         'active',
