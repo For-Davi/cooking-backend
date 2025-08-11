@@ -139,9 +139,9 @@ class ProductController
             if ($product) {
                 DB::commit();
 
-                $product->load('category');
+                $product->load(['category', 'logs']);
 
-                return response()->json(['basic' => $product, 'message' => 'Dados básicos de produto atualizado'], 200);
+                return response()->json(['basic' => $product, 'logs' => $product->logs, 'message' => 'Dados básicos de produto atualizado'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -161,7 +161,11 @@ class ProductController
             if ($advanced) {
                 DB::commit();
 
-                return response()->json(['advanced' => $advanced, 'message' => 'Configurações avançadas de produto atualizado'], 200);
+                $product = $this->repository->findById($request->productID, [
+                    'logs',
+                ]);
+
+                return response()->json(['advanced' => $advanced, 'logs' => $product->logs, 'message' => 'Configurações avançadas de produto atualizado'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -182,10 +186,10 @@ class ProductController
             DB::commit();
 
             $product = $this->repository->findById($request->productID, [
-                'tags',
+                'tags','logs'
             ]);
 
-            return response()->json(['tags' => $product->tags, 'message' => 'Tags do produto atualizada'], 200);
+            return response()->json(['tags' => $product->tags, 'logs' => $product->logs,  'message' => 'Tags do produto atualizada'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
 
