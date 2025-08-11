@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
+use App\Http\Requests\Product\DeleteProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Requests\Product\ShowProductRequest;
 use App\Http\Requests\Product\UpdateProductAdvancedRequest;
@@ -186,7 +187,7 @@ class ProductController
             DB::commit();
 
             $product = $this->repository->findById($request->productID, [
-                'tags','logs'
+                'tags', 'logs',
             ]);
 
             return response()->json(['tags' => $product->tags, 'logs' => $product->logs,  'message' => 'Tags do produto atualizada'], 200);
@@ -221,25 +222,25 @@ class ProductController
         }
     }
 
-    public function destroy(DeleteProductColorRequest $request)
+    public function destroy(DeleteProductRequest $request)
     {
         try {
             DB::beginTransaction();
 
-            $color = $this->repository->delete($request->route('colorID'));
+            $product = $this->repository->delete($request->route('productID'));
 
-            if ($color) {
+            if ($product) {
                 DB::commit();
-                $colors = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $productsVariants = $this->productVariantRepository->getAllByEnterprise($request->get('enterprise_id'), ['product', 'images', 'color']);
 
-                return response()->json(['colors' => $colors, 'message' => 'Cor excluída'], 200);
+                return response()->json(['products' => ProductVariantTableResource::collection($productsVariants), 'message' => 'Produto excluído'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao excluir cor:', $e, $request);
+            ErrorLogger::log('Erro ao excluir produto:', $e, $request);
 
-            return response()->json(['message' => 'Erro ao excluir cor'], 500);
+            return response()->json(['message' => 'Erro ao excluir produto'], 500);
         }
     }
 

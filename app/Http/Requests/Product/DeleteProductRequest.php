@@ -14,15 +14,15 @@ class DeleteProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'supplierID' => 'required|exists:suppliers,id',
+            'productID' => 'required|exists:products,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'supplierID.required' => 'O ID do fornecedor é obrigatório.',
-            'supplierID.exists' => 'O fornecedor informado não existe.',
+            'productID.required' => 'O ID do produto é obrigatório.',
+            'productID.exists' => 'O produto informado não existe.',
         ];
     }
 
