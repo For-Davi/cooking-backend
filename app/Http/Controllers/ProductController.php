@@ -9,6 +9,7 @@ use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Requests\Product\ShowProductRequest;
 use App\Http\Requests\Product\UpdateProductAdvancedRequest;
 use App\Http\Requests\Product\UpdateProductBasicRequest;
+use App\Http\Requests\Product\UpdateProductMediaRequest;
 use App\Http\Requests\Product\UpdateProductTagRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
@@ -197,6 +198,35 @@ class ProductController
             ErrorLogger::log('Erro ao atualizar as tags do produto:', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar as tags do produto'], 500);
+        }
+    }
+
+    public function updateMedia(UpdateProductMediaRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->service->updateMedia($request);
+
+            DB::commit();
+
+            $product = $this->repository->findById($request->productID, [
+                'images', 'logs',
+            ]);
+
+            $product->images->transform(function ($image) {
+                $image->url = asset($image->url);
+
+                return $image;
+            });
+
+            return response()->json(['images' => $product->images, 'logs' => $product->logs,  'message' => 'Imagens do produto atualizada'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao atualizar as imagens do produto:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao atualizar as imagens do produto'], 500);
         }
     }
 

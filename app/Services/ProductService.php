@@ -22,6 +22,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\ProductTagRepository;
 use App\Repositories\ProductVariantRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProductService
@@ -300,5 +301,83 @@ class ProductService
         );
 
         return $result;
+    }
+
+    public function updateMedia($request)
+    {
+        $this->enterpriseID = $request->get('enterprise_id');
+
+        $this->deleteImages($request);
+        $this->saveNewImages($request);
+
+        $user = $request->user();
+        ProductLogHelper::createLog(
+            $request->productID,
+            'update',
+            "O usuário(a) {$user->name} ({$user->email}) atualizou as imagens deste produto em ".
+            Carbon::now('America/Sao_Paulo')->locale('pt_BR')->translatedFormat('d/m/Y H:i:s')
+        );
+    }
+
+    private function deleteImages($request)
+    {
+        $imagesToDelete = collect($request->input('imagesToDelete', []))
+            ->pluck('id')
+            ->filter()
+            ->all();
+
+        if (empty($imagesToDelete)) {
+            return;
+        }
+
+        $imageRecords = DB::table('product_image')
+            ->whereIn('image_id', $imagesToDelete)
+            ->join('images', 'product_image.image_id', '=', 'images.id')
+            ->select('images.id', 'images.url')
+            ->get();
+
+        if ($imageRecords->isEmpty()) {
+            return;
+        }
+
+        DB::table('product_image')->whereIn('image_id', $imagesToDelete)->delete();
+
+        if (app()->environment('local')) {
+            foreach ($imageRecords as $image) {
+                $filePath = public_path($image->url);
+                if (is_file($filePath)) {
+                    @unlink($filePath);
+                }
+            }
+        }
+
+        DB::table('images')->whereIn('id', $imagesToDelete)->delete();
+    }
+
+    private function saveNewImages($request)
+    {
+        if (! $request->hasFile('newImages')) {
+            return;
+        }
+
+        foreach ($request->file('newImages') as $image) {
+            $path = $this->savePathImage($image);
+
+            $imageDTO = CreateImageDTO::fromRequest([
+                'url' => $path,
+                'name' => $image->getClientOriginalName(),
+                'size' => $image->getSize(),
+                'enterpriseID' => $this->enterpriseID,
+            ]);
+
+            $imageSaved = $this->imageRepository->create($imageDTO->toArray());
+
+            $productImageDTO = CreateProductImageDTO::fromRequest([
+                'imageID' => $imageSaved->id,
+                'productID' => $request->productID,
+            ]);
+
+            $this->productImageRepository->create($productImageDTO->toArray());
+        }
     }
 }
