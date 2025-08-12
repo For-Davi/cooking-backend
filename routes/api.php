@@ -11,6 +11,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingAppearanceController;
 use App\Http\Controllers\SupplierCatalogController;
 use App\Http\Controllers\SupplierCategoryController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TransactionCategoryController;
@@ -174,4 +175,8 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::get('/', [SettingAppearanceController::class, 'show']);
         });
     });
+
+     Route::prefix('feedback')->group(function () {
+    Route::post('/', [ FeedbackController::class, 'store']);
+    }); 
 });
