@@ -237,18 +237,18 @@ class ProductService
             $request->get('enterprise_id'),
             $request->input('name'),
             'update',
-            $request->input('id')
+            $request->input('productID')
         );
 
         $productBasicDTO = UpdateProductBasicDTO::fromRequest([
             ...$request->only(['name', 'type', 'category', 'description']),
         ]);
 
-        $result = $this->repository->update($request->id, $productBasicDTO->toArray());
+        $result = $this->repository->update($request->productID, $productBasicDTO->toArray());
 
         $user = $request->user();
         ProductLogHelper::createLog(
-            $request->product_id,
+            $request->productID,
             'update',
             "O usuário(a) {$user->name} ({$user->email}) atualizou os dados básicos deste produto em ".
             Carbon::now('America/Sao_Paulo')->locale('pt_BR')->translatedFormat('d/m/Y H:i:s')
@@ -289,11 +289,11 @@ class ProductService
             ]),
         ]);
 
-        $result = $this->productAdvancedRepository->update($request->id, $productAdvancedDTO->toArray());
+        $result = $this->productAdvancedRepository->update($request->productID, $productAdvancedDTO->toArray());
 
         $user = $request->user();
         ProductLogHelper::createLog(
-            $request->product_id,
+            $request->productID,
             'update',
             "O usuário(a) {$user->name} ({$user->email}) atualizou os dados avançados deste produto em ".
             Carbon::now('America/Sao_Paulo')->locale('pt_BR')->translatedFormat('d/m/Y H:i:s')

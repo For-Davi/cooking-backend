@@ -14,7 +14,7 @@ class UpdateProductBasicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:products,id',
+            'productID' => 'required|exists:products,id',
             'name' => 'required|string|min:1|max:100',
             'description' => 'nullable|string|max:500',
             'type' => 'required|in:product,service',
@@ -25,8 +25,8 @@ class UpdateProductBasicRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do produto é obrigatório',
-            'id.exists' => 'O ID do produto informado não existe.',
+            'productID.required' => 'O ID do produto é obrigatório',
+            'productID.exists' => 'O ID do produto informado não existe.',
             'name.required' => 'O nome do produto é obrigatório.',
             'name.string' => 'O nome do produto deve ser um texto.',
             'name.min' => 'O nome do produto deve ter pelo menos 1 caractere.',
