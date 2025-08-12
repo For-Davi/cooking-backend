@@ -14,7 +14,7 @@ class UpdateProductAdvancedRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:products,id',
+            'productID' => 'required|exists:products,id',
             'active' => 'required|in:0,1',
             'allowCoupon' => 'required|in:0,1',
             'allowDiscount' => 'required|in:0,1',
@@ -27,8 +27,8 @@ class UpdateProductAdvancedRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do produto é obrigatório',
-            'id.exists' => 'O ID do produto informado não existe.',
+            'productID.required' => 'O ID do produto é obrigatório',
+            'productID.exists' => 'O ID do produto informado não existe.',
             'active.required' => 'O status ativo/inativo é obrigatório.',
             'active.in' => 'O status ativo deve ser 0 (inativo) ou 1 (ativo) para o produto',
             'allowCoupon.required' => 'A permissão para cupons é obrigatória.',
