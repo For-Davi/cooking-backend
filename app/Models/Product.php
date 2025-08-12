@@ -41,7 +41,8 @@ class Product extends Model
 
     public function logs()
     {
-        return $this->hasMany(ProductLog::class, 'product_id');
+        return $this->hasMany(ProductLog::class, 'product_id')
+                ->orderBy('created_at', 'desc');
     }
 
     public function images()
