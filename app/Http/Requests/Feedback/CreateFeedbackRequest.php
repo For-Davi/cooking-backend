@@ -16,7 +16,7 @@ class CreateFeedbackRequest extends FormRequest
         return [
             'text' => 'required|string|max:5000',
             'images' => 'sometimes|array',
-            'images.*' => 'file|mimes:jpg,jpeg,png,gif|max:3072'
+            'images.*' => 'file|mimes:jpg,jpeg,png,gif|max:3072',
         ];
     }
 

@@ -16,6 +16,6 @@ class Feedback extends Model
         'enterprise_name',
         'user_name',
         'user_email',
-        'image_id'
+        'image_id',
     ];
 }

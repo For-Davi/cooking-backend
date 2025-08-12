@@ -30,7 +30,7 @@ class CreateFeedbackDTO
             'enterprise_name' => $this->enterprise_name,
             'user_name' => $this->user_name,
             'user_email' => $this->user_email,
-            'image_id' => $this->image_id
+            'image_id' => $this->image_id,
         ];
     }
 }

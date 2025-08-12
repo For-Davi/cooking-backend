@@ -28,7 +28,7 @@ class Supplier extends Model
         'address',
         'number',
         'active',
-        'category_supplier_id',
+        'supplier_category_id',
         'enterprise_id',
         'description',
         'complement',
@@ -41,6 +41,6 @@ class Supplier extends Model
 
     public function category()
     {
-        return $this->belongsTo(CategorySupplier::class, 'category_supplier_id');
+        return $this->belongsTo(SupplierCategory::class, 'supplier_category_id');
     }
 }

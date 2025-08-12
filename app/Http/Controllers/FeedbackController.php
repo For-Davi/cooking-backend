@@ -6,7 +6,6 @@ use App\Http\Requests\Feedback\CreateFeedbackRequest;
 use App\Repositories\FeedbackRepository;
 use App\Services\FeedbackService;
 use App\Utils\ErrorLogger;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FeedbackController
