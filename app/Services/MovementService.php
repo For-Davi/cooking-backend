@@ -60,7 +60,7 @@ class MovementService
     public function update($request)
     {
         $requestDate = Carbon::createFromFormat('d/m/Y', $request->date);
-        
+
         $movementDTO = CreateOrUpdateMovementDTO::fromRequest([
             ...$request->only([
                 'value',

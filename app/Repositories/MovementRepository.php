@@ -10,9 +10,13 @@ class MovementRepository
 {
     public function __construct(protected Movement $model) {}
 
-    public function getAllByEnterprise($enterpriseID, $onlyPeriodActual = false)
+    public function getAllByEnterprise($enterpriseID, $onlyPeriodActual = false, array $relations = [])
     {
         $query = $this->model->where('enterprise_id', $enterpriseID);
+
+        if (! empty($relations)) {
+            $query->with($relations);
+        }
 
         if ($onlyPeriodActual) {
             $now = Carbon::now('America/Sao_Paulo');
