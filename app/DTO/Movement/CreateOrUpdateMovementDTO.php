@@ -8,7 +8,7 @@ class CreateOrUpdateMovementDTO
         public readonly string $date,
         public readonly string $type,
         public readonly ?int $transaction_category_id,
-        public readonly int $value,
+        public readonly float $value,
         public readonly ?string $description,
         public readonly string $enterprise_id,
     ) {}
