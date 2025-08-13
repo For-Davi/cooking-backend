@@ -59,15 +59,17 @@ class MovementService
 
     public function update($request)
     {
+        $requestDate = Carbon::createFromFormat('d/m/Y', $request->date);
+        
         $movementDTO = CreateOrUpdateMovementDTO::fromRequest([
             ...$request->only([
                 'value',
                 'transactionCategoryID',
                 'description',
-                'date',
                 'type',
             ]),
             'enterpriseID' => $request->get('enterprise_id'),
+            'date' => $requestDate->format('d-m-Y'),
         ]);
 
         return $this->repository->update($request->id, $movementDTO->toArray());
