@@ -6,6 +6,7 @@ class CreateOrUpdateMovementDTO
 {
     public function __construct(
         public readonly string $date,
+        public readonly string $type,
         public readonly ?int $transaction_category_id,
         public readonly int $value,
         public readonly ?string $description,
@@ -16,6 +17,7 @@ class CreateOrUpdateMovementDTO
     {
         return new self(
             date: $data['date'],
+            type: $data['type'],
             transaction_category_id: $data['transactionCategoryID'],
             value: $data['value'],
             description: $data['description'],
@@ -27,6 +29,7 @@ class CreateOrUpdateMovementDTO
     {
         return [
             'date' => $this->date,
+            'type' => $this->type,
             'transaction_category_id' => $this->transaction_category_id,
             'value' => $this->value,
             'description' => $this->description,

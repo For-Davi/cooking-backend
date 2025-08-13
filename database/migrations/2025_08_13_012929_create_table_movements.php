@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('movements', function (Blueprint $table) {
             $table->id();
             $table->string('date');
+            $table->enum('type', ['out', 'entry']);
             $table->decimal('value', 15, 2)->default(0);
             $table->unsignedBigInteger('transaction_category_id')->nullable();
             $table->foreign('transaction_category_id')->references('id')->on('transaction_categories');

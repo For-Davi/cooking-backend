@@ -18,7 +18,8 @@ class UpdateMovementRequest extends FormRequest
             'value' => 'required|numeric|min:0',
             'transactionCategoryID' => 'nullable|exists:transaction_categories,id',
             'description' => 'nullable|string|max:500',
-            'date' => 'required|date_format:m/d/Y',
+            'date' => 'required|date_format:d/m/Y',
+            'type' => 'required|in:entry,out',
         ];
     }
 
@@ -34,7 +35,9 @@ class UpdateMovementRequest extends FormRequest
             'description.string' => 'A descrição deve ser um texto',
             'description.max' => 'A descrição não pode ter mais que 500 caracteres',
             'date.required' => 'A data da movimentação é obrigatória.',
-            'date.date_format' => 'A data deve estar no formato mm/dd/yyyy.',
+            'date.date_format' => 'A data deve estar no formato dd/mm/yyyy.',
+            'type.required' => 'O tipo de movimentação é obrigatório.',
+            'type.in' => 'O tipo de movimentação deve ser "entry" (entrada) ou "out" (saída).',
         ];
     }
 }

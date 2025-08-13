@@ -60,6 +60,10 @@ class MovementRepository
             );
         }
 
+        if ($filters->type !== 'all') {
+            $query->where('type', $filters->type);
+        }
+
         return $query->get();
     }
 

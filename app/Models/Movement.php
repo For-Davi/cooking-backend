@@ -13,6 +13,7 @@ class Movement extends Model
 
     protected $fillable = [
         'date',
+        'type',
         'value',
         'transaction_category_id',
         'enterprise_id',

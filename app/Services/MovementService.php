@@ -30,6 +30,7 @@ class MovementService
                         'value',
                         'transactionCategoryID',
                         'description',
+                        'type',
                     ]),
                     'enterpriseID' => $request->get('enterprise_id'),
                     'date' => $date->format('Y-m-d'),
@@ -47,6 +48,7 @@ class MovementService
                 'transactionCategoryID',
                 'description',
                 'date',
+                'type',
             ]),
             'enterpriseID' => $request->get('enterprise_id'),
         ]);
@@ -62,6 +64,7 @@ class MovementService
                 'transactionCategoryID',
                 'description',
                 'date',
+                'type',
             ]),
             'enterpriseID' => $request->get('enterprise_id'),
         ]);
