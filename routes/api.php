@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GridController;
+use App\Http\Controllers\MovementController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -36,6 +37,15 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::post('/', [ColorController::class, 'store']);
         Route::put('/', [ColorController::class, 'update']);
         Route::delete('/{colorID}', [ColorController::class, 'destroy']);
+    });
+
+    Route::prefix('movement')->group(function () {
+        Route::get('/', [MovementController::class, 'index']);
+        Route::get('/{movementID}', [MovementController::class, 'show']);
+        Route::post('/filter', [MovementController::class, 'filter']);
+        Route::post('/', [MovementController::class, 'store']);
+        Route::put('/', [MovementController::class, 'update']);
+        Route::delete('/{movementID}', [MovementController::class, 'destroy']);
     });
 
     Route::prefix('grid')->group(function () {
