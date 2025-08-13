@@ -30,9 +30,15 @@ class MovementRepository
         return $query->get();
     }
 
-    public function findById($id)
+    public function findById($id, array $relations = [])
     {
-        return $this->model->find($id);
+        $query = $this->model;
+
+        if (! empty($relations)) {
+            $query = $query->with($relations);
+        }
+
+        return $query->find($id);
     }
 
     public function getAllWithFilter($filters)

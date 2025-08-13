@@ -37,7 +37,7 @@ class MovementController
     public function show(ShowMovementRequest $request)
     {
         try {
-            $movement = $this->repository->findById($request->route('movementID'));
+            $movement = $this->repository->findById($request->route('movementID'), ['category']);
 
             return response()->json(['movement' => $movement], 200);
 
