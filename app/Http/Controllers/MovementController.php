@@ -118,9 +118,9 @@ class MovementController
 
             if ($movement) {
                 DB::commit();
-                $clients = $this->repository->getAllByEnterprise($request->get('enterprise_id'), true);
+                $movements = $this->repository->getAllByEnterprise($request->get('enterprise_id'), true);
 
-                return response()->json(['clients' => $clients, 'message' => 'Movimentação excluída'], 200);
+                return response()->json(['movements' => $movements, 'message' => 'Movimentação excluída'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
