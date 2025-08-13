@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class TypeAccount extends Model
+class TypeReceipt extends Model
 {
     use Notifiable;
 
-    protected $table = 'types_account';
+    protected $table = 'types_receipt';
 
     protected $fillable = [
         'name',

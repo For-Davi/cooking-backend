@@ -15,7 +15,7 @@ use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TransactionCategoryController;
-use App\Http\Controllers\TypeAccountController;
+use App\Http\Controllers\TypeReceiptController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -162,11 +162,11 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
 
     Route::prefix('account')->group(function () {
         Route::prefix('type')->group(function () {
-            Route::get('/', [TypeAccountController::class, 'index']);
-            Route::get('/{typeID}', [TypeAccountController::class, 'show']);
-            Route::post('/', [TypeAccountController::class, 'store']);
-            Route::put('/', [TypeAccountController::class, 'update']);
-            Route::delete('/{typeID}', [TypeAccountController::class, 'destroy']);
+            Route::get('/', [TypeReceiptController::class, 'index']);
+            Route::get('/{typeID}', [TypeReceiptController::class, 'show']);
+            Route::post('/', [TypeReceiptController::class, 'store']);
+            Route::put('/', [TypeReceiptController::class, 'update']);
+            Route::delete('/{typeID}', [TypeReceiptController::class, 'destroy']);
         });
     });
 

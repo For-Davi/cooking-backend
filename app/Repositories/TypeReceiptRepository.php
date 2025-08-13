@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\TypeAccount;
+use App\Models\TypeReceipt;
 
-class TypeAccountRepository
+class TypeReceiptRepository
 {
-    public function __construct(protected TypeAccount $model) {}
+    public function __construct(protected TypeReceipt $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {

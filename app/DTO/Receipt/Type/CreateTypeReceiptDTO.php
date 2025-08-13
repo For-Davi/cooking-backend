@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTO\Account\Type;
+namespace App\DTO\Receipt\Type;
 
-class CreateTypeAccountDTO
+class CreateTypeReceiptDTO
 {
     public function __construct(
         public readonly string $name,

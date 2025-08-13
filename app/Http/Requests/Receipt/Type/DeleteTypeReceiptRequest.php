@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Account\Type;
+namespace App\Http\Requests\Receipt\Type;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteTypeAccountRequest extends FormRequest
+class DeleteTypeReceiptRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,7 @@ class DeleteTypeAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'typeID' => 'required|exists:types_account,id',
+            'typeID' => 'required|exists:types_receipt,id',
         ];
     }
 
