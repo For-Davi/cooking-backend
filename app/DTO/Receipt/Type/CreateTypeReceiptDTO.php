@@ -6,7 +6,7 @@ class CreateTypeReceiptDTO
 {
     public function __construct(
         public readonly string $name,
-        public readonly string $enterprise_id,
+        public readonly int $enterprise_id,
     ) {}
 
     public static function fromRequest($data): self
