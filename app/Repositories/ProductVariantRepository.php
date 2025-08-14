@@ -21,6 +21,27 @@ class ProductVariantRepository
         return $query->get();
     }
 
+    public function getAllBySearch($enterpriseId, $value, $relations = null)
+    {
+        $query = $this->model
+            ->where('product_variants.enterprise_id', $enterpriseId)
+            ->leftJoin('products', 'products.id', '=', 'product_variants.product_id');
+
+        if ($relations) {
+            $query->with($relations);
+        }
+
+        $value = trim($value);
+        $query->where(function ($q) use ($value) {
+            $q->whereRaw('LOWER(product_variants.sku) LIKE ?', ['%'.mb_strtolower($value).'%'])
+                ->orWhereRaw('LOWER(products.name) LIKE ?', ['%'.mb_strtolower($value).'%']);
+        });
+
+        $query->select('product_variants.*');
+
+        return $query->get();
+    }
+
     public function getAllWithFilter(FilterProductDTO $filters)
     {
         $query = $this->model->where('enterprise_id', $filters->enterpriseID)->with([

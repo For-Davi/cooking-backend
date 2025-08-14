@@ -6,6 +6,7 @@ use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\DeleteProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
+use App\Http\Requests\Product\SearchProductRequest;
 use App\Http\Requests\Product\ShowProductRequest;
 use App\Http\Requests\Product\UpdateProductAdvancedRequest;
 use App\Http\Requests\Product\UpdateProductBasicRequest;
@@ -127,6 +128,20 @@ class ProductController
 
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao filtrar produtos:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function search(SearchProductRequest $request)
+    {
+        try {
+            $productsVariants = $this->productVariantRepository->getAllBySearch($request->get('enterprise_id'), $request->value, ['product', 'color']);
+
+            return response()->json(['products' => ProductVariantTableResource::collection($productsVariants)], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao buscar produtos:', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
