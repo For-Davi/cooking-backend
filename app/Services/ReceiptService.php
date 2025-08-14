@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\DTO\Receipt\Type\CreateReceiptDTO;
-use App\DTO\Receipt\Type\UpdateReceiptDTO;
-use App\Repositories\TypeReceiptRepository;
+use App\DTO\Receipt\CreateReceiptDTO;
+use App\DTO\Receipt\UpdateReceiptDTO;
+use App\Repositories\ReceiptRepository;
 
 class ReceiptService
 {
@@ -15,10 +15,11 @@ class ReceiptService
         $receiptDTO = CreateReceiptDTO::fromRequest([
             ...$request->only([
                 'identifier',
-                'types_id',
+                'typesID',
                 'description',
-        ]),
-            'enterpriseID' => $request->get('enterprise_id'),
+            ]),
+            'enterprise_id' => $request->get('enterprise_id'),
+            'type_receipt_id' => $request->get('typesID'),
         ]);
 
         return $this->repository->create($receiptDTO->toArray());
@@ -29,10 +30,11 @@ class ReceiptService
         $receiptDTO = UpdateReceiptDTO::fromRequest([
             ...$request->only([
                 'identifier',
-                'types_id',
+                'typesID',
                 'active',
                 'description',
             ]),
+            'type_receipt_id' => $request->get('typesID'),
         ]);
 
         return $this->repository->update($request->id, $receiptDTO->toArray());

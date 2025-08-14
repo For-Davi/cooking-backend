@@ -1,14 +1,13 @@
 <?php
 
-namespace App\DTO\Receipt\Type;
+namespace App\DTO\Receipt;
 
 class UpdateReceiptDTO
 {
     public function __construct(
         public readonly string $identifier,
-        public readonly ?int $types_id,
+        public readonly ?int $type_receipt_id,
         public readonly int $active,
-        public readonly int $enterprise_id,
         public readonly ?string $description,
     ) {}
 
@@ -16,10 +15,9 @@ class UpdateReceiptDTO
     {
         return new self(
             identifier: $data['identifier'],
-            types_id: $data['typesID'],
-            active:$data['active'],
-            enterprise_id: $data['enterpriseID'],
-            description: $data['description']
+            type_receipt_id: $data['typesID'] ?? null,
+            active: $data['active'],
+            description: $data['description'] ?? null
         );
     }
 
@@ -27,10 +25,9 @@ class UpdateReceiptDTO
     {
         return [
             'identifier' => $this->identifier,
-            'types_id' => $this->types_id,
+            'type_receipt_id' => $this->type_receipt_id,
             'active' => $this->active,
-            'enterprise_id' => $this->enterprise_id,
-            'description' => $this->description
+            'description' => $this->description,
         ];
     }
 }

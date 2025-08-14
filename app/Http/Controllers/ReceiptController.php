@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Receipt\CreateReceiptRequest;
 use App\Http\Requests\Receipt\DeleteReceiptRequest;
+use App\Http\Requests\Receipt\ShowReceiptRequest;
 use App\Http\Requests\Receipt\UpdateReceiptRequest;
 use App\Repositories\ReceiptRepository;
 use App\Services\ReceiptService;
@@ -31,12 +32,25 @@ class ReceiptController
         }
     }
 
+    public function show(ShowReceiptRequest $request)
+    {
+        try {
+            $receipt = $this->repository->findById($request->route('receiptID'));
+
+            return response()->json(['receipt' => $receipt], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao buscar recebimento:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function store(CreateReceiptRequest $request)
     {
         try {
             DB::beginTransaction();
             $receipt = $this->service->create($request);
-
             if ($receipt) {
                 DB::commit();
 
@@ -61,7 +75,6 @@ class ReceiptController
 
             if ($receipt) {
                 DB::commit();
-
                 $receipts = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
                 return response()->json(['receipts' => $receipts, 'message' => 'Recebimento atualizado'], 200);

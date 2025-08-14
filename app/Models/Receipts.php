@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Movement extends Model
+class Receipts extends Model
 {
     use Notifiable;
 
-    protected $table = 'movements';
+    protected $table = 'receipts';
 
     protected $fillable = [
         'identifier',
@@ -24,8 +24,8 @@ class Movement extends Model
         return $this->belongsTo(Enterprise::class);
     }
 
-    public function category()
+    public function type()
     {
-        return $this->belongsTo(TransactionCategory::class, 'transaction_category_id');
+        return $this->belongsTo(TypeReceipt::class, 'type_receipt_id');
     }
 }

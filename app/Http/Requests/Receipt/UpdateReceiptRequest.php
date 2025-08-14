@@ -18,7 +18,7 @@ class UpdateReceiptRequest extends FormRequest
             'identifier' => 'required|string|min:1|max:30',
             'typesID' => 'nullable|exists:types_receipt,id',
             'active' => 'required|in:1,0',
-            'description' => 'nullable|string|max:500'
+            'description' => 'nullable|string|max:500',
         ];
     }
 
@@ -26,14 +26,15 @@ class UpdateReceiptRequest extends FormRequest
     {
         return [
             'id.required' => 'O campo ID do recebimento é obrigatório',
-            'id.exists' => 'O ID do recebimento informado não existe'
+            'id.exists' => 'O ID do recebimento informado não existe',
             'identifier.required' => 'O nome do recebimento é obrigatório.',
             'identifier.string' => 'O nome deve ser uma string.',
             'identifier.min' => 'O nome do recebimento deve ter pelo menos 1 caractere.',
             'identifier.max' => 'O nome do recebimento não pode ter mais de 30 caracteres.',
             'typesID.exists' => 'O tipo de recebimento é inválido.',
+            'active.required' => 'O campo de status é obrigatório',
             'description.string' => 'A descrição deve ser um texto',
-            'description.max' => 'A descrição não pode exceder 500 caracteres.'
+            'description.max' => 'A descrição não pode exceder 500 caracteres.',
         ];
     }
 }

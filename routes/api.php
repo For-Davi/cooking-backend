@@ -9,6 +9,7 @@ use App\Http\Controllers\GridController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingAppearanceController;
 use App\Http\Controllers\SupplierCatalogController;
@@ -17,7 +18,6 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TypeReceiptController;
-use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -172,19 +172,18 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
     });
 
     Route::prefix('receipt')->group(function () {
-            Route::get('/', [ReceiptController::class, 'index']);
-            Route::get('/{typesID}', [ReceiptController::class, 'show']);
-            Route::post('/', [ReceiptController::class, 'store']);
-            Route::put('/', [ReceiptController::class, 'update']);
-            Route::delete('/{typesID}', [ReceiptController::class, 'destroy']);
-
         Route::prefix('type')->group(function () {
             Route::get('/', [TypeReceiptController::class, 'index']);
-            Route::get('/{typeID}', [TypeReceiptController::class, 'show']);
             Route::post('/', [TypeReceiptController::class, 'store']);
             Route::put('/', [TypeReceiptController::class, 'update']);
             Route::delete('/{typeID}', [TypeReceiptController::class, 'destroy']);
         });
+
+        Route::get('/', [ReceiptController::class, 'index']);
+        Route::get('/{receiptID}', [ReceiptController::class, 'show']);
+        Route::post('/', [ReceiptController::class, 'store']);
+        Route::put('/', [ReceiptController::class, 'update']);
+        Route::delete('/{receiptID}', [ReceiptController::class, 'destroy']);
     });
 
     Route::prefix('setting')->group(function () {

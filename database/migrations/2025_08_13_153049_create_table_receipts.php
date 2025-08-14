@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('receipts', function (Blueprint $table) {
             $table->id();
             $table->string('identifier');
-            $table->unsignedBigInteger('type_receipt_id');
+            $table->unsignedBigInteger('type_receipt_id')->nullable();
             $table->foreign('type_receipt_id')->references('id')->on('types_receipt');
             $table->integer('active')->default(1);
             $table->unsignedBigInteger('enterprise_id');

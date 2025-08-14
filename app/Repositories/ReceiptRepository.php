@@ -2,15 +2,18 @@
 
 namespace App\Repositories;
 
-use App\Models\Receipt;
+use App\Models\Receipts;
 
 class ReceiptRepository
 {
-    public function __construct(protected Receipt $model) {}
+    public function __construct(protected Receipts $model) {}
 
     public function getAllByEnterprise($enterpriseId)
     {
-        return $this->model->where('enterprise_id', $enterpriseId)->get();
+        return $this->model
+            ->where('enterprise_id', $enterpriseId)
+            ->with('type')
+            ->get();
     }
 
     public function findById($id)

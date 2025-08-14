@@ -16,7 +16,7 @@ class CreateReceiptRequest extends FormRequest
         return [
             'identifier' => 'required|string|min:1|max:30',
             'typesID' => 'nullable|exists:types_receipt,id',
-            'description' => 'nullable|string|max:500'
+            'description' => 'nullable|string|max:500',
         ];
     }
 
@@ -29,7 +29,7 @@ class CreateReceiptRequest extends FormRequest
             'identifier.max' => 'O nome do recebimento não pode ter mais de 30 caracteres.',
             'typesID.exists' => 'O tipo de recebimento é inválido.',
             'description.string' => 'A descrição deve ser um texto',
-            'description.max' => 'A descrição não pode exceder 500 caracteres.'
+            'description.max' => 'A descrição não pode exceder 500 caracteres.',
         ];
     }
 }

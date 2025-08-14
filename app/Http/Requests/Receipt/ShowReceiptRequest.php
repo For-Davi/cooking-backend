@@ -4,7 +4,7 @@ namespace App\Http\Requests\Receipt;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteReceiptRequest extends FormRequest
+class ShowReceiptRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -28,6 +28,6 @@ class DeleteReceiptRequest extends FormRequest
 
     public function validationData()
     {
-        return $this->route()->parameters();
+        return array_merge($this->all(), $this->route()->parameters());
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DTO\Receipt\Type;
+namespace App\DTO\Receipt;
 
-class CreateTypeReceiptDTO
+class CreateReceiptDTO
 {
     public function __construct(
         public readonly string $identifier,
-        public readonly ?int $types_id,
+        public readonly ?int $type_receipt_id,
         public readonly int $enterprise_id,
         public readonly ?string $description,
     ) {}
@@ -15,8 +15,8 @@ class CreateTypeReceiptDTO
     {
         return new self(
             identifier: $data['identifier'],
-             types_id: $data['typesID'],
-            enterprise_id: $data['enterpriseID'],
+            type_receipt_id: $data['typesID'] ?? null,
+            enterprise_id: $data['enterprise_id'],
             description: $data['description']
         );
     }
@@ -25,9 +25,9 @@ class CreateTypeReceiptDTO
     {
         return [
             'identifier' => $this->identifier,
-            'types_id' => $this->types_id,
+            'type_receipt_id' => $this->type_receipt_id,
             'enterprise_id' => $this->enterprise_id,
-            'description' => $this->description
+            'description' => $this->description,
         ];
     }
 }
