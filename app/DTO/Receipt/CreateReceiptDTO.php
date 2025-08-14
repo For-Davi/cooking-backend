@@ -16,7 +16,7 @@ class CreateReceiptDTO
         return new self(
             identifier: $data['identifier'],
             type_receipt_id: $data['typesID'] ?? null,
-            enterprise_id: $data['enterprise_id'],
+            enterprise_id: $data['enterpriseID'],
             description: $data['description']
         );
     }

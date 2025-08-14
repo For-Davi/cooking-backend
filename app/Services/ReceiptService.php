@@ -18,8 +18,7 @@ class ReceiptService
                 'typesID',
                 'description',
             ]),
-            'enterprise_id' => $request->get('enterprise_id'),
-            'type_receipt_id' => $request->get('typesID'),
+            'enterpriseID' => $request->get('enterprise_id'),
         ]);
 
         return $this->repository->create($receiptDTO->toArray());
@@ -34,7 +33,6 @@ class ReceiptService
                 'active',
                 'description',
             ]),
-            'type_receipt_id' => $request->get('typesID'),
         ]);
 
         return $this->repository->update($request->id, $receiptDTO->toArray());
