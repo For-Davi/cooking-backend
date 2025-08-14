@@ -41,7 +41,7 @@ class MovementRepository
         return $query->find($id);
     }
 
-    public function getAllWithFilter(array $filters)
+    public function getAllWithFilter(array $filters, array $relations = [])
     {
         $query = $this->model->where('enterprise_id', $filters['enterprise_id']);
 
@@ -64,6 +64,10 @@ class MovementRepository
 
         $query->where(DB::raw('SUBSTRING(`date`, 4, 2)'), '=', $month)
             ->where(DB::raw('SUBSTRING(`date`, 7, 4)'), '=', $year);
+        
+        if (! empty($relations)) {
+            $query->with($relations);
+        }
 
         return $query->get();
     }

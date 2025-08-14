@@ -68,7 +68,7 @@ class MovementController
                 ...$request->only(['period', 'category', 'type']),
                 'enterpriseID' => $request->get('enterprise_id'),
             ]);
-            $movements = $this->repository->getAllWithFilter($movementFilterDTO->toArray());
+            $movements = $this->repository->getAllWithFilter($movementFilterDTO->toArray(),['category']);
 
             return response()->json(['movements' => $movements], 200);
 
