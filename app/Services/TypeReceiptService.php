@@ -2,24 +2,24 @@
 
 namespace App\Services;
 
-use App\DTO\Account\Type\CreateTypeAccountDTO;
-use App\DTO\Account\Type\UpdateTypeAccountDTO;
-use App\Helpers\TypeAccountHelper;
-use App\Repositories\TypeAccountRepository;
+use App\DTO\Receipt\Type\CreateTypeReceiptDTO;
+use App\DTO\Receipt\Type\UpdateTypeReceiptDTO;
+use App\Helpers\TypeReceiptHelper;
+use App\Repositories\TypeReceiptRepository;
 
-class TypeAccountService
+class TypeReceiptService
 {
-    public function __construct(protected TypeAccountRepository $repository) {}
+    public function __construct(protected TypeReceiptRepository $repository) {}
 
     public function create($request)
     {
-        TypeAccountHelper::existsType(
+        TypeReceiptHelper::existsType(
             $request->get('enterprise_id'),
             $request->name,
             'create'
         );
 
-        $typesDTO = CreateTypeAccountDTO::fromRequest([
+        $typesDTO = CreateTypeReceiptDTO::fromRequest([
             ...$request->only(['name']),
             'enterpriseID' => $request->get('enterprise_id'),
         ]);
@@ -29,14 +29,14 @@ class TypeAccountService
 
     public function update($request)
     {
-        TypeAccountHelper::existsType(
+        TypeReceiptHelper::existsType(
             $request->get('enterprise_id'),
             $request->name,
             'update',
             $request->id
         );
 
-        $typesDTO = UpdateTypeAccountDTO::fromRequest([
+        $typesDTO = UpdateTypeReceiptDTO::fromRequest([
             ...$request->only(['name']),
         ]);
 

@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Account\Type\CreateTypeAccountRequest;
-use App\Http\Requests\Account\Type\DeleteTypeAccountRequest;
-use App\Http\Requests\Account\Type\UpdateTypeAccountRequest;
-use App\Repositories\TypeAccountRepository;
-use App\Services\TypeAccountService;
+use App\Http\Requests\Receipt\Type\CreateTypeReceiptRequest;
+use App\Http\Requests\Receipt\Type\DeleteTypeReceiptRequest;
+use App\Http\Requests\Receipt\Type\UpdateTypeReceiptRequest;
+use App\Repositories\TypeReceiptRepository;
+use App\Services\TypeReceiptService;
 use App\Utils\ErrorLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class TypeAccountController
+class TypeReceiptController
 {
     public function __construct(
-        private TypeAccountService $service,
-        private TypeAccountRepository $repository
+        private TypeReceiptService $service,
+        private TypeReceiptRepository $repository
     ) {}
 
     public function index(Request $request)
@@ -25,13 +25,13 @@ class TypeAccountController
 
             return response()->json(['types' => $types], 200);
         } catch (\Exception $e) {
-            ErrorLogger::log('Erro ao buscar os tipos de contas', $e, $request);
+            ErrorLogger::log('Erro ao buscar os tipos de recebimentos', $e, $request);
 
-            return response()->json(['message' => 'Erro ao buscar os tipos de contas'], 500);
+            return response()->json(['message' => 'Erro ao buscar os tipos de recebimentos'], 500);
         }
     }
 
-    public function store(CreateTypeAccountRequest $request)
+    public function store(CreateTypeReceiptRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -42,7 +42,7 @@ class TypeAccountController
 
                 $types = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['types' => $types, 'message' => 'Tipo de conta cadastrado'], 201);
+                return response()->json(['types' => $types, 'message' => 'Tipo de recebimento cadastrado'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -53,7 +53,7 @@ class TypeAccountController
         }
     }
 
-    public function update(UpdateTypeAccountRequest $request)
+    public function update(UpdateTypeReceiptRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -64,7 +64,7 @@ class TypeAccountController
 
                 $types = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['types' => $types, 'message' => 'Tipo de conta atualizado'], 200);
+                return response()->json(['types' => $types, 'message' => 'Tipo de recebimento atualizado'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -75,7 +75,7 @@ class TypeAccountController
         }
     }
 
-    public function destroy(DeleteTypeAccountRequest $request)
+    public function destroy(DeleteTypeReceiptRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -86,12 +86,12 @@ class TypeAccountController
                 DB::commit();
                 $types = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
 
-                return response()->json(['types' => $types, 'message' => 'Tipo de conta excluída'], 200);
+                return response()->json(['types' => $types, 'message' => 'Tipo de recebimento excluído'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao excluir tipo de conta:', $e, $request);
+            ErrorLogger::log('Erro ao excluir tipo de recebimento:', $e, $request);
 
             return response()->json(['message' => 'Erro ao excluir o tipo'], 500);
         }
