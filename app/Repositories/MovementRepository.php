@@ -41,40 +41,47 @@ class MovementRepository
         return $query->find($id);
     }
 
-    public function getAllWithFilter($filters)
+    public function getAllWithFilter(array $filters)
     {
-        $query = $this->model->where('enterprise_id', $filters->enterpriseID);
+        $query = $this->model->where('enterprise_id', $filters['enterprise_id']);
 
-        if ($filters->category !== null) {
-            $query->where('transaction_category_id', $filters->category);
+        if (! is_null($filters['category'])) {
+            $query->where('transaction_category_id', $filters['category']);
         }
 
-        if (! empty($filters->startDate)) {
-            $start = '01/'.$filters->startDate;
-            $query->where(
-                DB::raw("STR_TO_DATE(`date`, '%d/%m/%Y')"),
-                '>=',
-                DB::raw("STR_TO_DATE('$start', '%d/%m/%Y')")
-            );
+        if ($filters['type'] !== 'all') {
+            $query->where('type', $filters['type']);
         }
 
-        if (! empty($filters->endDate)) {
-            [$month, $year] = explode('/', $filters->endDate);
-            $lastDay = cal_days_in_month(CAL_GREGORIAN, (int) $month, (int) $year);
-            $end = str_pad($lastDay, 2, '0', STR_PAD_LEFT).'/'.$filters->endDate;
-
-            $query->where(
-                DB::raw("STR_TO_DATE(`date`, '%d/%m/%Y')"),
-                '<=',
-                DB::raw("STR_TO_DATE('$end', '%d/%m/%Y')")
-            );
+        if (empty($filters['period'])) {
+            $now = Carbon::now('America/Sao_Paulo');
+            $month = str_pad($now->month, 2, '0', STR_PAD_LEFT);
+            $year = $now->year;
+        } else {
+            [$month, $year] = explode('/', $filters['period']);
+            $month = str_pad($month, 2, '0', STR_PAD_LEFT);
         }
 
-        if ($filters->type !== 'all') {
-            $query->where('type', $filters->type);
-        }
+        $query->where(DB::raw('SUBSTRING(`date`, 4, 2)'), '=', $month)
+            ->where(DB::raw('SUBSTRING(`date`, 7, 4)'), '=', $year);
 
         return $query->get();
+    }
+
+    public function getPeriods($enterpriseID)
+    {
+        return $this->model
+            ->where('enterprise_id', $enterpriseID)
+            ->selectRaw("
+            DISTINCT 
+            CONCAT(SUBSTRING(`date`, 4, 2), '-', SUBSTRING(`date`, 7, 4)) as period,
+            CAST(SUBSTRING(`date`, 7, 4) AS UNSIGNED) as year_part,
+            CAST(SUBSTRING(`date`, 4, 2) AS UNSIGNED) as month_part
+        ")
+            ->orderBy('year_part', 'ASC')
+            ->orderBy('month_part', 'ASC')
+            ->pluck('period')
+            ->toArray();
     }
 
     public function create(array $data)

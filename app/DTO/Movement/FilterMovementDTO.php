@@ -5,8 +5,8 @@ namespace App\DTO\Movement;
 class FilterMovementDTO
 {
     public function __construct(
-        public readonly ?string $start_date,
-        public readonly ?string $end_date,
+        public readonly ?string $period,
+        public readonly string $type,
         public readonly ?int $category,
         public readonly int $enterprise_id,
     ) {}
@@ -14,8 +14,8 @@ class FilterMovementDTO
     public static function fromRequest(array $data): self
     {
         return new self(
-            start_date: $data['startDate'],
-            end_date: $data['endDate'],
+            period: $data['period'],
+            type: $data['type'],
             category: $data['category'],
             enterprise_id: $data['enterpriseID'],
         );
@@ -24,8 +24,8 @@ class FilterMovementDTO
     public function toArray(): array
     {
         return [
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
+            'period' => $this->period,
+            'type' => $this->type,
             'category' => $this->category,
             'enterprise_id' => $this->enterprise_id,
         ];

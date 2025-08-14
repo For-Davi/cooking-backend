@@ -34,6 +34,19 @@ class MovementController
         }
     }
 
+    public function indexPeriod(Request $request)
+    {
+        try {
+            $periods = $this->repository->getPeriods($request->get('enterprise_id'));
+
+            return response()->json(['periods' => $periods], 200);
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao buscar períodos:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao buscar períodos'], 500);
+        }
+    }
+
     public function show(ShowMovementRequest $request)
     {
         try {
@@ -52,7 +65,7 @@ class MovementController
     {
         try {
             $movementFilterDTO = FilterMovementDTO::fromRequest([
-                ...$request->only(['startDate', 'endDate', 'category']),
+                ...$request->only(['period', 'category', 'type']),
                 'enterpriseID' => $request->get('enterprise_id'),
             ]);
             $movements = $this->repository->getAllWithFilter($movementFilterDTO->toArray());

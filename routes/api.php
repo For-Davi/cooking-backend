@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
 
     Route::prefix('movement')->group(function () {
         Route::get('/', [MovementController::class, 'index']);
+        Route::get('/periods', [MovementController::class, 'indexPeriod']);
         Route::get('/{movementID}', [MovementController::class, 'show']);
         Route::post('/filter', [MovementController::class, 'filter']);
         Route::post('/', [MovementController::class, 'store']);

@@ -14,9 +14,8 @@ class FilterMovementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'startDate' => 'nullable|date_format:m/Y',
-            'endDate' => 'nullable|date_format:m/Y|after_or_equal:startDate',
-            'type' => 'required|in:all,enter,out',
+            'period' => 'nullable|date_format:m/Y',
+            'type' => 'required|in:all,entry,out',
             'category' => 'nullable|exists:transaction_categories,id',
         ];
     }
@@ -24,12 +23,10 @@ class FilterMovementRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'startDate.date_format' => 'A data inicial deve estar no formato mm/yyyy.',
-            'endDate.date_format' => 'A data final deve estar no formato mm/yyyy.',
-            'endDate.after_or_equal' => 'A data final deve ser igual ou posterior à data inicial.',
-            'type.required' => 'O tipo de movimentação é obrigatório.',
-            'type.in' => 'O tipo de movimentação deve ser "all", "enter" ou "out".',
-            'category.exists' => 'A categoria selecionada não existe.',
+            'period.date_format' => 'O período deve estar no formato mm/yyyy',
+            'type.required' => 'O tipo de movimentação é obrigatório',
+            'type.in' => 'O tipo de movimentação deve ser "all", "entry" ou "out"',
+            'category.exists' => 'A categoria selecionada não existe',
         ];
     }
 }
