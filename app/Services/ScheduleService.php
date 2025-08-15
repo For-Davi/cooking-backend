@@ -3,12 +3,14 @@
 namespace App\Services;
 
 use App\DTO\Schedule\CreateOrUpdateScheduleDTO;
+use App\DTO\Movement\CreateOrUpdateMovementDTO;
 use App\Repositories\ScheduleRepository;
+use App\Repositories\MovementRepository;
 use Carbon\Carbon;
 
 class ScheduleService
 {
-    public function __construct(protected ScheduleRepository $repository) {}
+    public function __construct(protected ScheduleRepository $repository, protected MovementRepository $movementrepository) {}
 
     public function create($request)
     {
@@ -73,5 +75,47 @@ class ScheduleService
         ]);
 
         return $this->repository->update($request->id, $scheduleDTO->toArray());
+    }
+
+    public function finishSchedule($request)
+    {
+
+        if($request->close === 'date_schedule') {
+            $requestDate = Carbon::createFromFormat('d/m/Y', $request->date);
+
+            $scheduleDTO = CreateOrUpdateMovementDTO::fromRequest([
+                ...$request->only([
+                    'value',
+                    'transactionCategoryID',
+                    'description',
+                    'type',
+                ]),
+                'enterpriseID' => $request->get('enterprise_id'),
+                'date' => $requestDate->format('d-m-Y'),
+            ]);
+            $this->repository->delete($request->id);
+            return $this->movementrepository->create($scheduleDTO->toArray());
+        }
+        if($request->close === 'date_now') {
+        $requestDate = Carbon::createFromFormat('d/m/Y', $request->date);
+
+         $today = now();
+
+       
+        $newDate = $requestDate->copy()->month($today->month)->year($today->year);
+
+        $scheduleDTO = CreateOrUpdateMovementDTO::fromRequest([
+            ...$request->only([
+                'value',
+                'transactionCategoryID',
+                'description',
+                'type',
+            ]),
+            'enterpriseID' => $request->get('enterprise_id'),
+            'date' => $newDate->format('d-m-Y'),
+        ]);
+          $this->repository->delete($request->id);
+        return $this->movementrepository->create($scheduleDTO->toArray());
+        }
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\Schedule\FilterScheduletDTO;
+use App\DTO\Schedule\FilterScheduleDTO;
 use App\Http\Requests\Schedule\CreateScheduleRequest;
 use App\Http\Requests\Schedule\FilterScheduleRequest;
 use App\Http\Requests\Schedule\ShowScheduleRequest;
 use App\Http\Requests\Schedule\UpdateScheduleRequest;
 use App\Http\Requests\Schedule\DeleteScheduleRequest;
+use App\Http\Requests\Schedule\FinishScheduleRequest;
 use App\Repositories\ScheduleRepository;
 use App\Services\ScheduleService;
 use App\Utils\ErrorLogger;
@@ -64,11 +65,11 @@ class ScheduleController
     public function filter(FilterScheduleRequest $request)
     {
         try {
-            $movementFilterDTO = FilterMovementDTO::fromRequest([
+            $scheduleFilterDTO = FilterScheduleDTO::fromRequest([
                 ...$request->only(['period', 'category', 'type']),
                 'enterpriseID' => $request->get('enterprise_id'),
             ]);
-            $schedules = $this->repository->getAllWithFilter($movementFilterDTO->toArray(),['category']);
+            $schedules = $this->repository->getAllWithFilter($scheduleFilterDTO->toArray(),['category']);
 
             return response()->json(['schedules' => $schedules], 200);
 
@@ -141,6 +142,29 @@ class ScheduleController
             ErrorLogger::log('Erro ao excluir agendamento:', $e, $request);
 
             return response()->json(['message' => 'Erro ao excluir agendamento'], 500);
+        }
+    }
+
+    public function finishSchedule(FinishScheduleRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $schedule = $this->service->finishSchedule($request);
+
+            if($schedule) {
+                DB::commit();
+
+                $schedules = $this->repository->getAllByEnterprise($request->get('enterprise_id'), true, ['category']);
+
+            return response()->json(['schedules' => $schedules, 'message' => 'Finalização concluída'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao finalizar agendamento:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao finalizar agendamento'], 500);
         }
     }
 }
