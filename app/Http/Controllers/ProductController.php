@@ -136,9 +136,9 @@ class ProductController
     public function search(SearchProductRequest $request)
     {
         try {
-            $productsVariants = $this->productVariantRepository->getAllBySearch($request->get('enterprise_id'), $request->value, ['product', 'color']);
+            $productsVariants = $this->productVariantRepository->getAllBySearch($request->get('enterprise_id'), $request->value, ['product', 'color', 'gridItem.gridGroup']);
 
-            return response()->json(['products' => ProductVariantTableResource::collection($productsVariants)], 200);
+            return response()->json(['products' => $productsVariants], 200);
 
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar produtos:', $e, $request);

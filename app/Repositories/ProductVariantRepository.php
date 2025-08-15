@@ -37,8 +37,6 @@ class ProductVariantRepository
                 ->orWhereRaw('LOWER(products.name) LIKE ?', ['%'.mb_strtolower($value).'%']);
         });
 
-        $query->select('product_variants.*');
-
         return $query->get();
     }
 
