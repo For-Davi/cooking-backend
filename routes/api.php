@@ -9,14 +9,16 @@ use App\Http\Controllers\GridController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SettingAppearanceController;
 use App\Http\Controllers\SupplierCatalogController;
 use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TransactionCategoryController;
-use App\Http\Controllers\TypeAccountController;
+use App\Http\Controllers\TypeReceiptController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -172,14 +174,19 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         });
     });
 
-    Route::prefix('account')->group(function () {
+    Route::prefix('receipt')->group(function () {
         Route::prefix('type')->group(function () {
-            Route::get('/', [TypeAccountController::class, 'index']);
-            Route::get('/{typeID}', [TypeAccountController::class, 'show']);
-            Route::post('/', [TypeAccountController::class, 'store']);
-            Route::put('/', [TypeAccountController::class, 'update']);
-            Route::delete('/{typeID}', [TypeAccountController::class, 'destroy']);
+            Route::get('/', [TypeReceiptController::class, 'index']);
+            Route::post('/', [TypeReceiptController::class, 'store']);
+            Route::put('/', [TypeReceiptController::class, 'update']);
+            Route::delete('/{typeID}', [TypeReceiptController::class, 'destroy']);
         });
+
+        Route::get('/', [ReceiptController::class, 'index']);
+        Route::get('/{receiptID}', [ReceiptController::class, 'show']);
+        Route::post('/', [ReceiptController::class, 'store']);
+        Route::put('/', [ReceiptController::class, 'update']);
+        Route::delete('/{receiptID}', [ReceiptController::class, 'destroy']);
     });
 
     Route::prefix('setting')->group(function () {
@@ -191,5 +198,16 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
 
     Route::prefix('feedback')->group(function () {
         Route::post('/', [FeedbackController::class, 'store']);
+    });
+
+    Route::prefix('schedule')->group(function () {
+        Route::get('/', [ScheduleController::class, 'index']);
+        Route::get('/periods', [ScheduleController::class, 'indexPeriod']);
+        Route::get('/{scheduleID}', [ScheduleController::class, 'show']);
+        Route::post('/filter', [ScheduleController::class, 'filter']);
+        Route::post('/', [ScheduleController::class, 'store']);
+        Route::post('/finish', [ScheduleController::class, 'finishSchedule']);
+        Route::put('/', [ScheduleController::class, 'update']);
+        Route::delete('/{scheduleID}', [ScheduleController::class, 'destroy']);
     });
 });

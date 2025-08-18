@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Account\Type;
+namespace App\Http\Requests\Schedule;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteTypeAccountRequest extends FormRequest
+class ShowScheduleRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,15 +14,15 @@ class DeleteTypeAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'typeID' => 'required|exists:types_account,id',
+            'scheduleID' => 'required|exists:schedules,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'typeID.required' => 'O ID do tipo é obrigatório.',
-            'typeID.exists' => 'O ID do tipo informado não existe.',
+            'scheduleID.required' => 'O ID do agendamento é obrigatório',
+            'scheduleID.exists' => 'O ID do agendamento informado não existe',
         ];
     }
 

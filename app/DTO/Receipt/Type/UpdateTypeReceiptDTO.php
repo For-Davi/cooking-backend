@@ -1,19 +1,17 @@
 <?php
 
-namespace App\DTO\Account\Type;
+namespace App\DTO\Receipt\Type;
 
-class CreateTypeAccountDTO
+class UpdateTypeReceiptDTO
 {
     public function __construct(
-        public readonly string $name,
-        public readonly string $enterprise_id,
+        public string $name,
     ) {}
 
     public static function fromRequest($data): self
     {
         return new self(
             name: $data['name'],
-            enterprise_id: $data['enterpriseID']
         );
     }
 
@@ -21,7 +19,6 @@ class CreateTypeAccountDTO
     {
         return [
             'name' => $this->name,
-            'enterprise_id' => $this->enterprise_id,
         ];
     }
 }

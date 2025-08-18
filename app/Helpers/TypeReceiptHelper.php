@@ -5,11 +5,11 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-class TypeAccountHelper
+class TypeReceiptHelper
 {
     public static function existsType($enterpriseId, $name, $mode, $typeID = null)
     {
-        $existingType = DB::table('types_account')
+        $existingType = DB::table('types_receipt')
             ->where('enterprise_id', $enterpriseId)
             ->where('name', $name)
             ->first();
