@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\DTO\Schedule\FilterScheduleDTO;
 use App\Http\Requests\Schedule\CreateScheduleRequest;
+use App\Http\Requests\Schedule\DeleteScheduleRequest;
 use App\Http\Requests\Schedule\FilterScheduleRequest;
+use App\Http\Requests\Schedule\FinishScheduleRequest;
 use App\Http\Requests\Schedule\ShowScheduleRequest;
 use App\Http\Requests\Schedule\UpdateScheduleRequest;
-use App\Http\Requests\Schedule\DeleteScheduleRequest;
-use App\Http\Requests\Schedule\FinishScheduleRequest;
 use App\Repositories\ScheduleRepository;
 use App\Services\ScheduleService;
 use App\Utils\ErrorLogger;
@@ -69,7 +69,7 @@ class ScheduleController
                 ...$request->only(['period', 'category', 'type']),
                 'enterpriseID' => $request->get('enterprise_id'),
             ]);
-            $schedules = $this->repository->getAllWithFilter($scheduleFilterDTO->toArray(),['category']);
+            $schedules = $this->repository->getAllWithFilter($scheduleFilterDTO->toArray(), ['category']);
 
             return response()->json(['schedules' => $schedules], 200);
 
@@ -152,12 +152,12 @@ class ScheduleController
 
             $schedule = $this->service->finishSchedule($request);
 
-            if($schedule) {
+            if ($schedule) {
                 DB::commit();
 
                 $schedules = $this->repository->getAllByEnterprise($request->get('enterprise_id'), true, ['category']);
 
-            return response()->json(['schedules' => $schedules, 'message' => 'Finalização concluída'], 200);
+                return response()->json(['schedules' => $schedules, 'message' => 'Finalização concluída'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();

@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\DTO\Schedule\CreateOrUpdateScheduleDTO;
 use App\DTO\Movement\CreateOrUpdateMovementDTO;
-use App\Repositories\ScheduleRepository;
+use App\DTO\Schedule\CreateOrUpdateScheduleDTO;
 use App\Repositories\MovementRepository;
+use App\Repositories\ScheduleRepository;
 use Carbon\Carbon;
 
 class ScheduleService
@@ -80,46 +80,46 @@ class ScheduleService
     public function finishSchedule($request)
     {
         $schedule = $this->repository->findById($request->scheduleID);
-        
-        if(!$schedule) {
+
+        if (! $schedule) {
             return null;
         }
 
-        if($request->close === 'date_schedule') {
-        $dateFormatted = Carbon::parse($schedule->date)->format('d-m-Y');
+        if ($request->close === 'dateSchedule') {
+            $dateFormatted = Carbon::parse($schedule->date)->format('d-m-Y');
 
-        $movementDTO = CreateOrUpdateMovementDTO::fromRequest([
-        'value' => $schedule->value,
-        'transactionCategoryID' => $schedule->transaction_category_id,
-        'description' => $schedule->description,
-        'type' => $schedule->type,
-        'enterpriseID' => $schedule->enterprise_id,
-        'date' => $dateFormatted,
-    ]);
-         $this->repository->delete($schedule->id);
-         $this->movementrepository->create($movementDTO->toArray());
+            $movementDTO = CreateOrUpdateMovementDTO::fromRequest([
+                'value' => $schedule->value,
+                'transactionCategoryID' => $schedule->transaction_category_id,
+                'description' => $schedule->description,
+                'type' => $schedule->type,
+                'enterpriseID' => $schedule->enterprise_id,
+                'date' => $dateFormatted,
+            ]);
+            $this->repository->delete($schedule->id);
+            $this->movementrepository->create($movementDTO->toArray());
 
-         return $schedule;
+            return $schedule;
         }
 
-         if ($request->close === 'date_now') {
-        $dateFormatted = Carbon::parse($schedule->date);
+        if ($request->close === 'dateNow') {
+            $dateFormatted = Carbon::parse($schedule->date);
 
-        $today = now();
-        $dateFormatted->month($today->month)->year($today->year);
+            $today = now();
+            $dateFormatted->month($today->month)->year($today->year);
 
-        $movementDTO = CreateOrUpdateMovementDTO::fromRequest([
-            'value' => $schedule->value,
-            'transactionCategoryID' => $schedule->transaction_category_id,
-            'description' => $schedule->description,
-            'type' => $schedule->type,
-            'enterpriseID' => $schedule->enterprise_id,
-            'date' => $dateFormatted->format('d-m-Y'),
-        ]);
-        $this->repository->delete($schedule->id);
-        $this->movementrepository->create($movementDTO->toArray());
+            $movementDTO = CreateOrUpdateMovementDTO::fromRequest([
+                'value' => $schedule->value,
+                'transactionCategoryID' => $schedule->transaction_category_id,
+                'description' => $schedule->description,
+                'type' => $schedule->type,
+                'enterpriseID' => $schedule->enterprise_id,
+                'date' => $dateFormatted->format('d-m-Y'),
+            ]);
+            $this->repository->delete($schedule->id);
+            $this->movementrepository->create($movementDTO->toArray());
 
-        return $schedule;
-    }
+            return $schedule;
+        }
     }
 }

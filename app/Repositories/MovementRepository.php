@@ -64,7 +64,7 @@ class MovementRepository
 
         $query->where(DB::raw('SUBSTRING(`date`, 4, 2)'), '=', $month)
             ->where(DB::raw('SUBSTRING(`date`, 7, 4)'), '=', $year);
-        
+
         if (! empty($relations)) {
             $query->with($relations);
         }

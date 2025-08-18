@@ -14,8 +14,8 @@ class FinishScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'close' => 'required|in:date_now,date_schedule',
-            'scheduleID' => 'required|exists:schedules,id'
+            'close' => 'required|in:dateNow,dateSchedule',
+            'scheduleID' => 'required|exists:schedules,id',
         ];
     }
 
@@ -23,9 +23,9 @@ class FinishScheduleRequest extends FormRequest
     {
         return [
             'close.required' => 'Deve ser informado o close',
-            'close.in' => 'O close deve ser "date_now" ou "date_schedule"',
+            'close.in' => 'O close deve ser "dateNow" ou "dateSchedule"',
             'scheduleID.required' => 'O ID do agendamento é requirido',
-            'scheduleID.exists' => 'O ID do agendamentto é inválido'
+            'scheduleID.exists' => 'O ID do agendamentto é inválido',
         ];
     }
 }
