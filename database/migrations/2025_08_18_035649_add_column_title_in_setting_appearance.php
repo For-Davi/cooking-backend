@@ -17,8 +17,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('setting_appearance', function (Blueprint $table) {
-            $table->boolean('title_page_color_default')->default(1);
-            $table->string('title_page_color_code')->nullable();
+            $table->dropColumn(['title_page_color_default', 'title_page_color_code']);
         });
+
     }
 };
