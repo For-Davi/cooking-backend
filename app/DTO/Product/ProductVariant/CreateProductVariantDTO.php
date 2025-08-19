@@ -7,6 +7,7 @@ class CreateProductVariantDTO
     public function __construct(
         public readonly int $active,
         public readonly ?string $sku,
+        public readonly ?string $code,
         public readonly ?string $description,
         public readonly ?string $location,
         public readonly int $enterprise_id,
@@ -25,6 +26,7 @@ class CreateProductVariantDTO
         return new self(
             active: $data['active'],
             sku: $data['sku'],
+            code: $data['code'],
             description: $data['description'],
             location: $data['location'],
             product_id: $data['productID'],
@@ -44,6 +46,7 @@ class CreateProductVariantDTO
         return [
             'active' => $this->active,
             'sku' => $this->sku,
+            'code' => $this->code,
             'description' => $this->description,
             'location' => $this->location,
             'product_id' => $this->product_id,

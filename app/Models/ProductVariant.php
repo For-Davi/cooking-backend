@@ -18,6 +18,7 @@ class ProductVariant extends Model
         'stock_quantity',
         'min_stock_alert',
         'sku',
+        'code',
         'active',
         'grid_item_id',
         'enterprise_id',
@@ -30,6 +31,11 @@ class ProductVariant extends Model
     public function setNameAttribute($value)
     {
         $this->attributes['sku'] = strtoupper($value);
+    }
+
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = strtoupper($value);
     }
 
     public function enterprise()

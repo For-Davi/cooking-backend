@@ -11,6 +11,7 @@ use App\DTO\Product\ProductTag\CreateProductTagDTO;
 use App\DTO\Product\ProductVariant\CreateProductVariantDTO;
 use App\DTO\Product\ProductVariant\UpdateProductVariantDTO;
 use App\DTO\Product\UpdateProductBasicDTO;
+use App\Helpers\CodeHelper;
 use App\Helpers\ProductHelper;
 use App\Helpers\ProductLogHelper;
 use App\Helpers\SkuHelper;
@@ -162,10 +163,19 @@ class ProductService
                 'create',
             );
         }
+        $code = $this->getCode($colorID, $variant['code']);
+        if ($code !== null) {
+            CodeHelper::existsCode(
+                $this->enterpriseID,
+                $this->getCode($colorID, $variant['code']),
+                'create',
+            );
+        }
 
         return CreateProductVariantDTO::fromRequest([
             'active' => $variant['active'],
             'sku' => $sku,
+            'code' => $code,
             'description' => $variant['description'],
             'offer' => $variant['offer'],
             'location' => $variant['location'],
@@ -209,6 +219,24 @@ class ProductService
         return $sku.'-'.strtoupper($productColor->name);
     }
 
+    private function getCode(?string $colorID, ?string $code): ?string
+    {
+        if ($code === null) {
+            return null;
+        }
+
+        if ($colorID === null) {
+            return $code;
+        }
+
+        $productColor = $this->productColorRepository->findById($colorID);
+        if ($productColor === null) {
+            return $code;
+        }
+
+        return $code.'-'.strtoupper($productColor->name);
+    }
+
     public function updateVariant($request)
     {
         $this->enterpriseID = $request->get('enterprise_id');
@@ -222,9 +250,18 @@ class ProductService
                 $request->id
             );
         }
+        $code = $this->getCode($request->colorID, $request->code);
+        if ($code !== null) {
+            CodeHelper::existsCode(
+                $this->enterpriseID,
+                $this->getCode($request->colorID, $request->code),
+                'create',
+                $request->id
+            );
+        }
 
         $productVariantDTO = UpdateProductVariantDTO::fromRequest([
-            ...$request->only(['active', 'sku', 'description', 'location', 'price', 'cost', 'offer', 'stockQuantity', 'minStockAlert']),
+            ...$request->only(['active', 'sku', 'code', 'description', 'location', 'price', 'cost', 'offer', 'stockQuantity', 'minStockAlert']),
         ]);
 
         return $this->productVariantRepository->update($request->id, $productVariantDTO->toArray());
