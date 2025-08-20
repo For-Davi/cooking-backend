@@ -17,13 +17,13 @@ class CodeHelper
         if ($mode === 'create') {
             if ($existingCode) {
                 throw ValidationException::withMessages([
-                    'name' => ['Este Código está sendo utilizado'],
+                    'name' => ['Este código está sendo utilizado'],
                 ]);
             }
         } else {
             if ($existingCode && $existingCode->id !== $variantID) {
                 throw ValidationException::withMessages([
-                    'name' => ['Este Código está sendo utilizado'],
+                    'name' => ['Este código está sendo utilizado'],
                 ]);
             }
         }

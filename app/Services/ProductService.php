@@ -163,11 +163,11 @@ class ProductService
                 'create',
             );
         }
-        $code = $this->getCode($colorID, $variant['code']);
-        if ($code !== null) {
+
+        if ($variant['code']) {
             CodeHelper::existsCode(
                 $this->enterpriseID,
-                $this->getCode($colorID, $variant['code']),
+                $variant['code'],
                 'create',
             );
         }
@@ -175,7 +175,7 @@ class ProductService
         return CreateProductVariantDTO::fromRequest([
             'active' => $variant['active'],
             'sku' => $sku,
-            'code' => $code,
+            'code' => $variant['code'],
             'description' => $variant['description'],
             'offer' => $variant['offer'],
             'location' => $variant['location'],
@@ -219,24 +219,6 @@ class ProductService
         return $sku.'-'.strtoupper($productColor->name);
     }
 
-    private function getCode(?string $colorID, ?string $code): ?string
-    {
-        if ($code === null) {
-            return null;
-        }
-
-        if ($colorID === null) {
-            return $code;
-        }
-
-        $productColor = $this->productColorRepository->findById($colorID);
-        if ($productColor === null) {
-            return $code;
-        }
-
-        return $code.'-'.strtoupper($productColor->name);
-    }
-
     public function updateVariant($request)
     {
         $this->enterpriseID = $request->get('enterprise_id');
@@ -250,12 +232,11 @@ class ProductService
                 $request->id
             );
         }
-        $code = $this->getCode($request->colorID, $request->code);
-        if ($code !== null) {
+        if ($request->code) {
             CodeHelper::existsCode(
                 $this->enterpriseID,
-                $this->getCode($request->colorID, $request->code),
-                'create',
+                $request->code,
+                'update',
                 $request->id
             );
         }

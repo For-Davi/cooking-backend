@@ -101,7 +101,7 @@ class CreateProductRequest extends FormRequest
             'variants.*.minStockAlert.integer' => 'O estoque mínimo deve ser um número inteiro.',
             'variants.*.minStockAlert.min' => 'O estoque mínimo não pode ser negativo.',
             'variants.*.sku.max' => 'O SKU não pode exceder 50 caracteres.',
-            'variants.*.code.max' => 'O Código não pode exceder 50 caracteres.',
+            'variants.*.code.max' => 'O código não pode exceder 50 caracteres.',
             'variants.*.active.required' => 'O status ativo/inativo é obrigatório.',
             'variants.*.active.in' => 'O status ativo deve ser 0 (inativo) ou 1 (ativo) para a variante',
             'variants.*.description.max' => 'A descrição da variante não pode exceder 500 caracteres.',
