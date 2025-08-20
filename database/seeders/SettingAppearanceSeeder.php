@@ -16,6 +16,7 @@ class SettingAppearanceSeeder extends Seeder
             DB::table('setting_appearance')->insert([
                 'enterprise_id' => $enterprise->id,
 
+                'title_page_color_default' => 1,
                 'navbar_color_default' => 1,
                 'navbar_icon_color_default' => 1,
                 'side_menu_color_default' => 1,
@@ -24,6 +25,7 @@ class SettingAppearanceSeeder extends Seeder
                 'side_menu_color_default_not_selected_icon' => 1,
                 'side_menu_color_default_selected_icon' => 1,
 
+                'title_page_color_code' => null,
                 'navbar_color_code' => null,
                 'navbar_icon_color_code' => null,
                 'side_menu_color_code' => null,

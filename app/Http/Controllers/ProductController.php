@@ -99,7 +99,6 @@ class ProductController
         try {
             DB::beginTransaction();
             $product = $this->service->create($request);
-
             if ($product) {
                 DB::commit();
                 $productsVariants = $this->productVariantRepository->getAllByEnterprise($request->get('enterprise_id'), ['product', 'images', 'color']);

@@ -7,6 +7,7 @@ class UpdateProductVariantDTO
     public function __construct(
         public readonly int $active,
         public readonly ?string $sku,
+        public readonly ?string $code,
         public readonly ?string $description,
         public readonly ?string $location,
         public readonly float $price,
@@ -20,6 +21,7 @@ class UpdateProductVariantDTO
     {
         return new self(
             active: $data['active'],
+            code: $data['code'],
             sku: $data['sku'],
             description: $data['description'],
             location: $data['location'],
@@ -36,6 +38,7 @@ class UpdateProductVariantDTO
         return [
             'active' => $this->active,
             'sku' => $this->sku,
+            'code' => $this->code,
             'description' => $this->description,
             'location' => $this->location,
             'price' => $this->price,

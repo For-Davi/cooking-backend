@@ -12,12 +12,14 @@ class SettingAppearance extends Model
     protected $table = 'setting_appearance';
 
     protected $fillable = [
+        'title_page_color_default',
         'navbar_color_default',
         'navbar_icon_color_default',
         'side_menu_color_default_not_selected_item',
         'side_menu_color_default_selected_item',
         'side_menu_color_default_not_selected_icon',
         'side_menu_color_default_selected_icon',
+        'title_page_color_code',
         'navbar_color_code',
         'navbar_icon_color_code',
         'side_menu_color_code_not_selected_item',

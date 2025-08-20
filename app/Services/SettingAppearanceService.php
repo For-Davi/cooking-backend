@@ -15,12 +15,14 @@ class SettingAppearanceService
     {
         $appearanceDTO = UpdateSettingAppearanceDTO::fromRequest([
             ...$request->only([
+                'titlePageColorDefault',
                 'navbarColorDefault',
                 'navbarIconColorDefault',
                 'sideMenuColorDefaultNotSelectedItem',
                 'sideMenuColorDefaultSelectedItem',
                 'sideMenuColorDefaultNotSelectedIcon',
                 'sideMenuColorDefaultSelectedIcon',
+                'titlePageColorCode',
                 'navbarColorCode',
                 'navbarIconColorCode',
                 'sideMenuColorCodeNotSelectedItem',
