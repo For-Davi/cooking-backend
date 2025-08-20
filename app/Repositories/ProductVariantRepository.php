@@ -32,13 +32,17 @@ class ProductVariantRepository
         }
 
         $value = trim($value);
-        $query->where(function ($q) use ($value) {
-            $q->whereRaw('LOWER(product_variants.sku) LIKE ?', ['%'.mb_strtolower($value).'%'])
-                ->orWhereRaw('LOWER(products.name) LIKE ?', ['%'.mb_strtolower($value).'%']);
+        $lowerValue = mb_strtolower($value);
+
+        $query->where(function ($q) use ($lowerValue) {
+            $q->whereRaw('LOWER(product_variants.sku) LIKE ?', ["%{$lowerValue}%"])
+            ->orWhereRaw('LOWER(products.name) LIKE ?', ["%{$lowerValue}%"])
+            ->orWhereRaw('LOWER(product_variants.code) LIKE ?', ["%{$lowerValue}%"]); // filtro por code
         });
 
         return $query->get();
     }
+
 
     public function getAllWithFilter(FilterProductDTO $filters)
     {
