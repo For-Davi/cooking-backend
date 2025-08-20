@@ -85,6 +85,26 @@ class ProductVariantRepository
         return $this->model->create($data);
     }
 
+    public function changeStockQuantity(int $variantID, string $type, float $quantity)
+    {
+        $variant = $this->findById($variantID);
+        if ($variant) {
+            $currentStock = (float) $variant->stock_quantity;
+
+            $newStock = $type === 'in'
+                ? $currentStock + $quantity
+                : $currentStock - $quantity;
+
+            $variant->update([
+                'stock_quantity' => $newStock,
+            ]);
+
+            return $variant;
+        }
+
+        return null;
+    }
+
     public function update($id, array $data)
     {
         $variant = $this->findById($id);

@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('product_movements', function (Blueprint $table) {
             $table->id();
             $table->string('reason'); // compra, venda, devolução, perda, inventário, transferência
-            $table->enum('type', ['in', 'out', 'adjustment']);
+            $table->enum('type', ['in', 'out']);
             $table->string('document_number')->nullable();
             $table->string('lot_number')->nullable();
             $table->decimal('quantity', 15, 3)->default(0);
