@@ -20,6 +20,7 @@ use App\Utils\ErrorLogger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class UserController
 {
@@ -72,6 +73,10 @@ class UserController
                 $user->load('enterprise');
 
                 $token = $this->configureToken($user);
+
+                  Mail::send('emails.welcome', ['user' => $user], function($message) use ($user){
+                    $message->to($user->email)->subject('Boas vindas ao Dalle Manage')->from('dalle@example.com', 'Dalle Manage');
+                });
 
                 return response()->json([
                     'user' => $user,
