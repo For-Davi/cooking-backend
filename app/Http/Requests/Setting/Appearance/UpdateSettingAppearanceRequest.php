@@ -52,9 +52,19 @@ class UpdateSettingAppearanceRequest extends FormRequest
             'sideMenuColorDefaultNotSelectedIcon.required' => 'Deve ser requerido o campo do toggle de ícones não selecionados',
             'sideMenuColorDefaultNotSelectedIcon.in' => 'O valor do toggle de ícones não selecionados deve ser 0 ou 1',
 
-            'sideMenuColorCodeSelectedIcon.required' => 'Deve ser requerido o campo do toggle de ícones selecionados',
-            'sideMenuColorCodeSelectedIcon.in' => 'O valor do toggle de ícones selecionados deve ser 0 ou 1',
+            'sideMenuColorDefaultSelectedIcon.required' => 'Deve ser requerido o campo do toggle de ícones selecionados',
+            'sideMenuColorDefaultSelectedIcon.in' => 'O valor do toggle de ícones selecionados deve ser 0 ou 1',
 
+            // mensagens para required_if
+            'titlePageColorCode.required_if' => 'O código da cor do título é obrigatório quando o toggle de título estiver desativado.',
+            'navbarColorCode.required_if' => 'O código da cor da navbar é obrigatório quando o toggle da navbar estiver desativado.',
+            'navbarIconColorCode.required_if' => 'O código da cor dos ícones da navbar é obrigatório quando o toggle de ícones da navbar estiver desativado.',
+            'sideMenuColorCodeNotSelectedItem.required_if' => 'O código da cor de itens não selecionados é obrigatório quando o toggle de itens não selecionados estiver desativado.',
+            'sideMenuColorCodeSelectedItem.required_if' => 'O código da cor de itens selecionados é obrigatório quando o toggle de itens selecionados estiver desativado.',
+            'sideMenuColorCodeNotSelectedIcon.required_if' => 'O código da cor de ícones não selecionados é obrigatório quando o toggle de ícones não selecionados estiver desativado.',
+            'sideMenuColorCodeSelectedIcon.required_if' => 'O código da cor de ícones selecionados é obrigatório quando o toggle de ícones selecionados estiver desativado.',
+
+            // mensagens de validação de formato/tamanho
             'titlePageColorCode.string' => 'O código da cor de título deve ser uma string',
             'titlePageColorCode.min' => 'O código da cor de título deve conter 7 caracteres',
             'titlePageColorCode.max' => 'O código da cor de título deve conter 7 caracteres',
@@ -82,7 +92,6 @@ class UpdateSettingAppearanceRequest extends FormRequest
             'sideMenuColorCodeSelectedIcon.string' => 'O código da cor de ícones selecionados deve ser uma string',
             'sideMenuColorCodeSelectedIcon.min' => 'O código da cor de ícones selecionados deve conter 7 caracteres',
             'sideMenuColorCodeSelectedIcon.max' => 'O código da cor de ícones selecionados deve conter 7 caracteres',
-
         ];
     }
 }
