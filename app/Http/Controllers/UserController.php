@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 
 class UserController
 {
@@ -74,9 +75,7 @@ class UserController
 
                 $token = $this->configureToken($user);
 
-                  Mail::send('emails.welcome', ['user' => $user], function($message) use ($user){
-                    $message->to($user->email)->subject('Boas vindas ao Dalle Manage')->from('dalle@example.com', 'Dalle Manage');
-                });
+                Mail::to($user->email)->queue(new WelcomeMail($user));
 
                 return response()->json([
                     'user' => $user,
