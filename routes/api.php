@@ -20,6 +20,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TypeReceiptController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
@@ -208,5 +209,9 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::post('/finish', [ScheduleController::class, 'finishSchedule']);
         Route::put('/', [ScheduleController::class, 'update']);
         Route::delete('/{scheduleID}', [ScheduleController::class, 'destroy']);
+    });
+
+    Route::prefix('export')->group(function () {
+    Route::post('/excel/{date}', [ExportController::class, 'exportExcel']);
     });
 });

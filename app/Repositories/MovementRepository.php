@@ -87,7 +87,6 @@ class MovementRepository
             ->pluck('period')
             ->toArray();
     }
-
     public function create(array $data)
     {
         return $this->model->create($data);
