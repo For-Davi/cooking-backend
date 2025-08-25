@@ -10,7 +10,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('supplier_catalog', function (Blueprint $table) {
-            $table->id();
             $table->string('name');
             $table->string('type')->default(SupplierType::PRODUCT->value);
             $table->unsignedBigInteger('supplier_id');

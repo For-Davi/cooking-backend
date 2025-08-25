@@ -35,14 +35,30 @@ class SupplierCatalogRepository
         return null;
     }
 
-    public function delete($id)
-    {
-        $item = $this->findById($id);
+    public function delete($supplierId, $productVariantId)
+{
+    $item = $this->model
+        ->where('supplier_id', $supplierId)
+        ->where('product_variant_id', $productVariantId)
+        ->first(); 
 
-        if ($item) {
-            return $item->delete();
-        }
-
-        return false;
+    if ($item) {
+        return $item->delete();
     }
+
+    return false;
+}
+
+
+public function getBySupplier($supplierId, $enterpriseId = null)
+{
+    $query = $this->model->where('supplier_id', $supplierId);
+
+    if ($enterpriseId) {
+        $query->where('enterprise_id', $enterpriseId);
+    }
+
+    return $query->get();
+}
+
 }

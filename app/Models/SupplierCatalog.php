@@ -7,29 +7,30 @@ use Illuminate\Notifications\Notifiable;
 
 class SupplierCatalog extends Model
 {
-    use Notifiable;
+     use Notifiable;
 
     protected $table = 'supplier_catalog';
 
     protected $fillable = [
-        'name',
-        'type',
+        'product_variant_id',
         'supplier_id',
-        'enterprise_id',
+        'price',
         'description',
+        'enterprise_id',
     ];
-
-    protected $casts = [
-        'type' => SupplierType::class,
-    ];
-
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class);
-    }
 
     public function enterprise()
     {
         return $this->belongsTo(Enterprise::class);
+    }
+
+   public function productVariant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'product_variant_id');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 }

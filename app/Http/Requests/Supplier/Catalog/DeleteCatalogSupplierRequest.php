@@ -14,7 +14,8 @@ class DeleteCatalogSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'catalogID' => 'required|exists:catalog_supplier,id',
+            'catalogID' => 'required|exists:supplier_catalog,supplier_id',
+            'productVariantID' => 'required|exists:supplier_catalog,product_variant_id',
         ];
     }
 
@@ -23,11 +24,13 @@ class DeleteCatalogSupplierRequest extends FormRequest
         return [
             'catalogID.required' => 'O ID do item de catálogo é obrigatório.',
             'catalogID.exists' => 'O item informado não existe.',
+             'productVariantID.required' => 'O ID do produto de catálogo é obrigatório.',
+            'productVariantID.exists' => 'O do produto informado não existe.',
         ];
     }
 
-    public function validationData()
-    {
-        return array_merge($this->all(), $this->route()->parameters());
-    }
+   public function validationData()
+{
+    return $this->route()->parameters(); 
+}
 }

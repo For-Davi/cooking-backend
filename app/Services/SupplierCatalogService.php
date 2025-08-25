@@ -13,7 +13,7 @@ class SupplierCatalogService
     public function create($request)
     {
         $catalogDTO = CreateSupplierCatalogDTO::fromRequest([
-            ...$request->only(['name', 'type', 'supplierID', 'description']),
+            ...$request->only(['productVariantID', 'price', 'supplierID', 'description']),
             'enterpriseID' => $request->get('enterprise_id'),
         ]);
 
@@ -23,7 +23,7 @@ class SupplierCatalogService
     public function update($request)
     {
         $catalogDTO = UpdateSupplierCatalogDTO::fromRequest([
-            ...$request->only(['name', 'type', 'description']),
+            ...$request->only(['productVariantID', 'price', 'supplierID', 'description']),
         ]);
 
         return $this->repository->update($request->id, $catalogDTO->toArray());
