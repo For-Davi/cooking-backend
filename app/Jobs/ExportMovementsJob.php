@@ -2,37 +2,29 @@
 
 namespace App\Jobs;
 
-use App\Services\ExportService;
-use App\Repositories\MovementRepository;
+use App\Exports\Movements\MovementsExport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class ExportMovementsJob implements ShouldQueue
 {
     use Dispatchable, Queueable, SerializesModels;
 
-    protected array $filters;
+    protected Collection $movements;
 
-    public function __construct(array $filters)
+    protected string $filePath;
+
+    public function __construct(Collection $movements, string $filePath)
     {
-        $this->filters = $filters;
+        $this->movements = $movements;
+        $this->filePath = $filePath;
     }
 
-    public function handle(MovementRepository $repository, ExportService $exportService)
+    public function handle(): void
     {
-        $movements = $repository->getAllWithFilter($this->filters);
-
-        if ($movements->isEmpty()) {
-            return;
-        }
-
-        $filename = 'movimentacoes_' . str_replace('/', '-', $this->filters);
-
-            $exportService->exportExcel($movements, $filename);
-        
+        (new MovementsExport($this->movements))->store($this->filePath);
     }
 }
-

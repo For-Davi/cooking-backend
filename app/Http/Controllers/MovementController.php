@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\Movement\FilterMovementDTO;
 use App\Http\Requests\Movement\CreateMovementRequest;
 use App\Http\Requests\Movement\DeleteMovementRequest;
+use App\Http\Requests\Movement\ExportMovementRequest;
 use App\Http\Requests\Movement\FilterMovementRequest;
 use App\Http\Requests\Movement\ShowMovementRequest;
 use App\Http\Requests\Movement\UpdateMovementRequest;
@@ -97,6 +98,18 @@ class MovementController
             ErrorLogger::log('Erro ao inserir movimentação:', $e, $request);
 
             return response()->json(['message' => 'Erro ao inserir movimentação'], 500);
+        }
+    }
+
+    public function export(ExportMovementRequest $request)
+    {
+        try {
+            return $this->service->export($request);
+        } catch (\Exception $e) {
+
+            ErrorLogger::log('Erro ao exportar movimentações:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao exportar movimentações'], 500);
         }
     }
 
