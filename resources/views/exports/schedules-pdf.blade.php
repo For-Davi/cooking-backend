@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Movimentações</title>
+    <title>Agendamentos</title>
     <style>
         body { 
             font-family: sans-serif; 
@@ -52,7 +52,7 @@
     </style>
 </head>
 <body>
-    <h2>Movimentações</h2>
+    <h2>Agendamentos</h2>
     <table>
         <thead>
             <tr>
@@ -64,13 +64,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($movements as $movement)
+            @foreach($schedules as $schedule)
                 <tr>
-                    <td>R$ {{ number_format($movement->value, 2, ',', '.') }}</td>
-                    <td>{{ $movement->type === 'out' ? 'Saída' : 'Entrada' }}</td>
-                    <td>{{ $movement->date ? \Carbon\Carbon::parse($movement->date)->format('d/m/Y') : '' }}</td>
-                    <td>{{ $movement->category?->name ?? 'Sem categoria' }}</td>
-                    <td class="descricao-cell">{{ $movement->description ?? 'Sem descrição' }}</td>
+                    <td>R$ {{ number_format($schedule->value, 2, ',', '.') }}</td>
+                    <td>{{ $schedule->type === 'out' ? 'Saída' : 'Entrada' }}</td>
+                    <td>{{ $schedule->date ? \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') : '' }}</td>
+                    <td>{{ $schedule->category?->name ?? 'Sem categoria' }}</td>
+                    <td class="descricao-cell">{{ $schedule->description ?? 'Sem descrição' }}</td>
                 </tr>
             @endforeach
         </tbody>

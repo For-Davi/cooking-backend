@@ -204,6 +204,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::get('/', [ScheduleController::class, 'index']);
         Route::get('/periods', [ScheduleController::class, 'indexPeriod']);
         Route::get('/{scheduleID}', [ScheduleController::class, 'show']);
+        Route::post('/export', [ScheduleController::class, 'export']);
         Route::post('/filter', [ScheduleController::class, 'filter']);
         Route::post('/', [ScheduleController::class, 'store']);
         Route::post('/finish', [ScheduleController::class, 'finishSchedule']);
