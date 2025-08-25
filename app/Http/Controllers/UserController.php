@@ -13,6 +13,7 @@ use App\Http\Requests\User\UpdateUserDataRequest;
 use App\Http\Requests\User\UpdateUserPasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserListResource;
+use App\Jobs\SendWelcomeMailJob;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
@@ -72,6 +73,8 @@ class UserController
                 $user->load('enterprise');
 
                 $token = $this->configureToken($user);
+
+                dispatch(new SendWelcomeMailJob($user));
 
                 return response()->json([
                     'user' => $user,

@@ -4,8 +4,11 @@ namespace App\Services;
 
 use App\DTO\Movement\CreateOrUpdateMovementDTO;
 use App\DTO\Schedule\CreateOrUpdateScheduleDTO;
+use App\DTO\Schedule\FilterScheduleDTO;
+use App\Exports\Schedule\SchedulesExport;
 use App\Repositories\MovementRepository;
 use App\Repositories\ScheduleRepository;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 class ScheduleService
@@ -120,6 +123,32 @@ class ScheduleService
             $this->movementrepository->create($movementDTO->toArray());
 
             return $schedule;
+        }
+    }
+
+    public function export($request)
+    {
+        $enterpriseID = $request->get('enterprise_id');
+        $dateTime = now()->format('Ymd_His');
+
+        $exportScheduleDTO = FilterScheduleDTO::fromRequest([
+            ...$request->only(['period', 'category', 'type']),
+            'enterpriseID' => $enterpriseID,
+        ]);
+        $schedules = $this->repository->getAllWithFilter($exportScheduleDTO->toArray(), ['category']);
+
+        if ($request->format === 'excel') {
+            $fileName = "schedules_{$dateTime}.xlsx";
+
+            return (new SchedulesExport($schedules))->download($fileName);
+        } else {
+            $fileName = "schedules_{$dateTime}.xlsx";
+
+            $pdf = Pdf::loadView('exports.schedules-pdf', [
+                'schedules' => $schedules,
+            ]);
+
+            return $pdf->download($fileName);
         }
     }
 }
