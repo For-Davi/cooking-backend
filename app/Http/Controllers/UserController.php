@@ -13,6 +13,7 @@ use App\Http\Requests\User\UpdateUserDataRequest;
 use App\Http\Requests\User\UpdateUserPasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserListResource;
+use App\Jobs\SendWelcomeMailJob;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
@@ -20,8 +21,6 @@ use App\Utils\ErrorLogger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\WelcomeMail;
 
 class UserController
 {
@@ -75,7 +74,7 @@ class UserController
 
                 $token = $this->configureToken($user);
 
-                Mail::to($user->email)->queue(new WelcomeMail($user));
+                dispatch(new SendWelcomeMailJob($user));
 
                 return response()->json([
                     'user' => $user,
