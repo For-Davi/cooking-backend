@@ -6,6 +6,7 @@ use App\DTO\Movement\CreateOrUpdateMovementDTO;
 use App\DTO\Movement\FilterMovementDTO;
 use App\Exports\Movement\MovementsExport;
 use App\Repositories\MovementRepository;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 class MovementService
@@ -93,7 +94,13 @@ class MovementService
 
             return (new MovementsExport($movements))->download($fileName);
         } else {
-            return 'se ferrou';
+            $fileName = "movements_{$dateTime}.xlsx";
+
+            $pdf = Pdf::loadView('exports.movements-pdf', [
+                'movements' => $movements,
+            ]);
+
+            return $pdf->download($fileName);
         }
     }
 }

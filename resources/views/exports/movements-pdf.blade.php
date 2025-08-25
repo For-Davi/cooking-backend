@@ -15,7 +15,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>VALOR</th>
                 <th>TIPO</th>
                 <th>DATA</th>
@@ -26,7 +25,6 @@
         <tbody>
             @foreach($movements as $movement)
                 <tr>
-                    <td>{{ $movement->id }}</td>
                     <td>{{ number_format($movement->value, 2, ',', '.') }}</td>
                     <td>{{ $movement->type === 'out' ? 'Saída' : 'Entrada' }}</td>
                     <td>{{ $movement->date ? \Carbon\Carbon::parse($movement->date)->format('d-m-Y') : '' }}</td>
