@@ -7,8 +7,8 @@ use App\Enums\SupplierType;
 class CreateSupplierCatalogDTO
 {
     public function __construct(
-        public int $price,
-        public string $product_variant_id,
+        public float $price,
+        public int $product_variant_id,
         public int $supplier_id,
         public int $enterprise_id,
         public ?string $description,

@@ -34,20 +34,6 @@ class SupplierController
         }
     }
 
-    public function show(ShowSupplierRequest $request)
-    {
-        try {
-            $supplier = $this->repository->findById($request->route('supplierID'));
-
-            return response()->json(['supplier' => $supplier], 200);
-
-        } catch (\Exception $e) {
-            ErrorLogger::log('Erro ao buscar fornecedor:', $e, $request);
-
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
     public function filter(FilterSupplierRequest $request)
     {
         try {

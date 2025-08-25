@@ -33,20 +33,6 @@ class SupplierCatalogController
         }
     }
 
-    public function show(ShowSupplierCatalogRequest $request)
-    {
-        try {
-            $item = $this->repository->findById($request->route('catalogID'));
-
-            return response()->json(['item' => $item], 200);
-
-        } catch (\Exception $e) {
-            ErrorLogger::log('Erro ao buscar item do catálogo:', $e, $request);
-
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
     public function store(CreateCatalogSupplierRequest $request)
     {
         try {
@@ -57,7 +43,7 @@ class SupplierCatalogController
                 DB::commit();
 
                 $catalog = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
-                dd($catalog);
+                // dd($catalog);
                 return response()->json(['catalog' => $catalog, 'message' => 'Item de catálogo cadastrado'], 201);
             }
         } catch (\Exception $e) {
