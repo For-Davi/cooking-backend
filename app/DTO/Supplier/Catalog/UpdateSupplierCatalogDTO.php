@@ -7,16 +7,18 @@ use App\Enums\SupplierType;
 class UpdateSupplierCatalogDTO
 {
     public function __construct(
-        public string $name,
-        public string $type,
+        public float $price,
+        public int $product_variant_id,
+        public int $supplier_id,
         public ?string $description,
     ) {}
 
     public static function fromRequest(array $data): self
     {
         return new self(
-            name: $data['name'],
-            type: $data['type'] ?? SupplierType::PRODUCT->value,
+            price: $data['price'],
+            product_variant_id: $data['productVariantID'],
+            supplier_id: $data['supplierID'],
             description: $data['description'] ?? null,
         );
     }
@@ -24,8 +26,9 @@ class UpdateSupplierCatalogDTO
     public function toArray(): array
     {
         return [
-            'name' => $this->name,
-            'type' => $this->type,
+            'price' => $this->price,
+            'product_variant_id' => $this->product_variant_id,
+            'supplier_id' => $this->supplier_id,
             'description' => $this->description,
         ];
     }

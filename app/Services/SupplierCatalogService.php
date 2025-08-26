@@ -16,7 +16,6 @@ class SupplierCatalogService
             ...$request->only(['productVariantID', 'price', 'supplierID', 'description']),
             'enterpriseID' => $request->get('enterprise_id'),
         ]);
-        // dd($catalogDTO);
 
         return $this->repository->create($catalogDTO->toArray());
     }
@@ -27,6 +26,11 @@ class SupplierCatalogService
             ...$request->only(['productVariantID', 'price', 'supplierID', 'description']),
         ]);
 
-        return $this->repository->update($request->id, $catalogDTO->toArray());
+
+        return $this->repository->update(
+        $catalogDTO->supplier_id,
+        $catalogDTO->product_variant_id,
+        $catalogDTO->toArray()
+    );
     }
 }
