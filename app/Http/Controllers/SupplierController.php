@@ -7,6 +7,7 @@ use App\Http\Requests\Supplier\CreateSupplierRequest;
 use App\Http\Requests\Supplier\DeleteSupplierRequest;
 use App\Http\Requests\Supplier\FilterSupplierRequest;
 use App\Http\Requests\Supplier\UpdateSupplierRequest;
+use App\Http\Requests\Supplier\ShowSupplierRequest;
 use App\Repositories\SupplierRepository;
 use App\Services\SupplierService;
 use App\Utils\ErrorLogger;
@@ -30,6 +31,19 @@ class SupplierController
             ErrorLogger::log('Erro ao buscar fornecedores:', $e, $request);
 
             return response()->json(['message' => 'Erro ao buscar fornecedores'], 500);
+        }
+    }
+    public function show(ShowSupplierRequest $request)
+    {
+        try {
+            $supplier = $this->repository->findById($request->route('supplierID'));
+
+            return response()->json(['supplier' => $supplier], 200);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao buscar fornecedor:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 

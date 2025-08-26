@@ -76,15 +76,16 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::delete('/{categoryID}', [SupplierCategoryController::class, 'destroy']);
         });
 
-        Route::prefix('catalog/')->group(function () {
+        Route::prefix('catalog')->group(function () {
             Route::get('/{supplierID}', [SupplierCatalogController::class, 'index']);
+            Route::get('/variant/{variantID}', [SupplierCatalogController::class, 'getByVariant']);
             Route::post('/', [SupplierCatalogController::class, 'store']);
             Route::put('/', [SupplierCatalogController::class, 'update']);
             Route::delete('/{supplierID}/{productVariantID}', [SupplierCatalogController::class, 'destroy']);
         });
 
         Route::get('/', [SupplierController::class, 'index']);
-        Route::get('/{supplierID}', [SupplierController::class, 'index']);
+        Route::get('/{supplierID}', [SupplierController::class, 'show']);
         Route::post('/', [SupplierController::class, 'store']);
         Route::post('/filter', [SupplierController::class, 'filter']);
         Route::put('/', [SupplierController::class, 'update']);

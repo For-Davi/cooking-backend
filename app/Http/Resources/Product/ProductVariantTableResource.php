@@ -9,7 +9,7 @@ class ProductVariantTableResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
+        return [ 
             'product_variant_id' => $this->id,
             'name' => $this->product?->name,
             'price' => $this->price,
@@ -21,6 +21,12 @@ class ProductVariantTableResource extends JsonResource
                 'name' => $this->color->name,
                 'hex_color_code' => $this->color->hex_color_code,
             ] : null,
-        ];
+            'catalog' => $this->suppliers->first() ? [
+            'supplier_id' => $this->suppliers->first()->pivot->supplier_id, 
+            'supplier_name' => $this->suppliers->first()->name,
+            'price' => $this->suppliers->first()->pivot->price ?? null,
+            'description' => $this->suppliers->first()->pivot->description ?? null,
+            ] : null,
+            ];
     }
 }

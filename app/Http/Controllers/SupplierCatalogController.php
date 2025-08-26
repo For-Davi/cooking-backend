@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Supplier\Catalog\CreateCatalogSupplierRequest;
 use App\Http\Requests\Supplier\Catalog\DeleteCatalogSupplierRequest;
 use App\Http\Requests\Supplier\Catalog\UpdateCatalogSupplierRequest;
+use App\Http\Requests\Supplier\Catalog\GetByVariantCatalogSupplierRequest;
 use App\Http\Resources\Product\ProductsLinkedResource;
 use App\Repositories\SupplierCatalogRepository;
 use App\Services\SupplierCatalogService;
@@ -22,7 +23,7 @@ class SupplierCatalogController
     public function index(Request $request)
     {
         try {
-            $catalog = $this->repository->getBySupplier($request->route('supplierID'), ['variant.product', 'variant.color']);
+            $catalog = $this->repository->getBySupplier($request->route('supplierID'), ['variant.product', 'variant.color', 'supplier']);
 
             return response()->json(['catalog' => ProductsLinkedResource::collection($catalog)], 200);
         } catch (\Exception $e) {
@@ -31,6 +32,22 @@ class SupplierCatalogController
             return response()->json(['message' => 'Erro ao buscar catálogos'], 500);
         }
     }
+    public function getByVariant(GetByVariantCatalogSupplierRequest $request)
+{
+    try {
+        
+        $catalog = $this->repository->getByVariant($request->variantID, ['variant.product', 'variant.color', 'supplier']);
+
+        return response()->json([
+            'catalog' => ProductsLinkedResource::collection($catalog)
+        ], 200);
+    } catch (\Exception $e) {
+        ErrorLogger::log('Erro ao buscar fornecedores por produto:', $e, $request);
+
+        return response()->json(['message' => 'Erro ao buscar fornecedores'], 500);
+    }
+}
+
 
     public function store(CreateCatalogSupplierRequest $request)
     {
@@ -41,7 +58,7 @@ class SupplierCatalogController
             if ($item) {
                 DB::commit();
 
-                $catalog = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $catalog = $this->repository->getBySupplier($request->supplierID, ['variant.product', 'variant.color', 'supplier']);
 
                 return response()->json(['catalog' => ProductsLinkedResource::collection($catalog), 'message' => 'Item de catálogo cadastrado'], 201);
             }
@@ -63,7 +80,7 @@ class SupplierCatalogController
             if ($catalog) {
                 DB::commit();
 
-                $catalog = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                 $catalog = $this->repository->getBySupplier($request->supplierID, ['variant.product', 'variant.color', 'supplier']);
 
                 return response()->json(['catalog' => ProductsLinkedResource::collection($catalog), 'message' => 'Categoria atualizada'], 200);
             }
@@ -85,7 +102,7 @@ class SupplierCatalogController
 
             if ($deleted) {
                 DB::commit();
-                $catalog = $this->repository->getAllByEnterprise($request->get('enterprise_id'));
+                $catalog = $this->repository->getBySupplier($request->supplierID, ['variant.product', 'variant.color', 'supplier']);
 
                 return response()->json([
                     'catalog' => ProductsLinkedResource::collection($catalog),

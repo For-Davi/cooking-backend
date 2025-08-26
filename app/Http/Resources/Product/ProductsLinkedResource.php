@@ -18,6 +18,7 @@ class ProductsLinkedResource extends JsonResource
             'sku' => $this->variant->sku,
             'color_code' => $this->variant?->color?->hex_color_code,
             'color_name' => $this->variant?->color?->name,
+            'supplier_name' => $this->supplier->name
         ];
     }
 }

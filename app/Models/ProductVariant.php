@@ -12,6 +12,7 @@ class ProductVariant extends Model
     protected $table = 'product_variants';
 
     protected $fillable = [
+        'supplier_id',
         'product_id',
         'price',
         'cost',
@@ -62,4 +63,9 @@ class ProductVariant extends Model
     {
         return $this->belongsTo(GridItem::class, 'grid_item_id');
     }
+
+    public function suppliers()
+{
+    return $this->belongsToMany(Supplier::class, 'supplier_catalog', 'product_variant_id', 'supplier_id');
+}
 }

@@ -33,12 +33,12 @@ class ProductController
     public function index(Request $request)
     {
         try {
-            $productsVariants = $this->productVariantRepository->getAllByEnterprise($request->get('enterprise_id'), ['product', 'images', 'color']);
+            $productsVariants = $this->productVariantRepository->getAllByEnterprise($request->get('enterprise_id'), ['product', 'images', 'color', 'suppliers']);
 
             return response()->json(['products' => ProductVariantTableResource::collection($productsVariants)], 200);
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar produtos:', $e, $request);
-
+            dd($e);
             return response()->json(['message' => 'Erro ao buscar produtos'], 500);
         }
     }
