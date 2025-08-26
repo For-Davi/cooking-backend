@@ -2,8 +2,6 @@
 
 namespace App\DTO\Supplier\Catalog;
 
-use App\Enums\SupplierType;
-
 class CreateSupplierCatalogDTO
 {
     public function __construct(

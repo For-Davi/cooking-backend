@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('supplier_catalog', function (Blueprint $table) {
-            
+
             $table->dropColumn(['name', 'type']);
             $table->unsignedBigInteger('product_variant_id');
             $table->foreign('product_variant_id')->references('id')->on('product_variants');

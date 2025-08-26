@@ -14,9 +14,10 @@ class ProductsLinkedResource extends JsonResource
             'supplier_id' => $this->supplier_id,
             'name' => $this->variant->product->name,
             'price' => $this->price,
+            'description' => $this->description,
             'sku' => $this->variant->sku,
             'color_code' => $this->variant?->color?->hex_color_code,
-            'color_name' => $this->variant?->color?->name
+            'color_name' => $this->variant?->color?->name,
         ];
     }
 }

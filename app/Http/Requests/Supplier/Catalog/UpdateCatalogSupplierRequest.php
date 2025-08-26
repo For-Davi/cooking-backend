@@ -25,7 +25,7 @@ class UpdateCatalogSupplierRequest extends FormRequest
     {
         return [
             'supplierID.required' => 'O ID do fornecedor do catálogo é obrigatório',
-             'supplierID.integer' => 'O ID do fornecedor deve ser um número inteiro.',
+            'supplierID.integer' => 'O ID do fornecedor deve ser um número inteiro.',
             'supplierID.exists' => 'O ID do fornecedor informado não existe.',
             'productVariantID.required' => 'O ID do fornecedor catálogo é obrigatório',
             'productVariantID.integer' => 'O ID da variante do produto deve ser um número inteiro.',

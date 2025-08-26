@@ -24,13 +24,13 @@ class DeleteCatalogSupplierRequest extends FormRequest
         return [
             'supplierID.required' => 'O ID do fornecedor é obrigatório.',
             'supplierID.exists' => 'O ID do fornecedor informado não existe.',
-             'productVariantID.required' => 'O ID do produto de catálogo é obrigatório.',
+            'productVariantID.required' => 'O ID do produto de catálogo é obrigatório.',
             'productVariantID.exists' => 'O do produto informado não existe.',
         ];
     }
 
-   public function validationData()
-{
-    return $this->route()->parameters(); 
-}
+    public function validationData()
+    {
+        return $this->route()->parameters();
+    }
 }

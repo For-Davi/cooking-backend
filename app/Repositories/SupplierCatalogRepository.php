@@ -24,45 +24,43 @@ class SupplierCatalogRepository
     }
 
     public function update(int $supplierId, int $productVariantId, array $data)
-{
-    $item = $this->model
-        ->where('supplier_id', $supplierId)
-        ->where('product_variant_id', $productVariantId)
-        ->first(); 
-    
-    if ($item) {
-        $item->update($data);
-        return $item;
+    {
+        $item = $this->model
+            ->where('supplier_id', $supplierId)
+            ->where('product_variant_id', $productVariantId)
+            ->first();
+
+        if ($item) {
+            $item->update($data);
+
+            return $item;
+        }
+
+        return null;
     }
-
-    return null;
-}
-
 
     public function delete($supplierId, $productVariantId)
-{
-    $item = $this->model
-        ->where('supplier_id', $supplierId)
-        ->where('product_variant_id', $productVariantId)
-        ->first(); 
+    {
+        $item = $this->model
+            ->where('supplier_id', $supplierId)
+            ->where('product_variant_id', $productVariantId)
+            ->first();
 
-    if ($item) {
-        return $item->delete();
+        if ($item) {
+            return $item->delete();
+        }
+
+        return false;
     }
 
-    return false;
-}
+    public function getBySupplier($supplierId, ?array $relations = null)
+    {
+        $query = $this->model->where('supplier_id', $supplierId);
 
-
-public function getBySupplier($supplierId, array $relations = null)
-{
-    $query = $this->model->where('supplier_id', $supplierId);
-
-     if (! empty($relations)) {
+        if (! empty($relations)) {
             $query->with($relations);
         }
 
         return $query->get();
-}
-
+    }
 }

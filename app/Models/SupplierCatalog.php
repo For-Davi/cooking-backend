@@ -10,13 +10,11 @@ class SupplierCatalog extends Model
     use Notifiable;
 
     protected $table = 'supplier_catalog';
-    
-    // Indica que não usa auto-increment
+
     public $incrementing = false;
-    
-    // Define a chave primária composta
+
     protected $primaryKey = ['supplier_id', 'product_variant_id'];
-    
+
     protected $fillable = [
         'product_variant_id',
         'supplier_id',
@@ -27,13 +25,10 @@ class SupplierCatalog extends Model
 
     public $timestamps = true;
 
-    /**
-     * Set the keys for a save update query.
-     */
     protected function setKeysForSaveQuery($query)
     {
         $keys = $this->getKeyName();
-        if (!is_array($keys)) {
+        if (! is_array($keys)) {
             return parent::setKeysForSaveQuery($query);
         }
 
@@ -44,13 +39,10 @@ class SupplierCatalog extends Model
         return $query;
     }
 
-    /**
-     * Get the value of the primary key.
-     */
     public function getKey()
     {
         $keys = $this->getKeyName();
-        if (!is_array($keys)) {
+        if (! is_array($keys)) {
             return parent::getKey();
         }
 

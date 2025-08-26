@@ -36,5 +36,4 @@ class CreateCatalogSupplierRequest extends FormRequest
             'description.string' => 'A descrição deve ser um texto.',
         ];
     }
-
 }

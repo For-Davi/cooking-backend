@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\Supplier\Catalog\CreateSupplierCatalogDTO;
 use App\DTO\Supplier\Catalog\UpdateSupplierCatalogDTO;
+use App\Helpers\SupplierCatalogHelper;
 use App\Repositories\SupplierCatalogRepository;
 
 class SupplierCatalogService
@@ -12,6 +13,8 @@ class SupplierCatalogService
 
     public function create($request)
     {
+        SupplierCatalogHelper::existsBond($request->productVariantID, $request->supplierID);
+
         $catalogDTO = CreateSupplierCatalogDTO::fromRequest([
             ...$request->only(['productVariantID', 'price', 'supplierID', 'description']),
             'enterpriseID' => $request->get('enterprise_id'),
@@ -26,11 +29,10 @@ class SupplierCatalogService
             ...$request->only(['productVariantID', 'price', 'supplierID', 'description']),
         ]);
 
-
         return $this->repository->update(
-        $catalogDTO->supplier_id,
-        $catalogDTO->product_variant_id,
-        $catalogDTO->toArray()
-    );
+            $catalogDTO->supplier_id,
+            $catalogDTO->product_variant_id,
+            $catalogDTO->toArray()
+        );
     }
 }
