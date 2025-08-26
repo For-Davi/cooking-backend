@@ -12,6 +12,8 @@ use App\DTO\User\UpdateProfilePasswordDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
+use App\Jobs\SendResetPasswordEmail;
+use App\Models\PasswordResetToken;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\RoleRepository;
@@ -102,6 +104,43 @@ class UserService
         ]);
 
         return $this->createUser($userDTO->toArray());
+    }
+
+    public function reset($request)
+    {
+        $user = $this->repository->findByEmail($request->input('email'));
+
+        if ($user) {
+            $token = app('auth.password.broker')->createToken($user);
+            SendResetPasswordEmail::dispatch($user, $token);
+        }
+
+        return 'Caso o e-mail esteja em nosso cadastro, o mesmo receberá o token.';
+    }
+
+    public function verify($request)
+    {
+        $reset = PasswordResetToken::where('email', $request->input('email'))->first();
+
+        if ($reset && $reset->code === $request->input('code')) {
+            return ['valid' => true, 'message' => 'Código validado'];
+        }
+
+        return ['valid' => false, 'message' => 'Código inválido'];
+    }
+
+    public function resetPassword($request)
+    {
+        $data = ['password' => Hash::make($request->input('password'))];
+
+        $result = $this->repository->resetPassword($request->input('email'), $data);
+
+        $register = PasswordResetToken::where('email', $request->input('email'))->first();
+        if ($register) {
+            $register->delete();
+        }
+
+        return $result;
     }
 
     public function store($request)
