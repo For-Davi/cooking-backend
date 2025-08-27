@@ -8,12 +8,12 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\FilterUserRequest;
+use App\Http\Requests\User\NewPasswordRequest;
 use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\ShowUserRequest;
 use App\Http\Requests\User\UpdateUserDataRequest;
 use App\Http\Requests\User\UpdateUserPasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Requests\User\VerifyCodePasswordRequest;
 use App\Http\Resources\User\UserListResource;
 use App\Jobs\SendWelcomeMailJob;
 use App\Repositories\EnterpriseRepository;
@@ -110,29 +110,16 @@ class UserController
         }
     }
 
-    public function verify(VerifyCodePasswordRequest $request)
-    {
-        try {
-            $result = $this->service->verify($request);
-
-            return response()->json(['valid' => $result['valid'], 'message' => $result['message']], 200);
-        } catch (\Exception $e) {
-            ErrorLogger::log('Erro ao validar código:', $e, $request);
-
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
-    public function resetPassword(Request $request)
+    public function newPassword(NewPasswordRequest $request)
     {
         try {
             DB::beginTransaction();
-            $user = $this->service->resetPassword($request);
+            $user = $this->service->newPassword($request);
 
             if ($user) {
                 DB::commit();
 
-                return response()->json(['user' => $user, 'message' => 'Sua senha foi redefinida'], 200);
+                return response()->json(['message' => 'Sua senha foi redefinida'], 200);
             }
 
             throw new \Exception('Falha ao redefinir senha');

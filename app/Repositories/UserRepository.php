@@ -115,7 +115,7 @@ class UserRepository
         return null;
     }
 
-    public function resetPassword($email, array $data)
+    public function newPassword($email, array $data)
     {
         $user = $this->findByEmail($email);
         if ($user) {

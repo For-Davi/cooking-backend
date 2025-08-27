@@ -27,13 +27,8 @@ class SendResetPasswordEmail implements ShouldQueue
 
     public function handle()
     {
-        $code = random_int(10000000, 99999999);
+        $reset = PasswordResetToken::firstOrNew(['email' => $this->user->email]);
 
-        PasswordResetToken::updateOrCreate(
-            ['email' => $this->user->email],
-            ['code' => $code]
-        );
-
-        Mail::to($this->user->email)->send(new ResetPasswordMail($code, $this->user->name));
+        Mail::to($this->user->email)->send(new ResetPasswordMail($reset->token, $this->user->name, config('app.url')));
     }
 }

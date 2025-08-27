@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Código de redefinição de senha</title>
+    <title>E-mail de redefinição de senha</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,12 +24,6 @@
 
         h1 {
             color: #333333;
-        }
-
-        h2 {
-            color: #007BFF;
-            font-size: 24px;
-            margin: 20px 0;
         }
 
         p {
@@ -58,12 +52,15 @@
     <div class="container">
         <h1>Olá {{ $name }}!</h1>
         <p>Você solicitou a redefinição de sua senha no <strong>Dalle Manage</strong>. Para continuar com o processo de
-            redefinição, por favor, utilize o código abaixo:</p>
-        <h2>{{ $code }}</h2>
+            redefinição, por favor, clique no link abaixo:</p>
+        <p>
+            <a class="button" href="{{ $appUrl }}/reset-password/{{ urlencode($token) }}">Redefinir Senha</a>
+        </p>
+        <p><strong>Este link é válido por apenas 30 minutos.</strong></p>
         <p>Se você não solicitou a redefinição da senha, pode ignorar este email.</p>
         <p>Atenciosamente,<br>A equipe do Dalle Manage.</p>
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Dalle Manage. Todos os direitos reservados.</p>
+            <p>© {{ date('Y') }} Dalle Manage. Todos os direitos reservados.</p>
         </div>
     </div>
 </body>

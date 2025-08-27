@@ -8,26 +8,27 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-// use Illuminate\Mail\Mailables\Address;
-
 class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $code;
+    public $token;
 
     public $name;
 
-    public function __construct($code, $name)
+    public $appUrl;
+
+    public function __construct($token, $name, $appUrl)
     {
-        $this->code = $code;
+        $this->token = $token;
         $this->name = $name;
+        $this->appUrl = $appUrl;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Código de Redefinição de Senha',
+            subject: 'E-mail para redefinição de senha',
         );
     }
 
@@ -36,8 +37,9 @@ class ResetPasswordMail extends Mailable
         return new Content(
             view: 'emails.reset-password',
             with: [
-                'code' => $this->code,
+                'token' => $this->token,
                 'user' => $this->name,
+                'appUrl' => $this->appUrl,
             ],
         );
     }

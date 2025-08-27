@@ -19,6 +19,7 @@ use App\Repositories\EnterpriseRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SettingAppearanceRepository;
 use App\Repositories\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -115,30 +116,28 @@ class UserService
             SendResetPasswordEmail::dispatch($user, $token);
         }
 
-        return 'Caso o e-mail esteja em nosso cadastro, o mesmo receberá o token.';
+        return 'Caso o e-mail esteja em nosso cadastro, você receberá as instruções para redefinição de senha.';
     }
 
-    public function verify($request)
+    public function newPassword($request)
     {
-        $reset = PasswordResetToken::where('email', $request->input('email'))->first();
+        $register = PasswordResetToken::where('token', $request->input('token'))
+            ->first();
 
-        if ($reset && $reset->code === $request->input('code')) {
-            return ['valid' => true, 'message' => 'Código validado'];
+        if (! $register) {
+            return response()->json(['error' => 'Token inválido.'], 400);
         }
 
-        return ['valid' => false, 'message' => 'Código inválido'];
-    }
+        $isExpired = Carbon::parse($register->created_at)->addMinutes(30)->isPast();
 
-    public function resetPassword($request)
-    {
+        if ($isExpired) {
+            return response()->json(['error' => 'Token expirado.'], 400);
+        }
+
         $data = ['password' => Hash::make($request->input('password'))];
+        $result = $this->repository->newPassword($register->email, $data);
 
-        $result = $this->repository->resetPassword($request->input('email'), $data);
-
-        $register = PasswordResetToken::where('email', $request->input('email'))->first();
-        if ($register) {
-            $register->delete();
-        }
+        $register->delete();
 
         return $result;
     }
