@@ -39,6 +39,7 @@ class ProductController
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar produtos:', $e, $request);
             dd($e);
+
             return response()->json(['message' => 'Erro ao buscar produtos'], 500);
         }
     }

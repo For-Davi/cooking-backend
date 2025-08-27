@@ -65,11 +65,10 @@ class SupplierCatalogRepository
     }
 
     public function getByVariant(int $variantID, array $relations = [])
-{
-    return $this->model
-        ->with($relations)
-        ->where('product_variant_id', $variantID)
-        ->get();
-}
-
+    {
+        return $this->model
+            ->with($relations)
+            ->where('product_variant_id', $variantID)
+            ->get();
+    }
 }

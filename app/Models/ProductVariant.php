@@ -12,7 +12,6 @@ class ProductVariant extends Model
     protected $table = 'product_variants';
 
     protected $fillable = [
-        'supplier_id',
         'product_id',
         'price',
         'cost',
@@ -65,7 +64,7 @@ class ProductVariant extends Model
     }
 
     public function suppliers()
-{
-    return $this->belongsToMany(Supplier::class, 'supplier_catalog', 'product_variant_id', 'supplier_id');
-}
+    {
+        return $this->belongsToMany(Supplier::class, 'supplier_catalog', 'product_variant_id', 'supplier_id');
+    }
 }

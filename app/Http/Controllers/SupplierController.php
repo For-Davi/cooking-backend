@@ -6,8 +6,8 @@ use App\DTO\Supplier\FilterSupplierDTO;
 use App\Http\Requests\Supplier\CreateSupplierRequest;
 use App\Http\Requests\Supplier\DeleteSupplierRequest;
 use App\Http\Requests\Supplier\FilterSupplierRequest;
-use App\Http\Requests\Supplier\UpdateSupplierRequest;
 use App\Http\Requests\Supplier\ShowSupplierRequest;
+use App\Http\Requests\Supplier\UpdateSupplierRequest;
 use App\Repositories\SupplierRepository;
 use App\Services\SupplierService;
 use App\Utils\ErrorLogger;
@@ -33,6 +33,7 @@ class SupplierController
             return response()->json(['message' => 'Erro ao buscar fornecedores'], 500);
         }
     }
+
     public function show(ShowSupplierRequest $request)
     {
         try {
