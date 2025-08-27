@@ -8,6 +8,8 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\FilterUserRequest;
+use App\Http\Requests\User\NewPasswordRequest;
+use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\ShowUserRequest;
 use App\Http\Requests\User\UpdateUserDataRequest;
 use App\Http\Requests\User\UpdateUserPasswordRequest;
@@ -89,6 +91,42 @@ class UserController
             DB::rollBack();
 
             ErrorLogger::log('Erro ao registrar com usuário:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function reset(ResetPasswordRequest $request)
+    {
+        try {
+            $result = $this->service->reset($request);
+
+            return response()->json(['message' => $result], 200);
+        } catch (\Exception $e) {
+
+            ErrorLogger::log('Erro ao solicitar redefinição de senha:', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function newPassword(NewPasswordRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $user = $this->service->newPassword($request);
+
+            if ($user) {
+                DB::commit();
+
+                return response()->json(['message' => 'Sua senha foi redefinida'], 200);
+            }
+
+            throw new \Exception('Falha ao redefinir senha');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao redefinir senha', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
