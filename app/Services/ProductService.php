@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\Image\CreateImageDTO;
 use App\DTO\Product\CreateProductDTO;
+use App\DTO\Product\FilterProductDTO;
 use App\DTO\Product\ProductAdvanced\CreateProductAdvancedDTO;
 use App\DTO\Product\ProductAdvanced\UpdateProductAdvancedDTO;
 use App\DTO\Product\ProductImage\CreateProductImageDTO;
@@ -22,6 +23,8 @@ use App\Repositories\ProductImageRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductTagRepository;
 use App\Repositories\ProductVariantRepository;
+use App\Exports\Product\ProductExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -397,5 +400,23 @@ class ProductService
 
             $this->productImageRepository->create($productImageDTO->toArray());
         }
+    }
+
+    public function export($request)
+    {
+        $enterpriseID = $request->get('enterprise_id');
+         $dateTime = now()->format('Ymd_His');
+
+        $exportProductDTO = FilterProductDtO::fromRequest([
+            ...$request->only(['name', 'sku', 'category', 'active', 'stockCritical']),
+            'enterpriseID' => $enterpriseID,
+        ]);
+
+        $products = $this->productVariantRepository->getAllWithFilter($exportProductDTO);
+
+       
+        $fileName = "products_{$dateTime}.xlsx";
+
+        return (new ProductExport($products))->download($fileName);
     }
 }
