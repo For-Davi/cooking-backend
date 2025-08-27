@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\DTO\Movement\CreateOrUpdateMovementDTO;
+use App\DTO\Movement\FilterMovementDTO;
+use App\Exports\Movement\MovementsExport;
 use App\Repositories\MovementRepository;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 class MovementService
@@ -73,5 +76,31 @@ class MovementService
         ]);
 
         return $this->repository->update($request->id, $movementDTO->toArray());
+    }
+
+    public function export($request)
+    {
+        $enterpriseID = $request->get('enterprise_id');
+        $dateTime = now()->format('Ymd_His');
+
+        $exportMovementDTO = FilterMovementDTO::fromRequest([
+            ...$request->only(['period', 'category', 'type']),
+            'enterpriseID' => $enterpriseID,
+        ]);
+        $movements = $this->repository->getAllWithFilter($exportMovementDTO->toArray(), ['category']);
+
+        if ($request->format === 'excel') {
+            $fileName = "movements_{$dateTime}.xlsx";
+
+            return (new MovementsExport($movements))->download($fileName);
+        } else {
+            $fileName = "movements_{$dateTime}.xlsx";
+
+            $pdf = Pdf::loadView('exports.movements-pdf', [
+                'movements' => $movements,
+            ]);
+
+            return $pdf->download($fileName);
+        }
     }
 }

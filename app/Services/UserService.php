@@ -12,11 +12,14 @@ use App\DTO\User\UpdateProfilePasswordDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
+use App\Jobs\SendResetPasswordEmail;
+use App\Models\PasswordResetToken;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SettingAppearanceRepository;
 use App\Repositories\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -102,6 +105,43 @@ class UserService
         ]);
 
         return $this->createUser($userDTO->toArray());
+    }
+
+    public function reset($request)
+    {
+        $user = $this->repository->findByEmail($request->input('email'));
+
+        if ($user) {
+            $token = app('auth.password.broker')->createToken($user);
+            SendResetPasswordEmail::dispatch($user, $token);
+        }
+
+        return 'Caso o e-mail esteja em nosso cadastro, você receberá as instruções para redefinição de senha.';
+    }
+
+    public function newPassword($request)
+    {
+        $register = PasswordResetToken::where('token', $request->input('token'))
+            ->first();
+
+        if (! $register) {
+            return response()->json(['error' => 'Token inválido.'], 400);
+        }
+
+        $isExpired = Carbon::parse($register->created_at)->addMinutes(30)->isPast();
+
+        if ($isExpired) {
+            throw ValidationException::withMessages([
+                'token' => ['Token expirado'],
+            ]);
+        }
+
+        $data = ['password' => Hash::make($request->input('password'))];
+        $result = $this->repository->newPassword($register->email, $data);
+
+        $register->delete();
+
+        return $result;
     }
 
     public function store($request)

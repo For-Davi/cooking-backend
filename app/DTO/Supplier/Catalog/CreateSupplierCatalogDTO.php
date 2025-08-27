@@ -2,13 +2,11 @@
 
 namespace App\DTO\Supplier\Catalog;
 
-use App\Enums\SupplierType;
-
 class CreateSupplierCatalogDTO
 {
     public function __construct(
-        public string $name,
-        public string $type,
+        public float $price,
+        public int $product_variant_id,
         public int $supplier_id,
         public int $enterprise_id,
         public ?string $description,
@@ -17,8 +15,8 @@ class CreateSupplierCatalogDTO
     public static function fromRequest(array $data): self
     {
         return new self(
-            name: $data['name'],
-            type: $data['type'] ?? SupplierType::PRODUCT->value,
+            price: $data['price'],
+            product_variant_id: $data['productVariantID'],
             supplier_id: $data['supplierID'],
             enterprise_id: $data['enterpriseID'],
             description: $data['description'] ?? null,
@@ -28,8 +26,8 @@ class CreateSupplierCatalogDTO
     public function toArray(): array
     {
         return [
-            'name' => $this->name,
-            'type' => $this->type,
+            'price' => $this->price,
+            'product_variant_id' => $this->product_variant_id,
             'supplier_id' => $this->supplier_id,
             'enterprise_id' => $this->enterprise_id,
             'description' => $this->description,

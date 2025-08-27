@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\Schedule\FilterScheduleDTO;
 use App\Http\Requests\Schedule\CreateScheduleRequest;
 use App\Http\Requests\Schedule\DeleteScheduleRequest;
+use App\Http\Requests\Schedule\ExportScheduleRequest;
 use App\Http\Requests\Schedule\FilterScheduleRequest;
 use App\Http\Requests\Schedule\FinishScheduleRequest;
 use App\Http\Requests\Schedule\ShowScheduleRequest;
@@ -98,6 +99,18 @@ class ScheduleController
             ErrorLogger::log('Erro ao inserir agendamento:', $e, $request);
 
             return response()->json(['message' => 'Erro ao inserir agendamento'], 500);
+        }
+    }
+
+    public function export(ExportScheduleRequest $request)
+    {
+        try {
+            return $this->service->export($request);
+        } catch (\Exception $e) {
+
+            ErrorLogger::log('Erro ao exportar agendamentos:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao exportar agendamentos'], 500);
         }
     }
 

@@ -23,9 +23,13 @@ class SupplierCatalogRepository
         return $this->model->create($data);
     }
 
-    public function update($id, array $data)
+    public function update(int $supplierId, int $productVariantId, array $data)
     {
-        $item = $this->findById($id);
+        $item = $this->model
+            ->where('supplier_id', $supplierId)
+            ->where('product_variant_id', $productVariantId)
+            ->first();
+
         if ($item) {
             $item->update($data);
 
@@ -35,14 +39,28 @@ class SupplierCatalogRepository
         return null;
     }
 
-    public function delete($id)
+    public function delete($supplierId, $productVariantId)
     {
-        $item = $this->findById($id);
+        $item = $this->model
+            ->where('supplier_id', $supplierId)
+            ->where('product_variant_id', $productVariantId)
+            ->first();
 
         if ($item) {
             return $item->delete();
         }
 
         return false;
+    }
+
+    public function getBySupplier($supplierId, ?array $relations = null)
+    {
+        $query = $this->model->where('supplier_id', $supplierId);
+
+        if (! empty($relations)) {
+            $query->with($relations);
+        }
+
+        return $query->get();
     }
 }

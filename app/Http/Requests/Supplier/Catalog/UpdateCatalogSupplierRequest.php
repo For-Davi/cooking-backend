@@ -14,20 +14,26 @@ class UpdateCatalogSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:catalog_supplier,id',
-            'name' => 'required|string|min:1|max:100',
+            'supplierID' => 'required|integer|exists:supplier_catalog,supplier_id',
+            'productVariantID' => 'required|integer|exists:supplier_catalog,product_variant_id',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do item do catálogo é obrigatório',
-            'id.exists' => 'O ID do item do catálogo informado não existe.',
-            'name.required' => 'O nome do item do catálogo é obrigatório',
-            'name.string' => 'O nome do item do catálogo deve ser um texto',
-            'name.min' => 'O nome do item do catálogo categoria deve ter pelo menos 1 caractere',
-            'name.max' => 'O nome do item do catálogo categoria não pode exceder 100 caracteres',
+            'supplierID.required' => 'O ID do fornecedor do catálogo é obrigatório',
+            'supplierID.integer' => 'O ID do fornecedor deve ser um número inteiro.',
+            'supplierID.exists' => 'O ID do fornecedor informado não existe.',
+            'productVariantID.required' => 'O ID do fornecedor catálogo é obrigatório',
+            'productVariantID.integer' => 'O ID da variante do produto deve ser um número inteiro.',
+            'productVariantID.exists' => 'O ID do fornecedor informado não existe.',
+            'price.required' => 'O preço do produto é obrigatório.',
+            'price.string' => 'O preço deve ser um número.',
+            'price.min' => 'O preço não deve ser negativo.',
+            'description.string' => 'A descrição deve ser um texto.',
         ];
     }
 }

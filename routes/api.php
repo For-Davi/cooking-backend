@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
+Route::post('/reset', [UserController::class, 'reset']);
+Route::post('/verify', [UserController::class, 'verify']);
+Route::post('/newPassword', [UserController::class, 'newPassword']);
 
 Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group(function () {
 
@@ -45,6 +48,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::get('/', [MovementController::class, 'index']);
         Route::get('/periods', [MovementController::class, 'indexPeriod']);
         Route::get('/{movementID}', [MovementController::class, 'show']);
+        Route::post('/export', [MovementController::class, 'export']);
         Route::post('/filter', [MovementController::class, 'filter']);
         Route::post('/', [MovementController::class, 'store']);
         Route::put('/', [MovementController::class, 'update']);
@@ -75,16 +79,15 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::delete('/{categoryID}', [SupplierCategoryController::class, 'destroy']);
         });
 
-        Route::prefix('catalog')->group(function () {
-            Route::get('/', [SupplierCatalogController::class, 'index']);
-            Route::get('/{catalogID}', [SupplierCatalogController::class, 'show']);
+        Route::prefix('catalog/')->group(function () {
+            Route::get('/{supplierID}', [SupplierCatalogController::class, 'index']);
             Route::post('/', [SupplierCatalogController::class, 'store']);
             Route::put('/', [SupplierCatalogController::class, 'update']);
-            Route::delete('/{catalogID}', [SupplierCatalogController::class, 'destroy']);
+            Route::delete('/{supplierID}/{productVariantID}', [SupplierCatalogController::class, 'destroy']);
         });
 
         Route::get('/', [SupplierController::class, 'index']);
-        Route::get('/{supplierID}', [SupplierController::class, 'show']);
+        Route::get('/{supplierID}', [SupplierController::class, 'index']);
         Route::post('/', [SupplierController::class, 'store']);
         Route::post('/filter', [SupplierController::class, 'filter']);
         Route::put('/', [SupplierController::class, 'update']);
@@ -204,6 +207,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::get('/', [ScheduleController::class, 'index']);
         Route::get('/periods', [ScheduleController::class, 'indexPeriod']);
         Route::get('/{scheduleID}', [ScheduleController::class, 'show']);
+        Route::post('/export', [ScheduleController::class, 'export']);
         Route::post('/filter', [ScheduleController::class, 'filter']);
         Route::post('/', [ScheduleController::class, 'store']);
         Route::post('/finish', [ScheduleController::class, 'finishSchedule']);
