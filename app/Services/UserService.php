@@ -131,7 +131,9 @@ class UserService
         $isExpired = Carbon::parse($register->created_at)->addMinutes(30)->isPast();
 
         if ($isExpired) {
-            return response()->json(['error' => 'Token expirado.'], 400);
+            throw ValidationException::withMessages([
+                'token' => ['Token expirado'],
+            ]);
         }
 
         $data = ['password' => Hash::make($request->input('password'))];
