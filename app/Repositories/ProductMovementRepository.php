@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\Product;
+use App\Models\ProductMovement;
 
 class ProductMovementRepository
 {
-    public function __construct(protected Product $model) {}
+    public function __construct(protected ProductMovement $model) {}
 
     public function getAllByEnterprise($enterpriseId, $relations = null)
     {

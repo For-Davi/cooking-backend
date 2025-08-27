@@ -22,11 +22,9 @@ class ProductMovementService
                 'documentNumber',
                 'lotNumber',
                 'quantity',
-                'previousStock',
-                'newstock',
                 'unitCost',
                 'totalCost',
-                'productVariantID',
+                'variantID',
                 'supplierID',
                 'description',
             ]),
@@ -37,7 +35,7 @@ class ProductMovementService
         $this->repository->create($movementDTO->toArray());
 
         $this->productVariantRepository->changeStockQuantity(
-            $request->productVariantID,
+            $request->variantID,
             $request->type,
             $request->quantity,
         );

@@ -101,11 +101,7 @@ class ProductVariantRepository
             $variant->update([
                 'stock_quantity' => $newStock,
             ]);
-
-            return $variant;
         }
-
-        return null;
     }
 
     public function update($id, array $data)

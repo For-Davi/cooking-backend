@@ -9,6 +9,7 @@ use App\Http\Controllers\GridController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductMovementController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
@@ -106,6 +107,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::prefix('variant')->group(function () {
             Route::get('/{variantID}', [ProductController::class, 'showVariant']);
             Route::post('/search', [ProductController::class, 'search']);
+            Route::post('/movement', [ProductMovementController::class, 'store']);
             Route::put('/', [ProductController::class, 'updateVariant']);
             Route::delete('/{variantID}', [ProductController::class, 'destroyVariant']);
         });

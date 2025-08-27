@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('total_cost', 10, 2)->nullable();
             $table->unsignedBigInteger('product_variant_id');
             $table->foreign('product_variant_id')->references('id')->on('product_variants');
-            $table->unsignedBigInteger('supplier_id');
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');

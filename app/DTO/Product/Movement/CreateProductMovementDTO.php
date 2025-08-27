@@ -2,6 +2,8 @@
 
 namespace App\DTO\Product\Movement;
 
+use Illuminate\Support\Facades\DB;
+
 class CreateProductMovementDTO
 {
     public function __construct(
@@ -15,7 +17,7 @@ class CreateProductMovementDTO
         public readonly float $unit_cost,
         public readonly float $total_cost,
         public readonly int $product_variant_id,
-        public readonly int $supplier_id,
+        public readonly ?int $supplier_id,
         public readonly int $created_by,
         public readonly int $enterprise_id,
         public readonly ?string $description,
@@ -23,21 +25,31 @@ class CreateProductMovementDTO
 
     public static function fromRequest($data): self
     {
+
+        $variant = DB::table('product_variants')->where('id', $data['variantID'])->first();
+
+        $previousStock = (float) $variant->stock_quantity;
+        $quantity = (float) $data['quantity'];
+
+        $newStock = $data['type'] === 'in'
+            ? $previousStock + $quantity
+            : $previousStock - $quantity;
+
         return new self(
-            description: $data['description'],
             reason: $data['reason'],
             type: $data['type'],
             document_number: $data['documentNumber'],
             lot_number: $data['lotNumber'],
-            quantity: $data['quantity'],
-            previous_stock: $data['previousStock'],
-            new_stock: $data['newStock'],
-            unit_cost: $data['unitCost'],
-            total_cost: $data['totalCost'],
-            product_variant_id: $data['productVariantID'],
+            quantity: $quantity,
+            previous_stock: $previousStock,
+            new_stock: $newStock,
+            unit_cost: (float) ($data['unitCost'] ?? 0),
+            total_cost: (float) ($data['totalCost'] ?? 0),
+            product_variant_id: $data['variantID'],
             supplier_id: $data['supplierID'],
             created_by: $data['createdBY'],
             enterprise_id: $data['enterpriseID'],
+            description: $data['description'],
         );
     }
 

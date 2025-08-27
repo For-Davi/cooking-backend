@@ -28,7 +28,7 @@ class ProductMovementController
                     default => 'Movimentação realizada'
                 };
 
-                return response()->json(['message' => $message], 201);
+                return response()->json(['message' => $message], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();

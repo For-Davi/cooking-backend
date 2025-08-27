@@ -14,16 +14,14 @@ class CreateProductMovementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reason' => 'required|string|in:buy,sell,return,loss,inventory,transfer,adjustment',
-            'type' => 'required|in:in,out,adjustment',
+            'reason' => 'required|string|in:buy,return,loss,transfer_in,transfer_out,adjustment_in,adjustment_out,production,internal_use',
+            'type' => 'required|in:in,out',
             'documentNumber' => 'nullable|string|max:255',
             'lotNumber' => 'nullable|string|max:255',
-            'quantity' => 'required|numeric|min:0',
-            'previousStock' => 'required|numeric|min:0',
-            'newStock' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:0.01',
             'unitCost' => 'nullable|numeric|min:0',
             'totalCost' => 'nullable|numeric|min:0',
-            'productVariantID' => 'required|exists:product_variants,id',
+            'variantID' => 'required|exists:product_variants,id',
             'supplierID' => 'nullable|exists:suppliers,id',
             'description' => 'nullable|string',
         ];
@@ -36,7 +34,7 @@ class CreateProductMovementRequest extends FormRequest
             'reason.in' => 'O motivo informado não é válido.',
 
             'type.required' => 'O tipo do movimento é obrigatório.',
-            'type.in' => 'O tipo deve ser entrada (in), saída (out) ou ajuste (adjustment).',
+            'type.in' => 'O tipo deve ser entrada (in) ou saída (out).',
 
             'documentNumber.string' => 'O número do documento deve ser um texto válido.',
             'documentNumber.max' => 'O número do documento não pode ultrapassar 255 caracteres.',
@@ -46,15 +44,7 @@ class CreateProductMovementRequest extends FormRequest
 
             'quantity.required' => 'A quantidade é obrigatória.',
             'quantity.numeric' => 'A quantidade deve ser numérica.',
-            'quantity.min' => 'A quantidade não pode ser negativa.',
-
-            'previousStock.required' => 'O estoque anterior é obrigatório.',
-            'previousStock.numeric' => 'O estoque anterior deve ser numérico.',
-            'previousStock.min' => 'O estoque anterior não pode ser negativo.',
-
-            'newStock.required' => 'O novo estoque é obrigatório.',
-            'newStock.numeric' => 'O novo estoque deve ser numérico.',
-            'newStock.min' => 'O novo estoque não pode ser negativo.',
+            'quantity.min' => 'A quantidade deve ser maior que zero.',
 
             'unitCost.numeric' => 'O custo unitário deve ser numérico.',
             'unitCost.min' => 'O custo unitário não pode ser negativo.',
@@ -62,8 +52,8 @@ class CreateProductMovementRequest extends FormRequest
             'totalCost.numeric' => 'O custo total deve ser numérico.',
             'totalCost.min' => 'O custo total não pode ser negativo.',
 
-            'productVariantID.required' => 'O produto é obrigatório.',
-            'productVariantID.exists' => 'O produto informado não existe.',
+            'variantID.required' => 'O produto é obrigatório.',
+            'variantID.exists' => 'O produto informado não existe.',
 
             'supplierID.exists' => 'O fornecedor informado não existe.',
 
