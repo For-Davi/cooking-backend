@@ -21,6 +21,28 @@ class ProductVariantRepository
         return $query->get();
     }
 
+    public function getAllBySearch($enterpriseId, $value, $relations = null)
+    {
+        $query = $this->model
+            ->where('product_variants.enterprise_id', $enterpriseId)
+            ->leftJoin('products', 'products.id', '=', 'product_variants.product_id');
+
+        if ($relations) {
+            $query->with($relations);
+        }
+
+        $value = trim($value);
+        $lowerValue = mb_strtolower($value);
+
+        $query->where(function ($q) use ($lowerValue) {
+            $q->whereRaw('LOWER(product_variants.sku) LIKE ?', ["%{$lowerValue}%"])
+                ->orWhereRaw('LOWER(products.name) LIKE ?', ["%{$lowerValue}%"])
+                ->orWhereRaw('LOWER(product_variants.code) LIKE ?', ["%{$lowerValue}%"]);
+        });
+
+        return $query->get();
+    }
+
     public function getAllWithFilter(FilterProductDTO $filters)
     {
         $query = $this->model->where('enterprise_id', $filters->enterpriseID)->with([
@@ -64,6 +86,22 @@ class ProductVariantRepository
     public function create(array $data)
     {
         return $this->model->create($data);
+    }
+
+    public function changeStockQuantity(int $variantID, string $type, float $quantity)
+    {
+        $variant = $this->findById($variantID);
+        if ($variant) {
+            $currentStock = (float) $variant->stock_quantity;
+
+            $newStock = $type === 'in'
+                ? $currentStock + $quantity
+                : $currentStock - $quantity;
+
+            $variant->update([
+                'stock_quantity' => $newStock,
+            ]);
+        }
     }
 
     public function update($id, array $data)
