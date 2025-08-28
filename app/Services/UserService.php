@@ -76,16 +76,16 @@ class UserService
     {
         $settingAppearanceDTO = CreateSettingAppearanceDTO::fromRequest(['enterpriseID' => $enterpriseID]);
 
-
         $this->settingAppearanceRepository->create($settingAppearanceDTO->toArray());
     }
-      private function createSettingSystem($enterpriseID)
+
+    private function createSettingSystem($enterpriseID)
     {
         $settingSystemDTO = CreateSettingSystemDTO::fromRequest(['enterpriseID' => $enterpriseID]);
 
-        
         $this->settingSystemRepository->create($settingSystemDTO->toArray());
     }
+
     private function createEmployee($employeeDTO)
     {
         return $this->employeeRepository->create($employeeDTO);

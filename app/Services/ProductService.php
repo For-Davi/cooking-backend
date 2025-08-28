@@ -12,6 +12,7 @@ use App\DTO\Product\ProductTag\CreateProductTagDTO;
 use App\DTO\Product\ProductVariant\CreateProductVariantDTO;
 use App\DTO\Product\ProductVariant\UpdateProductVariantDTO;
 use App\DTO\Product\UpdateProductBasicDTO;
+use App\Exports\Product\ProductExport;
 use App\Helpers\CodeHelper;
 use App\Helpers\ProductHelper;
 use App\Helpers\ProductLogHelper;
@@ -23,7 +24,6 @@ use App\Repositories\ProductImageRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductTagRepository;
 use App\Repositories\ProductVariantRepository;
-use App\Exports\Product\ProductExport;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -404,7 +404,7 @@ class ProductService
     public function export($request)
     {
         $enterpriseID = $request->get('enterprise_id');
-         $dateTime = now()->format('Ymd_His');
+        $dateTime = now()->format('Ymd_His');
 
         $exportProductDTO = FilterProductDtO::fromRequest([
             ...$request->only(['name', 'sku', 'category', 'active', 'stockCritical']),
@@ -413,7 +413,6 @@ class ProductService
 
         $products = $this->productVariantRepository->getAllWithFilter($exportProductDTO);
 
-       
         $fileName = "products_{$dateTime}.xlsx";
 
         return (new ProductExport($products))->download($fileName);

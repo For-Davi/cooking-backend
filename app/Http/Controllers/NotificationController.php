@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Notification\UpdateReadNotificationRequest;
 use App\Repositories\NotificationRepository;
-use App\Services\MovementService;
 use App\Utils\ErrorLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 class NotificationController
 {
     public function __construct(
-        private MovementService $service,
         private NotificationRepository $repository
     ) {}
 
@@ -27,47 +26,45 @@ class NotificationController
             return response()->json(['message' => 'Erro ao buscar notificações'], 500);
         }
     }
-    // public function update(UpdateMovementRequest $request)
-    // {
-    //     try {
-    //         DB::beginTransaction();
-    //         $movement = $this->service->update($request);
 
-    //         if ($movement) {
-    //             DB::commit();
+    public function updateRead(UpdateReadNotificationRequest $request)
+    {
+        try {
+            DB::beginTransaction();
 
-    //             $movements = $this->repository->getAllByEnterprise($request->get('enterprise_id'), true, ['category']);
+            $notification = $this->repository->markAsRead($request->user()->id, $request->notificationID);
 
-    //             return response()->json(['movements' => $movements, 'message' => 'Movimentação atualizada'], 200);
-    //         }
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
+            DB::commit();
 
-    //         ErrorLogger::log('Erro ao atualizar movimentação:', $e, $request);
+            return response()->json(['notification' => $notification], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    //         return response()->json(['message' => 'Erro ao atualizar movimentação'], 500);
-    //     }
-    // }
+            ErrorLogger::log('Erro ao atualizar notificação:', $e, $request);
 
-    // public function destroy(DeleteMovementRequest $request)
-    // {
-    //     try {
-    //         DB::beginTransaction();
+            return response()->json(['message' => 'Erro ao atualizar notificação'], 500);
+        }
+    }
 
-    //         $movement = $this->repository->delete($request->route('movementID'));
+    public function destroy(UpdateReadNotificationRequest $request)
+    {
+        try {
+            DB::beginTransaction();
 
-    //         if ($movement) {
-    //             DB::commit();
-    //             $movements = $this->repository->getAllByEnterprise($request->get('enterprise_id'), true, ['category']);
+            $notification = $this->repository->delete($request->user()->id, $request->notificationID);
 
-    //             return response()->json(['movements' => $movements, 'message' => 'Movimentação excluída'], 200);
-    //         }
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
+            if ($notification) {
+                DB::commit();
+                $notifications = $this->repository->getAllByUserId($request->user()->id);
 
-    //         ErrorLogger::log('Erro ao excluir movimentação:', $e, $request);
+                return response()->json(['notifications' => $notifications, 'message' => 'Notificação excluída'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    //         return response()->json(['message' => 'Erro ao excluir movimentação'], 500);
-    //     }
-    // }
+            ErrorLogger::log('Erro ao excluir notificação:', $e, $request);
+
+            return response()->json(['message' => 'Erro ao excluir notificação'], 500);
+        }
+    }
 }

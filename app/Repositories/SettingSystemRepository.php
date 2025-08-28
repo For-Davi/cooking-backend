@@ -8,7 +8,7 @@ class SettingSystemRepository
 {
     public function __construct(protected SettingSystem $model) {}
 
-       public function create($data)
+    public function create($data)
     {
         return $this->model->create($data);
     }

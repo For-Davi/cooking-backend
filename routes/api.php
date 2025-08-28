@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GridController;
 use App\Http\Controllers\MovementController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductMovementController;
@@ -21,7 +22,6 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TypeReceiptController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -204,7 +204,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
             Route::get('/', [SettingAppearanceController::class, 'show']);
         });
 
-         Route::prefix('system')->group(function () {
+        Route::prefix('system')->group(function () {
             Route::put('/', [SettingSystemController::class, 'update']);
             Route::get('/', [SettingSystemController::class, 'show']);
         });
@@ -228,5 +228,7 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
 
     Route::prefix('notification')->group(function () {
         Route::get('/', [NotificationController::class, 'index']);
+        Route::put('/{notificationID}', [NotificationController::class, 'updateRead']);
+        Route::delete('/delete/{notificationID}', [NotificationController::class, 'destroy']);
     });
 });
