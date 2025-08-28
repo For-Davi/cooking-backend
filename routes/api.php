@@ -13,6 +13,7 @@ use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SettingAppearanceController;
+use App\Http\Controllers\SettingSystemController;
 use App\Http\Controllers\SupplierCatalogController;
 use App\Http\Controllers\SupplierCategoryController;
 use App\Http\Controllers\SupplierController;
@@ -196,6 +197,11 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::prefix('appearance')->group(function () {
             Route::put('/', [SettingAppearanceController::class, 'update']);
             Route::get('/', [SettingAppearanceController::class, 'show']);
+        });
+
+         Route::prefix('system')->group(function () {
+            Route::put('/', [SettingSystemController::class, 'update']);
+            Route::get('/', [SettingSystemController::class, 'show']);
         });
     });
 

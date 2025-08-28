@@ -6,6 +6,7 @@ use App\DTO\Employee\StartEmployeeDTO;
 use App\DTO\Enterprise\EnterpriseStartDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
+use App\DTO\Setting\System\CreateSettingSystemDTO;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateProfileDataDTO;
 use App\DTO\User\UpdateProfilePasswordDTO;
@@ -18,6 +19,7 @@ use App\Repositories\EmployeeRepository;
 use App\Repositories\EnterpriseRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SettingAppearanceRepository;
+use App\Repositories\SettingSystemRepository;
 use App\Repositories\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -30,7 +32,8 @@ class UserService
         protected EnterpriseRepository $enterpriseRepository,
         protected RoleRepository $roleRepository,
         protected EmployeeRepository $employeeRepository,
-        protected SettingAppearanceRepository $settingAppearanceRepository
+        protected SettingAppearanceRepository $settingAppearanceRepository,
+        protected SettingSystemRepository $settingSystemRepository
     ) {}
 
     public function login($request)
@@ -73,9 +76,16 @@ class UserService
     {
         $settingAppearanceDTO = CreateSettingAppearanceDTO::fromRequest(['enterpriseID' => $enterpriseID]);
 
+
         $this->settingAppearanceRepository->create($settingAppearanceDTO->toArray());
     }
+      private function createSettingSystem($enterpriseID)
+    {
+        $settingSystemDTO = CreateSettingSystemDTO::fromRequest(['enterpriseID' => $enterpriseID]);
 
+        
+        $this->settingSystemRepository->create($settingSystemDTO->toArray());
+    }
     private function createEmployee($employeeDTO)
     {
         return $this->employeeRepository->create($employeeDTO);
@@ -94,6 +104,7 @@ class UserService
         $enterprise = $this->createEnterprise($enterpriseDTO->toArray());
 
         $this->createSettingAppearance($enterprise->id);
+        $this->createSettingSystem($enterprise->id);
 
         $roleDTO = RoleStartDTO::fromRequest(['enterprise_id' => $enterprise->id]);
         $role = $this->startRole($roleDTO->toArray());
