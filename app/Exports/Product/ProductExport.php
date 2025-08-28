@@ -2,7 +2,6 @@
 
 namespace App\Exports\Product;
 
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -56,7 +55,7 @@ class ProductExport
                     ? $products->product?->category->name
                     : (is_string($products->product?->category) ? $products->product?->category : ''),
                 'ESTOQUE' => $products->stock_quantity,
-                'ALERTA MÍNIMO' => $products->min_stock_alert,    
+                'ALERTA MÍNIMO' => $products->min_stock_alert,
                 'COR' => $products->color?->name,
                 'GRADE GRUPO' => $products->gridItem?->gridGroup?->name ?? '',
                 'GRADE ITEM' => $products->gridItem?->size ?? '',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\Product\FilterProductDTO;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\DeleteProductRequest;
+use App\Http\Requests\Product\ExportProductRequest;
 use App\Http\Requests\Product\FilterProductRequest;
 use App\Http\Requests\Product\SearchProductRequest;
 use App\Http\Requests\Product\ShowProductRequest;
@@ -12,7 +13,6 @@ use App\Http\Requests\Product\UpdateProductAdvancedRequest;
 use App\Http\Requests\Product\UpdateProductBasicRequest;
 use App\Http\Requests\Product\UpdateProductMediaRequest;
 use App\Http\Requests\Product\UpdateProductTagRequest;
-use App\Http\Requests\Product\ExportProductRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
 use App\Http\Requests\Product\Variant\UpdateProductVariantRequest;
@@ -115,7 +115,6 @@ class ProductController
         }
     }
 
-    
     public function export(ExportProductRequest $request)
     {
         try {
@@ -123,6 +122,7 @@ class ProductController
         } catch (\Exception $e) {
 
             ErrorLogger::log('Erro ao exportar produtos:', $e, $request);
+
             return response()->json(['message' => 'Erro ao exportar produtos'], 500);
         }
     }
