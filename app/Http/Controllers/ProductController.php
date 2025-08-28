@@ -262,7 +262,7 @@ class ProductController
             DB::rollBack();
 
             ErrorLogger::log('Erro ao atualizar prodputo:', $e, $request);
-
+            dd($e);
             return response()->json(['message' => 'Erro ao atualizar produto'], 500);
         }
     }

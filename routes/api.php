@@ -21,6 +21,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TypeReceiptController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -222,5 +223,9 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
         Route::post('/finish', [ScheduleController::class, 'finishSchedule']);
         Route::put('/', [ScheduleController::class, 'update']);
         Route::delete('/{scheduleID}', [ScheduleController::class, 'destroy']);
+    });
+
+    Route::prefix('notification')->group(function () {
+        Route::get('/', [NotificationController::class, 'index']);
     });
 });
