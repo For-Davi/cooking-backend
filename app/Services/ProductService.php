@@ -24,7 +24,6 @@ use App\Repositories\ProductRepository;
 use App\Repositories\ProductTagRepository;
 use App\Repositories\ProductVariantRepository;
 use App\Exports\Product\ProductExport;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
