@@ -40,7 +40,7 @@ class ProductVariantRepository
                 ->orWhereRaw('LOWER(product_variants.code) LIKE ?', ["%{$lowerValue}%"]);
         });
 
-        return $query->get();
+        return $query->select('product_variants.*')->get();
     }
 
     public function getAllWithFilter(FilterProductDTO $filters)
