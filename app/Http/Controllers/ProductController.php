@@ -12,6 +12,7 @@ use App\Http\Requests\Product\UpdateProductAdvancedRequest;
 use App\Http\Requests\Product\UpdateProductBasicRequest;
 use App\Http\Requests\Product\UpdateProductMediaRequest;
 use App\Http\Requests\Product\UpdateProductTagRequest;
+use App\Http\Requests\Product\ExportProductRequest;
 use App\Http\Requests\Product\Variant\DeleteProductVariantRequest;
 use App\Http\Requests\Product\Variant\ShowProductVariantRequest;
 use App\Http\Requests\Product\Variant\UpdateProductVariantRequest;
@@ -39,7 +40,6 @@ class ProductController
             return response()->json(['products' => ProductVariantTableResource::collection($productsVariants)], 200);
         } catch (\Exception $e) {
             ErrorLogger::log('Erro ao buscar produtos:', $e, $request);
-            dd($e);
 
             return response()->json(['message' => 'Erro ao buscar produtos'], 500);
         }
@@ -112,6 +112,18 @@ class ProductController
             ErrorLogger::log('Erro ao cadastrar produto:', $e, $request);
 
             return response()->json(['message' => 'Erro ao cadastrar produto'], 500);
+        }
+    }
+
+    
+    public function export(ExportProductRequest $request)
+    {
+        try {
+            return $this->service->export($request);
+        } catch (\Exception $e) {
+
+            ErrorLogger::log('Erro ao exportar produtos:', $e, $request);
+            return response()->json(['message' => 'Erro ao exportar produtos'], 500);
         }
     }
 
