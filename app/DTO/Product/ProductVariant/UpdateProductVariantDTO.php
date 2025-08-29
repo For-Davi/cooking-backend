@@ -13,7 +13,6 @@ class UpdateProductVariantDTO
         public readonly float $price,
         public readonly float $offer,
         public readonly float $cost,
-        public readonly float $stock_quantity,
         public readonly float $min_stock_alert
     ) {}
 
@@ -28,7 +27,6 @@ class UpdateProductVariantDTO
             price: $data['price'],
             cost: $data['cost'],
             offer: $data['offer'],
-            stock_quantity: $data['stockQuantity'],
             min_stock_alert: $data['minStockAlert'],
         );
     }
@@ -44,7 +42,6 @@ class UpdateProductVariantDTO
             'price' => $this->price,
             'cost' => $this->cost,
             'offer' => $this->offer,
-            'stock_quantity' => $this->stock_quantity,
             'min_stock_alert' => $this->min_stock_alert,
         ];
     }

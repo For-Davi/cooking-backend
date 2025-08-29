@@ -244,7 +244,7 @@ class ProductService
         }
 
         $productVariantDTO = UpdateProductVariantDTO::fromRequest([
-            ...$request->only(['active', 'sku', 'code', 'description', 'location', 'price', 'cost', 'offer', 'stockQuantity', 'minStockAlert']),
+            ...$request->only(['active', 'sku', 'code', 'description', 'location', 'price', 'cost', 'offer', 'minStockAlert']),
         ]);
 
         return $this->productVariantRepository->update($request->id, $productVariantDTO->toArray());
