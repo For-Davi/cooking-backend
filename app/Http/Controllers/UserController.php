@@ -237,7 +237,7 @@ class UserController
             DB::rollBack();
 
             ErrorLogger::log('Erro ao registrar membro da organização:', $e, $request);
-
+            dd($e);
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
