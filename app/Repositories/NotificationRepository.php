@@ -19,10 +19,9 @@ class NotificationRepository
         return $query->orderBy('created_at', 'desc')->get();
     }
 
-    public function markAsRead(int $userID, int $notificationID): ?Notification
+    public function markAsRead(int $notificationID): ?Notification
     {
         $notification = $this->model
-            ->where('user_id', $userID)
             ->where('id', $notificationID)
             ->first();
 
@@ -35,10 +34,9 @@ class NotificationRepository
         return null;
     }
 
-    public function delete(int $userID, int $notificationID): int
+    public function delete(int $notificationID): int
     {
         return $this->model
-            ->where('user_id', $userID)
             ->where('id', $notificationID)
             ->delete();
     }

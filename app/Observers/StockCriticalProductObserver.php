@@ -16,21 +16,31 @@ class StockCriticalProductObserver
             if ($system->send_notification_stock_critical === 1) {
                 $users = DB::table('users')->where('enterprise_id', $variant->enterprise_id)->get();
 
-                $cor = $variant->color->name ?? 'Não definida';
-                $categoria = $variant->product->category->name ?? 'Não definida';
-                $grade = $variant->gridItem->name ?? 'Não definida';
+                $color = $variant->color->name ?? 'Não definida';
+                $category = $variant->product->category->name ?? 'Não definida';
+                $grid = $variant->gridItem->name ?? 'Não definida';
                 $sku = $variant->sku ?? 'Não definido';
+
+                $brasiliaTime = now()->timezone('America/Sao_Paulo');
+                $dataHora = $brasiliaTime->format('d/m/Y H:i');
 
                 foreach ($users as $user) {
                     NotificationHelper::create(
                         $user->id,
-                        "Estoque de alerta de {$variant->product->name}",
-                        "O produto {$variant->product->name} atingiu o alerta crítico.
-                    Informações:
-                    Cor: ".$cor.'.
-                    Categoria: '.$categoria.'.
-                    Grade: '.$grade.'.
-                    SKU: '.$sku.'.',
+                        '⚠️ ALERTA: Estoque Crítico',
+                        "O produto **{$variant->product->name}** atingiu o nível crítico de estoque.
+                        
+                        📋 **Detalhes do Produto:**
+                        • **SKU:** {$sku}
+                        • **Categoria:** {$category}
+                        • **Cor:** {$color}
+                        • **Grade:** {$grid}
+                        • **Estoque Atual:** {$variant->stock_quantity} unidades
+                        • **Nível de Alerta:** {$variant->min_stock_alert} unidades
+
+                        🚨 **Ação Recomendada:** Realizar reposição de estoque para evitar ruptura.
+
+                        _Data do alerta: {$dataHora} (Horário de Brasília)_",
                         $variant->enterprise_id
                     );
                 }

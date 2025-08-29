@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Notification\DeleteNotificationRequest;
 use App\Http\Requests\Notification\UpdateReadNotificationRequest;
 use App\Repositories\NotificationRepository;
 use App\Utils\ErrorLogger;
@@ -32,7 +33,7 @@ class NotificationController
         try {
             DB::beginTransaction();
 
-            $notification = $this->repository->markAsRead($request->user()->id, $request->notificationID);
+            $notification = $this->repository->markAsRead($request->notificationID);
 
             DB::commit();
 
@@ -46,12 +47,12 @@ class NotificationController
         }
     }
 
-    public function destroy(UpdateReadNotificationRequest $request)
+    public function destroy(DeleteNotificationRequest $request)
     {
         try {
             DB::beginTransaction();
 
-            $notification = $this->repository->delete($request->user()->id, $request->notificationID);
+            $notification = $this->repository->delete($request->notificationID);
 
             if ($notification) {
                 DB::commit();
