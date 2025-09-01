@@ -12,8 +12,8 @@ use App\DTO\User\UpdateProfilePasswordDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
-use App\Jobs\SendResetPasswordEmail;
 use App\Jobs\SendInviteUserEmailJob;
+use App\Jobs\SendResetPasswordEmail;
 use App\Models\PasswordResetToken;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\EnterpriseRepository;
@@ -130,15 +130,15 @@ class UserService
             return response()->json(['error' => 'Token inválido.'], 400);
         }
 
-        if($register->type === 'reset') {
-            
-         $isExpired = Carbon::parse($register->created_at)->addMinutes(30)->isPast();
+        if ($register->type === 'reset') {
 
-        if ($isExpired) {
-            throw ValidationException::withMessages([
-                'token' => ['Token expirado'],
-            ]);
-        }
+            $isExpired = Carbon::parse($register->created_at)->addMinutes(30)->isPast();
+
+            if ($isExpired) {
+                throw ValidationException::withMessages([
+                    'token' => ['Token expirado'],
+                ]);
+            }
 
         }
 
@@ -159,11 +159,11 @@ class UserService
 
         $user = $this->createUser($userDTO->toArray());
 
-        $admin = $request->user(); 
+        $admin = $request->user();
         $enterprise = $this->enterpriseRepository->findById($request->get('enterprise_id'));
         $token = app('auth.password.broker')->createToken($user);
 
-         $this->setTypePassword($user->email, 'invite');
+        $this->setTypePassword($user->email, 'invite');
 
         SendInviteUserEmailJob::dispatch($user, $admin, $enterprise, $token);
 
@@ -184,9 +184,10 @@ class UserService
 
         return true;
     }
+
     private function setTypePassword($email, $type)
     {
-         $resetRecord = PasswordResetToken::where('email', $email)
+        $resetRecord = PasswordResetToken::where('email', $email)
             ->latest()
             ->first();
         if ($resetRecord) {

@@ -50,17 +50,17 @@
 
 <body>
     <div class="container">
-        <h1>Olá {{ $user->name }}!</h1>
-        <p>O usuário {{ $admin->name }} da empresa {{ $enterprise->name }}, incluiu você na <strong>Dalle Manage</strong>. Para continuar com o processo de
+        <h1>Olá {{ $userName }}!</h1>
+        <p>O usuário {{ $adminName }} da empresa {{ $enterpriseName }}, incluiu você na <strong>Dalle Manage</strong>. Para continuar com o processo de
             login, por favor, clique no link abaixo:</p>
             <p>
                 Seus dados de acesso:
             </p>
             <p>
-                - Email: {{ $user->email }}
+                - Email: {{ $userEmail }}
             </p>
             <p>
-                - Senha: Senha definida por {{ $admin->name }}
+                - Senha: Senha definida por {{ $adminName }}
             </p>
         <p>
             <a class="button" href="{{ $appUrl }}/auth">Fazer Login</a>
@@ -71,7 +71,6 @@
         <p>
             <a class="button" href="{{ $appUrl }}/reset-password/{{ urlencode($token) }}">Redefinir Senha</a>
         </p>
-        <p><strong>Este link é válido por apenas 30 minutos.</strong></p>
 
         <p>Atenciosamente,<br>A equipe do Dalle Manage.</p>
         <div class="footer">

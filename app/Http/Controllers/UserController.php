@@ -238,6 +238,7 @@ class UserController
 
             ErrorLogger::log('Erro ao registrar membro da organização:', $e, $request);
             dd($e);
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }

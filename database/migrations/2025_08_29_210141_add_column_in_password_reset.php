@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-   
     public function up(): void
     {
         Schema::table('password_reset_tokens', function (Blueprint $table) {
@@ -15,13 +14,12 @@ return new class extends Migration
         });
     }
 
-
     public function down(): void
     {
         Schema::table('password_reset_tokens', function (Blueprint $table) {
-                $table->dropColumn('type');
-                $table->dropColumn('updated_at');
-        
+            $table->dropColumn('type');
+            $table->dropColumn('updated_at');
+
         });
     }
 };
