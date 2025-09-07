@@ -13,6 +13,7 @@ use App\DTO\User\UpdateProfilePasswordDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
+use App\Jobs\SendInviteUserEmailJob;
 use App\Jobs\SendResetPasswordEmail;
 use App\Models\PasswordResetToken;
 use App\Repositories\EmployeeRepository;
@@ -124,6 +125,7 @@ class UserService
 
         if ($user) {
             $token = app('auth.password.broker')->createToken($user);
+            $this->setTypePassword($user->email, 'reset');
             SendResetPasswordEmail::dispatch($user, $token);
         }
 
@@ -139,12 +141,16 @@ class UserService
             return response()->json(['error' => 'Token inválido.'], 400);
         }
 
-        $isExpired = Carbon::parse($register->created_at)->addMinutes(30)->isPast();
+        if ($register->type === 'reset') {
 
-        if ($isExpired) {
-            throw ValidationException::withMessages([
-                'token' => ['Token expirado'],
-            ]);
+            $isExpired = Carbon::parse($register->created_at)->addMinutes(30)->isPast();
+
+            if ($isExpired) {
+                throw ValidationException::withMessages([
+                    'token' => ['Token expirado'],
+                ]);
+            }
+
         }
 
         $data = ['password' => Hash::make($request->input('password'))];
@@ -164,6 +170,14 @@ class UserService
 
         $user = $this->createUser($userDTO->toArray());
 
+        $admin = $request->user();
+        $enterprise = $this->enterpriseRepository->findById($request->get('enterprise_id'));
+        $token = app('auth.password.broker')->createToken($user);
+
+        $this->setTypePassword($user->email, 'invite');
+
+        SendInviteUserEmailJob::dispatch($user, $admin, $enterprise, $token);
+
         if ($request->createEmployee) {
             $employeeDTO = StartEmployeeDTO::fromRequest([
                 ...$request->only([
@@ -180,6 +194,16 @@ class UserService
         }
 
         return true;
+    }
+
+    private function setTypePassword($email, $type)
+    {
+        $resetRecord = PasswordResetToken::where('email', $email)
+            ->latest()
+            ->first();
+        if ($resetRecord) {
+            $resetRecord->update(['type' => 'reset']);
+        }
     }
 
     public function update($request)
