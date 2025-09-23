@@ -29,7 +29,7 @@ class UserHelper
 
     public static function checkPassword($user, $password)
     {
-        if (!Hash::check($password, $user->password)) {
+        if (! Hash::check($password, $user->password)) {
             throw ValidationException::withMessages([
                 'password' => ['Credenciais não constam em nosso registro.'],
             ]);
