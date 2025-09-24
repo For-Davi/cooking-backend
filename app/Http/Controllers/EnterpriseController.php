@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Enterprise\DeleteEnterpriseRequest;
 use App\Http\Requests\Enterprise\UpdateEnterpriseRequest;
 use App\Repositories\EnterpriseRepository;
 use App\Services\EnterpriseService;
@@ -50,25 +49,25 @@ class EnterpriseController
         }
     }
 
-    public function destroy(DeleteEnterpriseRequest $request)
+    public function destroy(Request $request)
     {
         try {
             DB::beginTransaction();
-            $enterprise = $this->repository->findById($request->route('enterpriseID'));
+            $enterprise = $this->repository->delete($request->get('enterprise_id'));
 
             if ($enterprise) {
-                $this->repository->deleteEnterpriseData($enterprise);
+                $this->repository->delete($enterprise);
 
                 DB::commit();
 
-                return response()->json(['message' => 'Dados da empresa deletados'], 200);
+                return response()->json(['message' => 'Empresa deletada'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao deletar os dados da empresa:', $e, $request);
+            ErrorLogger::log('Erro ao deletar a empresa:', $e, $request);
 
-            return response()->json(['message' => 'Erro ao deletar os dados da empresa'], 500);
+            return response()->json(['message' => 'Erro ao deletar a empresa'], 500);
         }
     }
 }

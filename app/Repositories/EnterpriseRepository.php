@@ -52,41 +52,13 @@ class EnterpriseRepository
         if ($enterprise) {
 
             DB::table('users')->where('enterprise_id', $id)->delete();
+            DB::table('roles')->where('enterprise_id', $id)->delete();
+            DB::table('setting_appearance')->where('enterprise_id', $id)->delete();
+            DB::table('setting_system')->where('enterprise_id', $id)->delete();
 
             return $enterprise->delete();
         }
 
         return false;
-    }
-
-    public function deleteEnterpriseData($enterprise)
-    {
-        if ($enterprise) {
-            $enterpriseID = $enterprise->id;
-
-            DB::table('users')
-                ->whereIn('role_id', function ($query) use ($enterpriseID) {
-                    $query->select('id')
-                        ->from('roles')
-                        ->where('enterprise_id', $enterpriseID);
-                })
-                ->delete();
-
-            DB::table('roles')->where('enterprise_id', $enterpriseID)->delete();
-
-            DB::table('setting_appearance')
-                ->where('enterprise_id', $enterpriseID)
-                ->delete();
-
-            DB::table('setting_system')
-                ->where('enterprise_id', $enterpriseID)
-                ->delete();
-
-            $enterprise->delete();
-
-            return true;
-        }
-
-        return null;
     }
 }

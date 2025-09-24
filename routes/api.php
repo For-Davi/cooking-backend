@@ -236,6 +236,6 @@ Route::middleware(['auth:sanctum', 'token.expiration', 'set.enterprise'])->group
     Route::prefix('enterprise')->group(function () {
         Route::get('/', [EnterpriseController::class, 'show']);
         Route::put('/', [EnterpriseController::class, 'update']);
-        Route::delete('/{enterpriseID}', [EnterpriseController::class, 'destroy']);
+        Route::delete('/', [EnterpriseController::class, 'destroy']);
     });
 });
