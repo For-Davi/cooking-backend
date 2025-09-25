@@ -6,17 +6,17 @@ class UpdateEnterpriseDTO
 {
     public function __construct(
         public string $name,
-        public ?string $email ,
-        public ?string $phone ,
-        public ?string $cpf ,
-        public ?string $cnpj ,
-        public ?string $cep ,
-        public ?string $state ,
-        public ?string $city ,
-        public ?string $neighborhood ,
-        public ?string $address ,
-        public ?string $number_address ,
-        public ?string $complement ,
+        public ?string $email,
+        public ?string $phone,
+        public ?string $cpf,
+        public ?string $cnpj,
+        public ?string $cep,
+        public ?string $state,
+        public ?string $city,
+        public ?string $neighborhood,
+        public ?string $address,
+        public ?string $number_address,
+        public ?string $complement,
     ) {}
 
     public static function fromRequest(array $data): self
