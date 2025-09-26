@@ -8,9 +8,9 @@ use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\Setting\System\CreateSettingSystemDTO;
 use App\DTO\User\CreateUserDTO;
-use App\DTO\User\UpdateProfileDataDTO;
-use App\DTO\User\UpdateProfilePasswordDTO;
+use App\DTO\User\UpdateUserDataDTO;
 use App\DTO\User\UpdateUserDTO;
+use App\DTO\User\UpdateUserPasswordDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
 use App\Jobs\SendInviteUserEmailJob;
@@ -96,8 +96,6 @@ class UserService
     {
         return $this->roleRepository->create($roleDTO);
     }
-
-    public function updateProfileData($userId, $profileDataDTO) {}
 
     public function register($request)
     {
@@ -215,7 +213,7 @@ class UserService
         return $this->updateUser($request->id, $userDTO->toArray());
     }
 
-    public function updateDataProfile($request)
+    public function updateData($request)
     {
 
         UserHelper::existsEmail(
@@ -223,24 +221,24 @@ class UserService
             $request->email,
         );
 
-        $profileDataDTO = UpdateProfileDataDTO::fromRequest(
+        $profileDataDTO = UpdateUserDataDTO::fromRequest(
             $request->only(['name', 'email']),
         );
 
-        return $this->repository->updateProfileData($request->user()->id, $profileDataDTO->toArray());
+        return $this->repository->update($request->user()->id, $profileDataDTO->toArray());
     }
 
-    public function updatePasswordProfile($request)
+    public function updatePassword($request)
     {
         UserHelper::isPasswordEqual(
             $request->user(),
             $request->current_password
         );
 
-        $profilePasswordDTO = UpdateProfilePasswordDTO::fromRequest([
+        $profilePasswordDTO = UpdateUserPasswordDTO::fromRequest([
             'new_password' => Hash::make($request->new_password),
         ]);
 
-        return $this->repository->updateProfilePassword($request->user()->id, $profilePasswordDTO->toArray());
+        return $this->repository->updatePassword($request->user()->id, $profilePasswordDTO->toArray());
     }
 }
