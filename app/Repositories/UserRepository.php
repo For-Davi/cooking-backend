@@ -143,4 +143,40 @@ class UserRepository
 
         return false;
     }
+
+    public function updateProfilePhoto($userID, $deleteID, $addID)
+    {
+        $user = $this->findById($userID);
+        if (! $user) {
+            return null;
+        }
+
+        if ($addID && $deleteID === null) {
+            $user->update(['image_id' => $addID]);
+
+            return $user;
+        }
+
+        if ($addID && $deleteID) {
+
+            if ($user->image_id === $deleteID) {
+                $user->update(['image_id' => $addID]);
+            }
+
+            DB::table('images')->where('id', $deleteID)->delete();
+
+            return $user;
+        }
+
+        if (! $addID && $deleteID) {
+            if ($user->image_id === $deleteID) {
+                $user->update(['image_id' => null]);
+            }
+            DB::table('images')->where('id', $deleteID)->delete();
+
+            return $user;
+        }
+
+        return $user;
+    }
 }

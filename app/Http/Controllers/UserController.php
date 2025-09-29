@@ -46,7 +46,11 @@ class UserController
     {
         try {
             $user = $this->service->login($request);
-            $user->load('enterprise');
+            $user->load(['enterprise', 'image']);
+
+            if ($user->image) {
+                $user->image->url = asset($user->image->url);
+            }
 
             $token = $this->configureToken($user);
 
@@ -71,8 +75,11 @@ class UserController
 
             if ($user) {
                 DB::commit();
+                $user->load(['enterprise', 'image']);
 
-                $user->load('enterprise');
+                if ($user->image) {
+                    $user->image->url = asset($user->image->url);
+                }
 
                 $token = $this->configureToken($user);
 
@@ -141,6 +148,12 @@ class UserController
 
             if ($user) {
                 DB::commit();
+
+                $user->load(['enterprise', 'image']);
+
+                if ($user->image) {
+                    $user->image->url = asset($user->image->url);
+                }
 
                 return response()->json(['user' => $user, 'message' => 'Dados atualizados']);
             }

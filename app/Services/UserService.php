@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\Employee\StartEmployeeDTO;
 use App\DTO\Enterprise\EnterpriseStartDTO;
+use App\DTO\Image\CreateImageDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\Setting\System\CreateSettingSystemDTO;
@@ -11,6 +12,7 @@ use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDataDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UpdateUserPasswordDTO;
+use App\DTO\User\UpdateUserProfilePhotoDTO;
 use App\DTO\User\UserStartDTO;
 use App\Helpers\UserHelper;
 use App\Jobs\SendInviteUserEmailJob;
@@ -18,12 +20,14 @@ use App\Jobs\SendResetPasswordEmail;
 use App\Models\PasswordResetToken;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\EnterpriseRepository;
+use App\Repositories\ImageRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SettingAppearanceRepository;
 use App\Repositories\SettingSystemRepository;
 use App\Repositories\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class UserService
@@ -34,7 +38,8 @@ class UserService
         protected RoleRepository $roleRepository,
         protected EmployeeRepository $employeeRepository,
         protected SettingAppearanceRepository $settingAppearanceRepository,
-        protected SettingSystemRepository $settingSystemRepository
+        protected SettingSystemRepository $settingSystemRepository,
+        protected ImageRepository $imageRepository
     ) {}
 
     public function login($request)
@@ -216,16 +221,49 @@ class UserService
     public function updateData($request)
     {
 
-        UserHelper::existsEmail(
-            $request->user(),
-            $request->email,
-        );
+        $imageID = null;
+        $savedImage = null;
 
-        $profileDataDTO = UpdateUserDataDTO::fromRequest(
-            $request->only(['name', 'email']),
-        );
+        if ($request->hasFile('photoAdd')) {
+
+            $image = $request->file('photoAdd');
+
+            $path = $this->savePathImage($image);
+
+            $imageDTO = CreateImageDTO::fromRequest([
+                'url' => $path,
+                'name' => $image->getClientOriginalName(),
+                'size' => $image->getSize(),
+                'enterpriseID' => $request->get('enterprise_id'),
+            ]);
+
+            $savedImage = $this->imageRepository->create($imageDTO->toArray());
+
+            $profilePhotoDTO = UpdateUserProfilePhotoDTO::fromRequest(['photoAdd' => $savedImage->id, 'photoDelete' => $request->photoDelete === null ? null : $request->photoDelete]);
+
+             $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO->photo_delete_id, $profilePhotoDTO->photo_add_id);
+        }
+
+        if (! $request->hasFile('photoAdd') && $request->photoDelete) {
+            $profilePhotoDTO = UpdateUserProfilePhotoDTO::fromRequest(['photoAdd' => null, 'photoDelete' => $request->photoDelete]);
+
+             $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO->photo_delete_id, $profilePhotoDTO->photo_add_id);
+        }
+
+        $profileDataDTO = UpdateUserDataDTO::fromRequest(['name' => $request->name, 'email' => $request->email]);
 
         return $this->repository->update($request->user()->id, $profileDataDTO->toArray());
+    }
+
+    private function savePathImage($image)
+    {
+        if (! Storage::disk('public')->exists('images')) {
+            Storage::disk('public')->makeDirectory('images');
+        }
+
+        $path = $image->store('images', 'public');
+
+        return Storage::url($path);
     }
 
     public function updatePassword($request)
