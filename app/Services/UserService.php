@@ -220,8 +220,15 @@ class UserService
 
     public function updateData($request)
     {
+        $this->updateImage($request);
 
-        $imageID = null;
+        $profileDataDTO = UpdateUserDataDTO::fromRequest(['name' => $request->name, 'email' => $request->email]);
+
+        return $this->repository->update($request->user()->id, $profileDataDTO->toArray());
+    }
+
+    private function updateImage($request)
+    {
         $savedImage = null;
 
         if ($request->hasFile('photoAdd')) {
@@ -241,18 +248,14 @@ class UserService
 
             $profilePhotoDTO = UpdateUserProfilePhotoDTO::fromRequest(['photoAdd' => $savedImage->id, 'photoDelete' => $request->photoDelete === null ? null : $request->photoDelete]);
 
-             $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO->photo_delete_id, $profilePhotoDTO->photo_add_id);
+            $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO->photo_delete_id, $profilePhotoDTO->photo_add_id);
         }
 
         if (! $request->hasFile('photoAdd') && $request->photoDelete) {
             $profilePhotoDTO = UpdateUserProfilePhotoDTO::fromRequest(['photoAdd' => null, 'photoDelete' => $request->photoDelete]);
 
-             $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO->photo_delete_id, $profilePhotoDTO->photo_add_id);
+            $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO->photo_delete_id, $profilePhotoDTO->photo_add_id);
         }
-
-        $profileDataDTO = UpdateUserDataDTO::fromRequest(['name' => $request->name, 'email' => $request->email]);
-
-        return $this->repository->update($request->user()->id, $profileDataDTO->toArray());
     }
 
     private function savePathImage($image)
