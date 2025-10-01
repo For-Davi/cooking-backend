@@ -34,9 +34,9 @@ class UpdateUserProfilePhotoDTO
 
     public function toArray(): array
     {
-        return array_filter([
+        return [
             'photo_add_id' => $this->photo_add_id,
             'photo_delete_id' => $this->photo_delete_id,
-        ]);
+        ];
     }
 }
