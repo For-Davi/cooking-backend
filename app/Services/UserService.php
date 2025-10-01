@@ -14,6 +14,7 @@ use App\DTO\User\UpdateUserDTO;
 use App\DTO\User\UpdateUserPasswordDTO;
 use App\DTO\User\UpdateUserProfilePhotoDTO;
 use App\DTO\User\UserStartDTO;
+use App\Helpers\SellerHelper;
 use App\Helpers\UserHelper;
 use App\Jobs\SendInviteUserEmailJob;
 use App\Jobs\SendResetPasswordEmail;
@@ -104,7 +105,11 @@ class UserService
 
     public function register($request)
     {
-        $enterpriseDTO = EnterpriseStartDTO::fromRequest($request->only(['nameEnterprise']));
+        if ($request->sellerCode) {
+            SellerHelper::existsCode($request->sellerCode);
+        }
+
+        $enterpriseDTO = EnterpriseStartDTO::fromRequest($request->only(['nameEnterprise', 'sellerCode']));
         $enterprise = $this->createEnterprise($enterpriseDTO->toArray());
 
         $this->createSettingAppearance($enterprise->id);
