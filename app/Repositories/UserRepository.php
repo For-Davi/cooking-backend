@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTO\User\FilterUserDTO;
+use App\DTO\User\UpdateUserProfilePhotoDTO;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -144,39 +145,57 @@ class UserRepository
         return false;
     }
 
-    public function updateProfilePhoto($userID, $deleteID, $addID)
+    public function updateProfilePhoto(int $userID, UpdateUserProfilePhotoDTO $dto): ?object
     {
         $user = $this->findById($userID);
         if (! $user) {
             return null;
         }
 
-        if ($addID && $deleteID === null) {
-            $user->update(['image_id' => $addID]);
-
-            return $user;
+        if ($dto->hasDeleteOperation() && ! $dto->hasAddOperation()) {
+            return $this->handleDeleteOperation($user, $dto->photo_delete_id);
         }
 
-        if ($addID && $deleteID) {
-
-            if ($user->image_id === $deleteID) {
-                $user->update(['image_id' => $addID]);
-            }
-
-            DB::table('images')->where('id', $deleteID)->delete();
-
-            return $user;
+        if ($dto->hasAddOperation() && ! $dto->hasDeleteOperation()) {
+            return $this->handleAddOperation($user, $dto->photo_add_id);
         }
 
-        if (! $addID && $deleteID) {
-            if ($user->image_id === $deleteID) {
-                $user->update(['image_id' => null]);
-            }
-            DB::table('images')->where('id', $deleteID)->delete();
-
-            return $user;
+        if ($dto->hasBothOperations()) {
+            return $this->handleBothOperations($user, $dto->photo_add_id, $dto->photo_delete_id);
         }
 
         return $user;
+    }
+
+    private function handleAddOperation(object $user, int $addID): object
+    {
+        $user->update(['image_id' => $addID]);
+
+        return $user;
+    }
+
+    private function handleDeleteOperation(object $user, int $deleteID): object
+    {
+        if ($user->image_id === $deleteID) {
+            $user->update(['image_id' => null]);
+        }
+        $this->deleteImage($deleteID);
+
+        return $user;
+    }
+
+    private function handleBothOperations(object $user, int $addID, int $deleteID): object
+    {
+        if ($user->image_id === $deleteID) {
+            $user->update(['image_id' => $addID]);
+        }
+        $this->deleteImage($deleteID);
+
+        return $user;
+    }
+
+    private function deleteImage(int $imageID): void
+    {
+        DB::table('images')->where('id', $imageID)->delete();
     }
 }

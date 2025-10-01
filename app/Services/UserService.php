@@ -231,6 +231,16 @@ class UserService
     {
         $savedImage = null;
 
+        if ($request->photoDelete) {
+            $profilePhotoDTO = UpdateUserProfilePhotoDTO::fromRequest(['photoAdd' => null, 'photoDelete' => $request->photoDelete]);
+
+            $imageDelete = $this->imageRepository->findById($profilePhotoDTO->photo_delete_id);
+
+            $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO);
+
+            $this->destroyImageStorage($imageDelete->url);
+        }
+
         if ($request->hasFile('photoAdd')) {
 
             $image = $request->file('photoAdd');
@@ -246,15 +256,9 @@ class UserService
 
             $savedImage = $this->imageRepository->create($imageDTO->toArray());
 
-            $profilePhotoDTO = UpdateUserProfilePhotoDTO::fromRequest(['photoAdd' => $savedImage->id, 'photoDelete' => $request->photoDelete === null ? null : $request->photoDelete]);
+            $profilePhotoDTO = UpdateUserProfilePhotoDTO::fromRequest(['photoAdd' => $savedImage->id, 'photoDelete' => null]);
 
-            $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO->photo_delete_id, $profilePhotoDTO->photo_add_id);
-        }
-
-        if (! $request->hasFile('photoAdd') && $request->photoDelete) {
-            $profilePhotoDTO = UpdateUserProfilePhotoDTO::fromRequest(['photoAdd' => null, 'photoDelete' => $request->photoDelete]);
-
-            $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO->photo_delete_id, $profilePhotoDTO->photo_add_id);
+            $this->repository->updateProfilePhoto($request->user()->id, $profilePhotoDTO);
         }
     }
 
@@ -267,6 +271,16 @@ class UserService
         $path = $image->store('images', 'public');
 
         return Storage::url($path);
+    }
+
+    private function destroyImageStorage($path)
+    {
+        if (app()->environment('local')) {
+            $filePath = public_path($path);
+            if (is_file($filePath)) {
+                @unlink($filePath);
+            }
+        }
     }
 
     public function updatePassword($request)
