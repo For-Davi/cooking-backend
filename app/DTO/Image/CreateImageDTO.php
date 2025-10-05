@@ -2,13 +2,15 @@
 
 namespace App\DTO\Image;
 
+use Illuminate\Support\Facades\Auth;
+
 class CreateImageDTO
 {
     public function __construct(
         public readonly string $name,
         public readonly string $url,
         public readonly int $size,
-        public readonly string $enterprise_id,
+        public readonly string $user_id,
     ) {}
 
     public static function fromRequest($data): self
@@ -17,7 +19,7 @@ class CreateImageDTO
             name: $data['name'],
             size: $data['size'],
             url: $data['url'],
-            enterprise_id: $data['enterpriseID'],
+            user_id: Auth::id()
         );
     }
 
@@ -27,7 +29,7 @@ class CreateImageDTO
             'name' => $this->name,
             'size' => $this->size,
             'url' => $this->url,
-            'enterprise_id' => $this->enterprise_id,
+            'user_id' => $this->user_id,
         ];
     }
 }

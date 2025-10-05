@@ -31,16 +31,7 @@ class UserHelper
     {
         if (! Hash::check($password, $user->password)) {
             throw ValidationException::withMessages([
-                'password' => ['Credenciais não constam em nosso registro.'],
-            ]);
-        }
-    }
-
-    public static function checkUserActive($user)
-    {
-        if ($user->active === 0) {
-            throw ValidationException::withMessages([
-                'active' => ['Este usuário está inativo e não pode acessar a conta. Por favor, entre em contato com o administrador.'],
+                'password' => ['Credenciais não constam em nosso registro'],
             ]);
         }
     }
@@ -55,7 +46,7 @@ class UserHelper
         if ($existEmail) {
             if ($user->email !== $existEmail->email) {
                 throw ValidationException::withMessages([
-                    'email' => ['Este email ja está em uso.'],
+                    'email' => ['Este email ja está em uso'],
                 ]);
             }
         }
@@ -65,7 +56,7 @@ class UserHelper
     {
         if (! Hash::check($actualPassword, $user->password)) {
             throw ValidationException::withMessages([
-                'password' => ['A senha atual está incorreta.'],
+                'password' => ['A senha atual está incorreta'],
             ]);
         }
     }

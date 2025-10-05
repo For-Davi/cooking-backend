@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -14,12 +15,17 @@ class Image extends Model
     protected $fillable = [
         'name',
         'url',
-        'enterprise_id',
+        'user_id',
         'size',
     ];
 
-    public function enterprise()
+    protected static function booted(): void
     {
-        return $this->belongsTo(Enterprise::class);
+        static::addGlobalScope(new UserScope);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -16,8 +16,6 @@ class UpdateUserDataRequest extends FormRequest
         return [
             'name' => 'required|string|min:3|max:30',
             'email' => 'required|string|email|max:50',
-            'photoAdd' => 'nullable|file|mimes:jpg,jpeg,png,gif|max:3072',
-            'photoDelete' => 'nullable|exists:images,id',
         ];
     }
 
@@ -30,10 +28,6 @@ class UpdateUserDataRequest extends FormRequest
             'email.string' => 'O e-mail deve ser uma string',
             'email.email' => 'O e-mail deve ser um endereço de e-mail válido',
             'email.max' => 'O e-mail não pode ter mais de 50 caracteres',
-            'photoAdd.file' => 'O arquivo de imagem é inválido.',
-            'photoAdd.mimes' => 'Apenas imagens JPG, JPEG, PNG ou GIF são permitidas.',
-            'photoAdd.max' => 'O tamanho máximo da imagem é 3MB.',
-            'photoDelete.exists' => 'O ID da foto informada não existe',
         ];
     }
 }

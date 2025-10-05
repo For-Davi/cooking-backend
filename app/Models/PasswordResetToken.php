@@ -20,6 +20,5 @@ class PasswordResetToken extends Model
     protected $fillable = [
         'email',
         'token',
-        'type',
     ];
 }

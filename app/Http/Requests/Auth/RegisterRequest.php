@@ -17,8 +17,6 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string|min:3|max:30',
             'password' => 'required|string|min:8',
             'email' => 'required|string|email|max:50|unique:users',
-            'nameEnterprise' => 'required|string|min:3|max:30',
-            'sellerCode' => 'nullable|string|min:8|max:20',
         ];
     }
 
@@ -37,13 +35,6 @@ class RegisterRequest extends FormRequest
             'email.email' => 'O e-mail deve ser um endereço de e-mail válido',
             'email.max' => 'O e-mail não pode ter mais de 50 caracteres',
             'email.unique' => 'Este e-mail já está registrado',
-            'nameEnterprise.required' => 'O nome da empresa é obrigatório',
-            'nameEnterprise.string' => 'O nome da empresa deve ser uma string',
-            'nameEnterprise.min' => 'O nome da empresa não pode ter menos de 3 caracteres',
-            'nameEnterprise.max' => 'O nome da empresa não pode ter mais de 30 caracteres',
-            'sellerCode.string' => 'O código do vendedor deve ser uma string',
-            'sellerCode.min' => 'O código do vendedor deve ter pelo menos 8 caracteres',
-            'sellerCode.max' => 'O código do vendedor não pode ter mais de 20 caracteres',
         ];
     }
 }

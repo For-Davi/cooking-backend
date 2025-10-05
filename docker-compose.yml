@@ -1,5 +1,5 @@
 services:
-    laravel.test:
+    cooking:
         build:
             context: './vendor/laravel/sail/runtimes/8.4'
             dockerfile: Dockerfile
@@ -24,36 +24,12 @@ services:
             - './storage/framework:/var/www/html/storage/framework'
             - './storage/logs:/var/www/html/storage/logs'
         networks:
-            - manage-network
+            - cooking-network
         depends_on:
-            - mysql_manage
+            - mysql
             - smtp
-            - prometheus
 
-    prometheus:
-        image: prom/prometheus
-        container_name: prometheus
-        ports:
-            - '9090:9090'
-        volumes:
-            - ./prometheus.yml:/etc/prometheus/prometheus.yml
-        command: --config.file=/etc/prometheus/prometheus.yml
-        networks:
-            - manage-network
-
-    grafana:
-        image: grafana/grafana
-        container_name: grafana
-        ports:
-            - '3000:3000'
-        volumes:
-            - grafana_data:/var/lib/grafana
-        networks:
-            - manage-network
-        depends_on:
-            - prometheus
-
-    mysql_manage:
+    mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
@@ -67,7 +43,7 @@ services:
         volumes:
             - 'sail-mysql:/var/lib/mysql'
         networks:
-            - manage-network
+            - cooking-network
         healthcheck:
             test:
                 - CMD
@@ -87,14 +63,13 @@ services:
             - "1025:1025"
             - "8025:8025"
         networks:
-            - manage-network
+            - cooking-network
 
 networks:
-    manage-network:
+    cooking-network:
         driver: bridge
         external: true
 
 volumes:
     sail-mysql:
         driver: local
-    grafana_data:
