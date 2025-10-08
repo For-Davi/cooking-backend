@@ -151,7 +151,7 @@ class RevenueController
                     }
                 }
 
-                return response()->json(['products' => RevenueTableListResource::collection($revenues), 'message' => 'Receita excluída'], 200);
+                return response()->json(['revenues' => RevenueTableListResource::collection($revenues), 'message' => 'Receita excluída'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
