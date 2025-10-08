@@ -20,7 +20,6 @@ class CategoryService
 
         $categoryDTO = CreateCategoryDTO::fromRequest([
             ...$request->only(['name']),
-            'userID' => $request->get('user_id'),
         ]);
 
         return $this->repository->create($categoryDTO->toArray());

@@ -21,6 +21,7 @@ class CreateRevenueRequest extends FormRequest
             'ingredients' => 'required|array',
             'ingredients.*' => 'required|string',
             'categoryID' => 'nullable|exists:categories,id',
+            'difficulty' => 'required|in:easy,average,hard,professional',
             'image' => 'nullable|file|mimes:jpg,jpeg,png|max:3072',
         ];
     }
@@ -43,6 +44,8 @@ class CreateRevenueRequest extends FormRequest
             'ingredients.*.required' => 'Cada ingrediente é obrigatório.',
             'ingredients.*.string' => 'Cada ingrediente deve ser um texto.',
             'categoryID.exists' => 'A categoria selecionada não existe.',
+            'difficulty.required' => 'O campo dificuldade é obrigatório.',
+            'difficulty.in' => 'A dificuldade deve ser: fácil, média, difícil ou profissional.',
             'image.file' => 'A imagem deve ser um arquivo.',
             'image.mimes' => 'A imagem deve ser do tipo: jpg, jpeg ou png.',
             'image.max' => 'A imagem não pode ter mais de 3MB.',

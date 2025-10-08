@@ -25,6 +25,7 @@ class RevenueService
     {
         $revenue = $this->createRevenue($request);
         $ingredients = $this->createIngredient($revenue->id, $request->ingredients);
+        // dd($ingredients);
 
         return $revenue && $ingredients;
 
@@ -33,12 +34,14 @@ class RevenueService
     private function createRevenue($request)
     {
         $imageID = $this->createImage($request);
+        // dd($imageID);
 
         $revenueDTO = CreateRevenueDTO::fromRequest([
             ...$request->only([
                 'name',
                 'time',
                 'portions',
+                'difficulty',
                 'preparationMethod',
                 'categoryID',
             ]),
@@ -56,7 +59,7 @@ class RevenueService
             'name' => $ingredient
         ]);
 
-        return $this->repository->create($dto->toArray());
+        return $this->revenueIngredientrepository->create($dto->toArray());
         }
 
     }
@@ -70,6 +73,7 @@ class RevenueService
                 'name',
                 'time',
                 'portions',
+                'difficulty',
                 'preparationMethod',
                 'categoryID',
             ]),
@@ -87,14 +91,14 @@ class RevenueService
 
     public function updateFavorite($request)
     {
+        $revenue = $this->repository->findById($request->route('revenueID'));
+
         $revenueDTO = UpdateRevenueFavoriteDTO::fromRequest([
-            ...$request->only([
-                'favorite',
-            ]),
-
+            "favorite" => $revenue->is_favorite === 1 ? 0 : 1
         ]);
+        // dd($request->route('revenueID'), $revenueDTO->toArray());
 
-        return $this->repository->update($request->id, $revenueDTO->toArray());
+        return $this->repository->update($request->route('revenueID'), $revenueDTO->toArray());
     }
 
     private function createImage($request)

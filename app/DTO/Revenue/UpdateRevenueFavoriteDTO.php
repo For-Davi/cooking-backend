@@ -5,20 +5,20 @@ namespace App\DTO\Revenue;
 class UpdateRevenueFavoriteDTO
 {
     public function __construct(
-        public readonly int $favorite,
+        public readonly int $is_favorite,
     ) {}
 
     public static function fromRequest($data): self
     {
         return new self(
-            favorite: $data['favorite'],
+            is_favorite: $data['favorite'],
         );
     }
 
     public function toArray(): array
     {
         return [
-            'favorite' => $this->favorite,
+            'is_favorite' => $this->is_favorite,
         ];
     }
 }

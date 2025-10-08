@@ -23,10 +23,16 @@ class RevenueController
     public function index()
     {
         try {
-            $revenues = $this->repository->getAllByUser(['category']);
+            $revenues = $this->repository->getAllByUser(['category', 'image']);
+            foreach($revenues as $revenue){
+                if($revenue->image){
+                    $revenue->image->url = asset($revenue->image->url);
+                }
+            }
 
             return response()->json(['revenues' => RevenueTableListResource::collection($revenues)], 200);
         } catch (\Exception $e) {
+            dd($e);
             return response()->json(['message' => 'Erro ao buscar produtos'], 500);
         }
     }
@@ -47,14 +53,21 @@ class RevenueController
     {
         try {
             DB::beginTransaction();
-            $product = $this->service->create($request);
-            if ($product) {
+            $revenue = $this->service->create($request);
+            if ($revenue) {
                 DB::commit();
-                $revenues = $this->repository->getAllByUser(['category']);
+
+                $revenues = $this->repository->getAllByUser(['category', 'image']);
+                foreach($revenues as $revenue){
+                    if($revenue->image){
+                        $revenue->image->url = asset($revenue->image->url);
+                    }
+                }
 
                 return response()->json(['revenues' => RevenueTableListResource::collection($revenues), 'message' => 'Receita cadastrada'], 201);
             }
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
 
             return response()->json(['message' => 'Erro ao cadastrar receita'], 500);
@@ -70,7 +83,12 @@ class RevenueController
             if ($product) {
                 DB::commit();
 
-                $revenues = $this->repository->getAllByUser(['category']);
+                $revenues = $this->repository->getAllByUser(['category', 'image']);
+                foreach($revenues as $revenue){
+                    if($revenue->image){
+                        $revenue->image->url = asset($revenue->image->url);
+                    }
+                }
 
                 return response()->json(['revenues' => RevenueTableListResource::collection($revenues), 'message' => 'Receita atualizada'], 200);
             }
@@ -90,7 +108,14 @@ class RevenueController
             if ($revenue) {
                 DB::commit();
 
-                return response()->json([ 'message' => 'Receita favoritada'], 200);
+                $revenues = $this->repository->getAllByUser(['category', 'image']);
+                foreach($revenues as $revenue){
+                    if($revenue->image){
+                        $revenue->image->url = asset($revenue->image->url);
+                    }
+                }
+
+                return response()->json(['revenues' => RevenueTableListResource::collection($revenues), 'message' => 'Atualizado favoritação'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -108,7 +133,13 @@ class RevenueController
 
             if ($revenue) {
                 DB::commit();
-                $revenues = $this->repository->getAllByUser(['category']);
+
+                $revenues = $this->repository->getAllByUser(['category', 'image']);
+                foreach($revenues as $revenue){
+                    if($revenue->image){
+                        $revenue->image->url = asset($revenue->image->url);
+                    }
+                }
 
                 return response()->json(['products' => RevenueTableListResource::collection($revenues), 'message' => 'Receita excluída'], 200);
             }

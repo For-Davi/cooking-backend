@@ -14,7 +14,8 @@ class RevenueTableListResource extends JsonResource
             'name' => $this->name,
             'time' => $this->time,
             'portions' => $this->portions,
-            'favorite' => $this->favorite,
+            'is_favorite' => $this->is_favorite,
+            'image' => $this->image,
             'category' => $this->category?->name
         ];
     }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\UserScope;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 

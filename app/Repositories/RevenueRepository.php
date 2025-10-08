@@ -15,6 +15,7 @@ class RevenueRepository implements RevenueRepositoryInterface
     {
         return $this->model
             ->with($relations)
+            ->orderBy('is_favorite', 'DESC')
             ->get();
     }
 
@@ -23,7 +24,7 @@ class RevenueRepository implements RevenueRepositoryInterface
         return $this->model->find($id);
     }
 
-    public function create(array $data)
+    public function  create(array $data)
     {
         return $this->model->create($data);
     }

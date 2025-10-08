@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('revenues', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('difficulty');
             $table->bigInteger('time')->default(0);
             $table->bigInteger('portions')->default(1);
             $table->longText('preparation_method');

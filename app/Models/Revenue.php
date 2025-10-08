@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\UserScope;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -19,6 +19,7 @@ class Revenue extends Model
         'preparation_method',
         'is_favorite',
         'category_id',
+        'difficulty',
         'image_id',
         'user_id',
     ];

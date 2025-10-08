@@ -2,6 +2,8 @@
 
 namespace App\DTO\Category;
 
+use Illuminate\Support\Facades\Auth;
+
 class CreateCategoryDTO
 {
     public function __construct(
@@ -13,7 +15,7 @@ class CreateCategoryDTO
     {
         return new self(
             name: $data['name'],
-            user_id: $data['userID']
+            user_id: Auth::id()
         );
     }
 

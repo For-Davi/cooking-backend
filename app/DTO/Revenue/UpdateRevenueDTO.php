@@ -6,6 +6,7 @@ class UpdateRevenueDTO
 {
     public function __construct(
         public readonly string $name,
+         public readonly string $difficulty,
         public readonly string $preparation_method,
         public readonly int $time,
         public readonly int $portions,
@@ -18,6 +19,7 @@ class UpdateRevenueDTO
             name: $data['name'],
             time: $data['time'],
             portions: $data['portions'],
+            difficulty: $data['difficulty'],
             preparation_method: $data['preparationMethod'],
             category_id: $data['categoryID'],
         );
@@ -29,6 +31,7 @@ class UpdateRevenueDTO
             'name' => $this->name,
             'time' => $this->time,
             'portions' => $this->portions,
+            'difficulty' => $this->difficulty,
             'preparation_method' => $this->preparation_method,
             'category_id' => $this->category_id,
         ];

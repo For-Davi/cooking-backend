@@ -14,19 +14,20 @@ class UpdateRevenueFavoriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:revenues,id',
-            'favorite' => 'required|numeric|in:0,1',
+            'revenueID' => 'required|exists:revenues,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID da receita é obrigatório.',
-            'id.exists' => 'A receita informada não existe.',
-            'favorite.required' => 'O campo favorito é obrigatório.',
-            'favorite.numeric' => 'O campo favorito deve ser um número.',
-            'favorite.in' => 'O campo favorito deve ser 0 ou 1.',
+            'revenueID.required' => 'O ID da receita é obrigatória.',
+            'revenueID.exists' => 'A receita informada não existe.',
         ];
+    }
+
+    public function validationData()
+    {
+        return array_merge($this->all(), $this->route()->parameters());
     }
 }

@@ -14,7 +14,7 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:transaction_categories,id',
+            'id' => 'required|exists:categories,id',
             'name' => 'required|string|min:1|max:20',
         ];
     }

@@ -22,6 +22,7 @@ class UpdateRevenueRequest extends FormRequest
             'ingredients' => 'required|array',
             'ingredients.*' => 'required|string',
             'categoryID' => 'nullable|exists:categories,id',
+            'difficulty' => 'required|in:easy,average,hard,professional',
             'photoAdd' => 'nullable|file|mimes:jpg,jpeg,png|max:3072',
             'photoDelete' => 'nullable|exists:images,id',
         ];
@@ -47,6 +48,8 @@ class UpdateRevenueRequest extends FormRequest
             'ingredients.*.required' => 'Cada ingrediente é obrigatório.',
             'ingredients.*.string' => 'Cada ingrediente deve ser um texto.',
             'categoryID.exists' => 'A categoria selecionada não existe.',
+            'difficulty.required' => 'O campo dificuldade é obrigatório.',
+            'difficulty.in' => 'A dificuldade deve ser: fácil, média, difícil ou profissional.',
             'photoAdd.file' => 'O arquivo de imagem é inválido.',
             'photoAdd.mimes' => 'Apenas imagens JPG, JPEG ou PNG são permitidas.',
             'photoAdd.max' => 'O tamanho máximo da imagem é 3MB.',

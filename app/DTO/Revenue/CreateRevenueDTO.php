@@ -8,6 +8,7 @@ class CreateRevenueDTO
 {
     public function __construct(
         public readonly string $name,
+        public readonly string $difficulty,
         public readonly string $preparation_method,
         public readonly int $time,
         public readonly int $portions,
@@ -22,6 +23,7 @@ class CreateRevenueDTO
             name: $data['name'],
             time: $data['time'],
             portions: $data['portions'],
+            difficulty: $data['difficulty'],
             preparation_method: $data['preparationMethod'],
             category_id: $data['categoryID'],
             image_id: $data['imageID'],
@@ -35,6 +37,7 @@ class CreateRevenueDTO
             'name' => $this->name,
             'time' => $this->time,
             'portions' => $this->portions,
+            'difficulty' => $this->difficulty,
             'preparation_method' => $this->preparation_method,
             'category_id' => $this->category_id,
             'image_id' => $this->image_id,
