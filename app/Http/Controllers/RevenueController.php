@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Revenue\CreateRevenueRequest;
 use App\Http\Requests\Revenue\DeleteRevenueRequest;
+use App\Http\Requests\Revenue\ExportRevenueRequest;
 use App\Http\Requests\Revenue\ShowRevenueRequest;
 use App\Http\Requests\Revenue\UpdateRevenueFavoriteRequest;
 use App\Http\Requests\Revenue\UpdateRevenueRequest;
@@ -96,6 +97,15 @@ class RevenueController
             DB::rollBack();
 
             return response()->json(['message' => 'Erro ao atualizar receita'], 500);
+        }
+    }
+
+    public function export(ExportRevenueRequest $request)
+    {
+        try {
+            return $this->service->export($request);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erro ao exportar receita'], 500);
         }
     }
 

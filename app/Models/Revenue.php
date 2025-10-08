@@ -46,6 +46,6 @@ class Revenue extends Model
 
     public function ingredients()
     {
-        return $this->belongsTo(RevenueIngredient::class, 'revenue_id');
+        return $this->hasMany(RevenueIngredient::class, 'revenue_id');
     }
 }

@@ -12,6 +12,7 @@ use App\Repositories\ImageRepository;
 use App\Repositories\RevenueRepository;
 use App\Repositories\RevenueIngredientRepository;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RevenueService
 {
@@ -174,5 +175,20 @@ class RevenueService
                 @unlink($filePath);
             }
         }
+    }
+
+    public function export($request)
+    {
+        $dateTime = now()->format('Ymd_His');
+
+        $revenue = $this->repository->findById($request->route('revenueID'), ['category','image' , 'ingredients']);
+
+        $fileName = "revenue_{$dateTime}.pdf";
+
+        $pdf = Pdf::loadView('exports.revenue-pdf', [
+            'revenue' => $revenue,
+        ]);
+
+        return $pdf->download($fileName);
     }
 }

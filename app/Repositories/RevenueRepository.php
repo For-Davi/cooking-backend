@@ -19,9 +19,15 @@ class RevenueRepository implements RevenueRepositoryInterface
             ->get();
     }
 
-    public function findById($id)
+    public function findById($id, $relations = null)
     {
-        return $this->model->find($id);
+        $query = $this->model->newQuery();
+
+        if (!empty($relations)) {
+            $query->with($relations);
+        }
+
+        return $query->find($id);
     }
 
     public function  create(array $data)

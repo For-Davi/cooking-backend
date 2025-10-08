@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/', [RevenueController::class, 'index']);
         Route::get('/{revenueID}', [RevenueController::class, 'show']);
         Route::post('/', [RevenueController::class, 'store']);
+        Route::post('/export/{revenueID}', [RevenueController::class, 'export']);
         Route::put('/', [RevenueController::class, 'update']);
         Route::put('/favorite/{revenueID}', [RevenueController::class, 'favorite']);
         Route::delete('/{revenueID}', [RevenueController::class, 'destroy']);
