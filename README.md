@@ -21,7 +21,7 @@ Este projeto é um backend desenvolvido em Laravel, utilizando o Laravel Sail pa
 	```
 
 
-3. **Configure o Mailhog no .env:**
+3. **Configure alguns itens no .env:**
 	Adicione ou ajuste as seguintes variáveis no seu `.env` para utilizar o Mailhog:
 	```env
 	MAIL_MAILER=smtp
@@ -34,15 +34,23 @@ Este projeto é um backend desenvolvido em Laravel, utilizando o Laravel Sail pa
 	MAIL_FROM_NAME="${APP_NAME}"
 	```
 
+    Sugestão:
+    
+    APP_URL=http://localhost
+    APP_PORT=80
+    APP_SERVICE=cooking
+
 4. **Configure o banco de dados no .env:**
 	Ajuste as variáveis de conexão com o banco de dados conforme necessário, por exemplo:
 	```env
+    Sugestao:
+
 	DB_CONNECTION=mysql
-	DB_HOST=mysql
-	DB_PORT=3306
-	DB_DATABASE=cooking
-	DB_USERNAME=sail
-	DB_PASSWORD=password
+    DB_HOST=host.docker.internal
+    DB_PORT=3306
+    DB_DATABASE=cooking
+    DB_USERNAME=root
+    DB_PASSWORD=root
 	```
 
 	> Os valores acima são os padrões do Laravel Sail para MySQL. Altere conforme sua necessidade.
