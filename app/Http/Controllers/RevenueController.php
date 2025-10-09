@@ -44,6 +44,10 @@ class RevenueController
             $revenue = $this->repository->findById($request->route('revenueID'));
             $revenue->load(['category','ingredients','image']);
 
+            if($revenue->image){
+                    $revenue->image->url = asset($revenue->image->url);
+                }
+
             return response()->json(['revenue' => $revenue], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar receita'], 500);

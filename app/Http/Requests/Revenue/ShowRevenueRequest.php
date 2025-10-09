@@ -14,15 +14,20 @@ class ShowRevenueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:revenues,id',
+            'revenueID' => 'required|exists:revenues,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID da receita é obrigatório.',
-            'id.exists' => 'O ID da receita informada não existe.',
+            'revenueID.required' => 'O ID da receita é obrigatório.',
+            'revenueID.exists' => 'O ID da receita informada não existe.',
         ];
+    }
+
+    public function validationData()
+    {
+        return array_merge($this->all(), $this->route()->parameters());
     }
 }

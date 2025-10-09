@@ -25,15 +25,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{revenueID}', [RevenueController::class, 'show']);
         Route::post('/', [RevenueController::class, 'store']);
         Route::post('/export/{revenueID}', [RevenueController::class, 'export']);
-        Route::put('/', [RevenueController::class, 'update']);
+        Route::post('/update', [RevenueController::class, 'update']);
         Route::put('/favorite/{revenueID}', [RevenueController::class, 'favorite']);
         Route::delete('/{revenueID}', [RevenueController::class, 'destroy']);
     });
 
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'show']);
-        Route::post('/update-data', [UserController::class, 'updateData']);
-        Route::put('/update-password', [UserController::class, 'updatePassword']);
+        Route::put('/data', [UserController::class, 'updateData']);
+        Route::put('/password', [UserController::class, 'updatePassword']);
         Route::delete('/{userID}', [UserController::class, 'destroy']);
     });
 });

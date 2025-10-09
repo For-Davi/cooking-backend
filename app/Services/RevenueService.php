@@ -60,8 +60,10 @@ class RevenueService
             'name' => $ingredient
         ]);
 
-        return $this->revenueIngredientrepository->create($dto->toArray());
+         $this->revenueIngredientrepository->create($dto->toArray());
         }
+
+        return true;
 
     }
 

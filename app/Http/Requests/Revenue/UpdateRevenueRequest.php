@@ -23,7 +23,7 @@ class UpdateRevenueRequest extends FormRequest
             'ingredients.*' => 'required|string',
             'categoryID' => 'nullable|exists:categories,id',
             'difficulty' => 'required|in:easy,average,hard,professional',
-            'photoAdd' => 'nullable|file|mimes:jpg,jpeg,png|max:3072',
+            'photoAdd' => 'nullable|file|mimes:jpg,jpeg,png',
             'photoDelete' => 'nullable|exists:images,id',
         ];
     }
@@ -52,7 +52,6 @@ class UpdateRevenueRequest extends FormRequest
             'difficulty.in' => 'A dificuldade deve ser: fácil, média, difícil ou profissional.',
             'photoAdd.file' => 'O arquivo de imagem é inválido.',
             'photoAdd.mimes' => 'Apenas imagens JPG, JPEG ou PNG são permitidas.',
-            'photoAdd.max' => 'O tamanho máximo da imagem é 3MB.',
             'photoDelete.exists' => 'O ID da foto informada não existe',
         ];
     }
