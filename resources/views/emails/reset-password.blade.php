@@ -54,7 +54,7 @@
         <p>Você solicitou a redefinição de sua senha no <strong>Cooking</strong>. Para continuar com o processo de
             redefinição, por favor, clique no link abaixo:</p>
         <p>
-            <a class="button" href="{{ $appUrl }}/reset-password/{{ urlencode($token) }}">Redefinir Senha</a>
+            <a class="button" href="{{ $appUrl }}:9000/reset-password/{{ urlencode($token) }}">Redefinir Senha</a>
         </p>
         <p><strong>Este link é válido por apenas 30 minutos.</strong></p>
         <p>Se você não solicitou a redefinição da senha, pode ignorar este email.</p>
